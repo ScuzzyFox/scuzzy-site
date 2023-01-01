@@ -1,0 +1,72 @@
+*{
+  padding: 0%;
+  margin: 0%;
+}
+
+body{
+  background-color: rgb(55, 48, 59);
+}
+
+.header {
+  background-color: black;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  text-decoration: none;
+  color: rgb(0, 132, 255);
+  /*vvv makes the logo in the actual center*/
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.logo:hover{
+  color: aqua;
+}
+
+.logo:active{
+    background: linear-gradient(to right, #6666ff, #0099ff, #00ff00, #ff3399, #6666ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rainbow_animation 1s ease-in-out infinite;
+      background-size: 400% 100%;
+    }
+    
+    @keyframes rainbow_animation {
+    
+      0%,
+      100% {
+        background-position: 0 0;
+      }
+    
+      50% {
+        background-position: 100% 0;
+      }
+    }
+
+    .hamburger {
+      /*makes the burger menu all the way to the left*/
+      margin-right:auto;
+
+      -webkit-filter: invert(.75);
+        /* safari 6.0 - 9.0 */
+        filter: invert(.75);
+    }
+
+    .hamburger:hover {
+      background-color: #333;
+      -webkit-filter: invert(100%);
+        /* safari 6.0 - 9.0 */
+        filter: invert(100%);
+    }
+
