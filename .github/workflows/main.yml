@@ -1,0 +1,23 @@
+name: Deploy on push
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+           key: ${{ secrets.SSH_KEY }}
+           name: id_rsa # optional
+           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+           config: ${{ secrets.CONFIG }} # ssh_config; optional
+           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+           
+      - name: Pull
+        run: ssh ubuntu@scuzzyfox.com "cd /home/ubuntu/git-repos/scuzzy-site.git && /usr/bin/git pull origin main"
