@@ -18,5 +18,5 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
         config: ${{ secrets.CONFIG }} # ssh_config; optional
         if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-    - name: rsync over SSH
+    - name: push to server
       run: ssh ubuntu@scuzzyfox.com "cd /user/ubuntu/git-repos/scuzzy-site.git && /usr/bin/git pull origin main"
