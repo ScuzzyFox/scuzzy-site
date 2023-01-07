@@ -19,4 +19,4 @@ jobs:
         config: ${{ secrets.CONFIG }} # ssh_config; optional
         if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
     - name: push to server
-      run: ssh ubuntu@scuzzyfox.com "cd /user/ubuntu/git-repos/scuzzy-site.git && /usr/bin/git pull origin main"
+      run: ssh ubuntu@scuzzyfox.com "cd /user/ubuntu/git-repos/scuzzy-site.git && /usr/bin/git fetch origin"
