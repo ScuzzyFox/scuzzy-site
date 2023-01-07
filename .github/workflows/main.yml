@@ -15,7 +15,7 @@ jobs:
       with:
         key: ${{ secrets.SSH_KEY }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
-        if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+        if_key_exists: ignore # replace / ignore / fail; optional (defaults to fail)
 
     - name: push to server
       run: ssh ubuntu@scuzzyfox.com "cd /user/ubuntu/git-repos/scuzzy-site.git && /usr/bin/git fetch origin"
