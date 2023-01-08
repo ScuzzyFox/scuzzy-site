@@ -18,4 +18,4 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H scuzzyfox.com >> ~/.ssh/known_hosts
       - name: Sync the remote repo
-        run: ssh ubuntu@scuzzyfox.com "cd ~/ && touch BigNut && pee >> BigNut"
+        run: ssh ubuntu@scuzzyfox.com "cd ~/ && touch BigNut && echo pee >> BigNut"
