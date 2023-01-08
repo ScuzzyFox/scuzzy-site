@@ -18,4 +18,4 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H scuzzyfox.com >> ~/.ssh/known_hosts
       - name: Sync the remote repo
-        run: ssh ubuntu@scuzzyfox.com "cd /home/ubuntu/git-repos/scuzzy-site.git && sudo git fetch origin && sudo git --work-tree=/var/www/html/scuzzy-site --git-dir=/home/ubuntu/git-repos/scuzzy-site.git checkout -f main"
+        run: ssh ubuntu@scuzzyfox.com "cd /home/ubuntu/git-repos/scuzzy-site.git && sudo git fetch origin && sudo git --work-tree=/var/www/html/scuzzy-site --git-dir=/home/ubuntu/git-repos/scuzzy-site.git checkout -f"
