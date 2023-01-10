@@ -4,8 +4,10 @@
 }
 
 body {
-  background-color: rgb(55, 48, 59);
+  background-color: #c2b8b2;
 }
+
+/*--------------vvvvHeadervvvv----------------*/
 
 .header {
   background-color: black;
@@ -16,13 +18,14 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 2rem;
 }
 
 .logo {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bolder;
   text-decoration: none;
-  color: rgb(0, 132, 255);
+  color: #73bced;
   /*vvv makes the logo in the actual center*/
   position: absolute;
   left: 50%;
@@ -75,7 +78,64 @@ body {
   /* safari 6.0 - 9.0 */
   filter: invert(100%);
 }
+/*--------------^^^^Header^^^^----------------*/
 
-.main img {
-  width: 75%;
+/*------------vvvvlinktreevvvv------------------*/
+
+.linktree {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.linktree a {
+  margin: 1rem;
+  background-color: #197bbd;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  border-radius: 0.3rem;
+  text-align: center;
+}
+
+.linktree a:hover {
+  background-color: #1e4752;
+  box-shadow: 0.1rem 0.1rem #8a716a;
+  outline-style: solid;
+  outline-width: 0.1rem;
+  outline-color: #00ff00;
+}
+
+.linktree a:active {
+  background-color: #00ff00;
+  color: #092f48;
+  outline-style: solid;
+  outline-width: 0.1rem;
+  outline-color: #197bbd;
+}
+
+@media only screen and (min-width: 1400px) {
+  .linktree {
+    flex-direction: row;
+  }
+}
+/*------------^^^^linktree^^^^------------------*/
+
+/*------------vvvvFootervvvv------------------*/
+.footer {
+  font-family: Montserrat;
+  text-align: center;
+
+  margin-top: 2rem;
+}
+
+@media only screen and (min-height: 690px) {
+  .footer {
+    position: absolute;
+    bottom: 0;
+  }
+}
+/*------------^^^^Footer^^^^------------------*/
