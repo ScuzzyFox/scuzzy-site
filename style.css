@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #c2b8b2;
+  background-color: #dac5b8;
 }
 
 /*--------------vvvvHeadervvvv----------------*/
@@ -18,66 +18,27 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 2rem;
+  height: 2em;
+  padding: 1em;
 }
 
 .logo {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bolder;
-  text-decoration: none;
-  color: #73bced;
-  /*vvv makes the logo in the actual center*/
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 3em;
 }
 
 .logo:hover {
-  color: aqua;
+  -webkit-filter: brightness(90%);
 }
 
 .logo:active {
-  background: linear-gradient(
-    to right,
-    #6666ff,
-    #0099ff,
-    #00ff00,
-    #ff3399,
-    #6666ff
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: rainbow_animation 1s ease-in-out infinite;
-  background-size: 400% 100%;
+  -webkit-filter: brightness(50%);
+  -webkit-transition: all 0.1s ease;
+  -moz-transition: all 0.1s ease;
+  -o-transition: all 0.1s ease;
+  -ms-transition: all 0.1s ease;
+  transition: all 0.1s ease;
 }
 
-@keyframes rainbow_animation {
-  0%,
-  100% {
-    background-position: 0 0;
-  }
-
-  50% {
-    background-position: 100% 0;
-  }
-}
-
-.hamburger {
-  /*makes the burger menu all the way to the left*/
-  margin-right: auto;
-
-  -webkit-filter: invert(0.75);
-  /* safari 6.0 - 9.0 */
-  filter: invert(0.75);
-}
-
-.hamburger:hover {
-  background-color: #333;
-  -webkit-filter: invert(100%);
-  /* safari 6.0 - 9.0 */
-  filter: invert(100%);
-}
 /*--------------^^^^Header^^^^----------------*/
 
 /*------------vvvvlinktreevvvv------------------*/
@@ -87,6 +48,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 1em;
 }
 
 .linktree a {
@@ -132,7 +94,7 @@ body {
   margin-top: 2rem;
 }
 
-@media only screen and (min-height: 690px) {
+@media only screen and (min-height: 800px) {
   .footer {
     position: absolute;
     bottom: 0;
