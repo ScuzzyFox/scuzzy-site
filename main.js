@@ -13,6 +13,9 @@ let todoItemInput = document.getElementById("todo-item-input");
 let addTodoButton = document.getElementById("todo-button");
 let todoItems = document.getElementById("todo-items");
 
+//To do button event listener, creates a list item and appends it to the ul
+//also adds a checkbox to the li. each checkbox has a listener that queries all the
+// checkboxes to see if the the whole list is checked off or not.
 addTodoButton.addEventListener("click", function () {
   // get text for todo item
   let todoItemText = todoItemInput.value;
@@ -44,12 +47,18 @@ addTodoButton.addEventListener("click", function () {
 
   //append li to todo-items <ul></ul>
   listItem.appendChild(checkbox);
+
+  //since a new list item was added, the list is NOT complete
   document.getElementById("todo-complete").innerHTML = "";
   todoItems.appendChild(listItem);
 
+  //clears the textbox
   todoItemInput.value = "";
+  //makes sure the textbox is focused after clicking the button
   todoItemInput.focus();
 });
+
+//!---------------------------------------------------------------------------------
 
 //play with html input types
 //assign inputs to js inputs
@@ -68,8 +77,9 @@ let colorInput = document.getElementById("color-input");
 
 // ! add listeners to them with callback functions that update the state
 
+// display output of the checkbox in html
 cutenessCheckbox.addEventListener("input", () => {
-  // vvv this doesn't work for some reason
+  // vvv this doesn't work for some reason vvv
   //let state = cutenessCheckbox.value;
 
   let state = cutenessCheckbox.checked;
@@ -86,7 +96,8 @@ cutenessCheckbox.addEventListener("input", () => {
   }
 });
 
-// I wanted to use this since I wrote the same function twice, but idk how to pass in a callback function with parameters
+// I wanted to use this since I wrote the same function twice, but idk how to pass
+// in a callback function with parameters
 
 /* function myCallback(elm, id) {
   let state = elm.value;
@@ -94,24 +105,29 @@ cutenessCheckbox.addEventListener("input", () => {
   htmlOutput.innerHTML = state;
 } */
 
+//update the output html element with the input's value
 emailInput.addEventListener("input", () => {
   let state = emailInput.value;
   htmlOutput = document.getElementById("email-output");
   htmlOutput.innerHTML = state;
 });
 
+//update the output html element with the input's value
 passwordInput.addEventListener("input", () => {
   let state = passwordInput.value;
   htmlOutput = document.getElementById("password-output");
   htmlOutput.innerHTML = state;
 });
 
+//update the output html element with the input's value
 colorInput.addEventListener("input", () => {
   let state = colorInput.value;
   //console.log(state);
 
   bodyElement = document.querySelector("body");
   bodyElement.style.backgroundColor = state;
+
+  //code i found online to convert hex string to hex number
   if (parseInt(state.replace(/^#/, ""), 16) < 0x361b1b) {
     bodyElement.style.color = "#ffffff";
   } else {
