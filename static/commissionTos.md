@@ -24,4 +24,4 @@ I retain the full rights to publish your commission on any platform with credit 
 
 ### Refunds
 
-Refunds for completely finished commissions are not allowed. A partial refund in the middle of the commission process is possible, however you will receive a smaller portion of a refund the further along the commission is to being completed (the range being 100% refund for no work completed and 0% refund for work fully completed). As soon as you know you need a refund, contact [scuzzyfox@gmail.com](mailto:scuzzyfox@gmail.com '‌') or check the Contact Us page to get in touch for a refund.
+Refunds for completely finished commissions are not allowed. A partial refund in the middle of the commission process is possible, however you will receive a smaller portion of a refund the further along the commission is to being completed (the range being 100% refund for no work completed and 0% refund for work fully completed). As soon as you know you need a refund, contact [scuzzyfox@gmail.com](mailto:scuzzyfox@gmail.com '‌') or check the [contact](/contact) page to get in touch for a refund.

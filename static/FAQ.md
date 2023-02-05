@@ -1,3 +1,3 @@
 # FAQ
 
-Under construction. Have a question? check the Contact Us page!
+Under construction. Have a question? check the [contact](/contact) page!
