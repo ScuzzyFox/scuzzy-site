@@ -35,12 +35,13 @@
 	}
 
 	.links {
-		font-size: 1.2em;
+		font-size: 1.2rem;
 		font-weight: bold;
 		text-decoration: none;
 		color: #f9f1ff;
 		font-family: Montserrat, sans-serif;
 		padding: 0.6em;
+		flex-shrink: 0;
 	}
 
 	.links:hover {

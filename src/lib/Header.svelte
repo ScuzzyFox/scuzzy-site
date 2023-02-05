@@ -1,6 +1,8 @@
 <script lang="ts">
 	import LogoNav from './LogoNav.svelte';
+	import LogoNavDD from './LogoNavDD.svelte';
 	import type { Link } from './Link';
+
 	let links: Link[] = [
 		{ name: 'contact', href: '/contact' },
 		{ name: 'about', href: '/about' },
@@ -8,12 +10,19 @@
 		{ name: 'gallery', href: '/gallery' },
 		{ name: 'commission', href: '/commissions' },
 		{ name: 'goals', href: '/goals' },
-		{ name: 'Terms of Service', href: '/tos' }
+		{ name: 'terms of service', href: '/tos' }
 	];
+	let innerWidth: number;
 </script>
 
+<svelte:window bind:innerWidth />
+
 <div class="main">
-	<LogoNav {links} />
+	{#if innerWidth < 913}
+		<LogoNavDD {links} />
+	{:else}
+		<LogoNav {links} />
+	{/if}
 </div>
 
 <style>

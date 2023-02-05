@@ -1,1 +1,5 @@
-<h1>this is CONTACT page</h1>
+<script lang="ts">
+	import Wip from '$lib/Wip.svelte';
+</script>
+
+<Wip />
