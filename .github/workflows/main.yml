@@ -18,4 +18,4 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H scuzzyfox.com >> ~/.ssh/known_hosts
       - name: Sync the remote repo and build app
-        run: ssh ubuntu@scuzzyfox.com "cd ~/git-repos/scuzzy-site && git pull origin main && sudo npm install && sudo npm run build"
+        run: ssh ubuntu@scuzzyfox.com "cd ~/git-repos/scuzzy-site && git pull origin main && sudo npm install && sudo npm run build && pm2 restart index"
