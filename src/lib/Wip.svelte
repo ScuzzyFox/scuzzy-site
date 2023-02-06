@@ -6,9 +6,6 @@
 <h1>COMING SOON</h1>
 
 <style>
-	div {
-		display: flex;
-	}
 	h1 {
 		background-color: yellow;
 		text-align: center;

@@ -1,11 +1,13 @@
 <script lang="ts">
+	import logo from '$lib/images/logos/scuzzyfox-white-inline.svg';
+
 	import type { Link } from './Link';
 	export let links: Link[] = [];
 </script>
 
 <nav>
 	<a href="/" class="imga"
-		><img src="https://scuzzyfox.com/scuzzyfox-white-inline.svg" alt="scuzzyfox logo" /></a
+		><img src={logo} alt="scuzzyfox logo" /></a
 	>
 	{#if links.length > 0}
 		{#each links as link (link.href)}

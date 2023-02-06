@@ -1,4 +1,5 @@
 <script lang="ts">
+	import logo from '$lib/images/logos/scuzzyfox-white-inline.svg';
 	import type { Link } from './Link';
 	export let links: Link[] = [];
 	import { clickOutside } from './click_outside';
@@ -17,7 +18,7 @@
 		id="nav-toggle-label"
 		use:clickOutside
 		on:outclick={handleOutclick}
-		><img src="https://scuzzyfox.com/scuzzyfox-white-inline.svg" alt="scuzzyfox logo" /></label
+		><img src={logo} alt="scuzzyfox logo" /></label
 	>
 	<input type="checkbox" id="nav-toggle" class="nav-toggle" bind:checked={isChecked} />
 	<div>
