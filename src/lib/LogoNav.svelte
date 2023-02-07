@@ -3,15 +3,24 @@
 
 	import type { Link } from './Link';
 	export let links: Link[] = [];
+	import { fly } from 'svelte/transition';
+
+	export let animating: boolean;
 </script>
 
 <nav>
-	<a href="/" class="imga"
-		><img src={logo} alt="scuzzyfox logo" /></a
-	>
+	<a href="/" class="imga"><img src={logo} alt="scuzzyfox logo" /></a>
 	{#if links.length > 0}
 		{#each links as link (link.href)}
-			<a href={link.href} class="links">{link.name}</a>
+			<a
+				href={link.href}
+				class="links"
+				transition:fly={{ x: -500, duration: 150 }}
+				on:introstart={() => (animating = true)}
+				on:introend={() => (animating = false)}
+				on:outrostart={() => (animating = true)}
+				on:outroend={() => (animating = false)}>{link.name}</a
+			>
 		{/each}
 	{/if}
 </nav>
@@ -34,6 +43,10 @@
 
 	img {
 		height: 2.7em;
+	}
+
+	img:hover {
+		filter: drop-shadow(0 0 4px #f9f1ff);
 	}
 
 	.links {

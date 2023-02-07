@@ -2,7 +2,9 @@
 	import logo from '$lib/images/logos/scuzzyfox-white-inline.svg';
 	import type { Link } from './Link';
 	export let links: Link[] = [];
+	import { fly } from 'svelte/transition';
 	import { clickOutside } from './click_outside';
+	import { elasticOut } from 'svelte/easing';
 	let isChecked: boolean;
 	function handleOutclick() {
 		if (isChecked) {
@@ -18,6 +20,7 @@
 		id="nav-toggle-label"
 		use:clickOutside
 		on:outclick={handleOutclick}
+		in:fly={{ y: -80, duration: 800, easing: elasticOut }}
 		><img src={logo} alt="scuzzyfox logo" /></label
 	>
 	<input type="checkbox" id="nav-toggle" class="nav-toggle" bind:checked={isChecked} />
@@ -42,11 +45,12 @@
 
 	.nav-toggle:checked ~ div {
 		display: flex;
+		background-color: #1b252e;
 	}
 
 	div {
 		margin-left: 0;
-		background-color: #1b252e;
+		background-color: #328586;
 		display: flex;
 		flex-direction: column;
 		position: absolute;
@@ -76,6 +80,10 @@
 
 	img {
 		height: 2.7em;
+	}
+
+	img:hover {
+		filter: drop-shadow(0 0 4px #f9f1ff);
 	}
 
 	.links {
