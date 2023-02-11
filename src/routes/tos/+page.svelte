@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CheckedSelector from '$lib/CheckedSelector.svelte';
 	import type { Selection } from '../../lib/Selection';
+	import favicon from '$lib/images/logos/favicon.png';
 
 	let mySelections: Selection[] = [
 		{ id: 0, name: 'Site TOS', selected: true },
@@ -9,7 +10,25 @@
 	];
 
 	export let data: any;
+
+	let pageTitle = "ScuzzyFox Terms of Service";
+	let pageDescription="Terms of Service for scuzzyfox.com and ScuzzyFox commissions, detailing what you can do with your furry art, commission process, and refund agreement.";
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={favicon} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:title" content={pageTitle} />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:site" content="@scuzzyfox" />
+	<meta name="twitter:creator" content="@scuzzyfox" />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={favicon} />
+</svelte:head>
 
 <div class="all-content">
 	<div class="selector">
