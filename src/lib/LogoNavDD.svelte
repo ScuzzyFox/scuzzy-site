@@ -46,6 +46,7 @@
 	.nav-toggle:checked ~ div {
 		display: flex;
 		background-color: #1b252e;
+		box-shadow: 10px 20px 20px #0d141a;
 	}
 
 	div {

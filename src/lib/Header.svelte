@@ -33,5 +33,6 @@
 		color: #f9f1ff;
 		align-items: center;
 		padding: 0.9em;
+		box-shadow: 0 5px 20px #0d141a;
 	}
 </style>

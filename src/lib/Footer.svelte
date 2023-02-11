@@ -10,7 +10,7 @@
 
 <style>
 	.main {
-		background-color: #1b252e;
+		background-color: #1d498b;
 		padding: 1em;
 		color: #f9f1ff;
 		display: flex;

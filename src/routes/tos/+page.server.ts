@@ -1,22 +1,23 @@
 import type { PageServerLoad } from './$types';
-import {readFile} from 'fs/promises';
+import { readFile } from 'fs/promises';
 import showdown from 'showdown';
 const converter = new showdown.Converter();
-let initPath:string = './static/';
+let initPath: string = './static/';
 
 export const load = (async ({ params }) => {
-   
-    let siteTosHtml: string = converter.makeHtml(await content(initPath+'siteTos.md'));
-    let commissionTosHtml: string =converter.makeHtml( await content(initPath+'commissionTos.md'));
-    let FAQHtml: string = converter.makeHtml(await content(initPath+'FAQ.md'));
-   
-  return {
-    siteTosHtml,
-    commissionTosHtml,
-    FAQHtml
-  };
+	let siteTosHtml: string = converter.makeHtml(await content(initPath + 'siteTos.md'));
+	let commissionTosHtml: string = converter.makeHtml(await content(initPath + 'commissionTos.md'));
+	let FAQHtml: string = converter.makeHtml(await content(initPath + 'FAQ.md'));
+
+	//data for tos page (html made from markdown files)
+	return {
+		siteTosHtml,
+		commissionTosHtml,
+		FAQHtml
+	};
 }) satisfies PageServerLoad;
 
-async function content(path:string) {  
-    return await readFile(path, 'utf8');
-  }
+//reads data from file
+async function content(path: string) {
+	return await readFile(path, 'utf8');
+}
