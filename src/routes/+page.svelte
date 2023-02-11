@@ -18,4 +18,5 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={mainPageBanner} />
 </svelte:head>
+<img src={mainPageBanner} width="100%" alt="" />
 <h1>This is HOME page</h1>
