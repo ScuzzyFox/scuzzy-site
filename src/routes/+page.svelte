@@ -1,7 +1,7 @@
 <script>
 	import mainPageBanner from '$lib/images/mainPageBanner.png';
 	let pageDescription = 'ScuzzyFox.com Furry commissions, badges, art, merchandise and more!';
-	let pageTitle = 'ScuzzyFox.com: Furry commissions, badges, art, merchandise and more!';
+	let pageTitle = 'ScuzzyFox.com | Furry commissions, badges, art, merchandise and more!';
 </script>
 
 <svelte:head>

@@ -24,7 +24,7 @@
 		<img class="pfp" src={scuzzyPfp} alt="Digital art of scuzzy" />
 
 		<div class="pfp-compliment">
-			<h1>ScuzzyFox</h1>
+			<h1>ScuzzyFox (he/him)</h1>
 			<h3 class="pronouonciation">\skə-zē\ or \skə-tsē\</h3>
 			<h4>Furry digital artist and maker.</h4>
 		</div>
@@ -44,7 +44,7 @@
 	<div>
 		<h2>My Background</h2>
 		<p>
-			I am Mexican-American born to two immigrant parents in California. I have a Mechanical
+			I'm a Mexican-American born to two immigrant parents in California. I have a Mechanical
 			Engineering degree and built 3 formula-style racecars in college. I have a mechanical aptitude
 			and can learn new skills very quickly. I am currently a warehouse technician and my job takes
 			up most of my time! I love art, music, movies, games, and I have a strong deisre to understand
@@ -55,8 +55,8 @@
 		<h2>This Site</h2>
 		<p>
 			Scuzzyfox.com is a site that I made from the ground-up and is my first, real, full programming
-			project. I've programmed robots and done data analysis, but never worked on a project this big
-			before. This site is built using Svelte/kit on the front end, with mysql and Django on the
+			project. I've programmed robots and done data analysis before, but never worked on a project
+			this big. This site is built using Svelte/kit on the front end, with mysql and Django on the
 			backend.
 		</p>
 		<p>
@@ -75,14 +75,17 @@
 	main {
 		padding: 10%;
 	}
+
 	.pfp {
 		width: 30%;
 	}
 
 	.pfp-containment {
 		display: flex;
-		align-items: baseline;
-		justify-content: space-evenly;
+		align-items: center;
+		justify-content: center;
+		gap: 2em;
+		flex: 1;
 	}
 
 	.pronouonciation {
@@ -103,9 +106,13 @@
 		.pfp-containment {
 			flex-direction: column;
 			align-items: center;
+			gap: 0;
 		}
 		.pfp-compliment {
 			text-align: center;
+		}
+		.pfp {
+			width: 70%;
 		}
 	}
 </style>
