@@ -1,10 +1,14 @@
 <script lang="ts">
 	import type { Selection } from './Selection';
+	//this might be better as a store?
 	export let selections: Selection[] = [{ id: 0, name: 'blank', selected: false }];
 	export let idModifier: string = '';
 
 	function handleNewSelection(event: any) {
+		//getting only the number id from the target's string id
 		let id: number = parseInt(event.target.id.replace(/^\D+/g, ''), 10);
+
+		//set all selections to false except for the one that was selected
 		selections = selections.map((selection) => {
 			if (id === selection.id) {
 				return { id: selection.id, name: selection.name, selected: true };

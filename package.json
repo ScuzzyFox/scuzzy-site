@@ -31,6 +31,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"dotenv": "^16.0.3",
+		"jose": "^4.11.4",
 		"showdown": "^2.1.0"
 	}
 }
