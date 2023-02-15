@@ -20,8 +20,8 @@ export async function handle({ event, resolve }: { event: any; resolve: Function
 
 		//verify that the cookie is valid using the secret environment variable
 		const { payload, protectedHeader } = await jose.jwtVerify(userSettings, secret, {
-			issuer: 'issuer',
-			audience: 'audience'
+			issuer: 'com.scuzzyfox.svelte',
+			audience: 'com.scuzzyfox.svelte'
 		});
 
 		//load functions and +server scripts can access the event.locals objects as { locals }
