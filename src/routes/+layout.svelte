@@ -8,7 +8,7 @@
 </svelte:head>
 
 <Header />
-<div class="wrapper">
+<div class="wrapper" id="slot-wrapper">
 	<slot />
 </div>
 <Footer />

@@ -2,6 +2,9 @@
 	import LogoNav from './LogoNav.svelte';
 	import LogoNavDD from './LogoNavDD.svelte';
 	import type { Link } from './Link';
+	import NsfwSwitch from './NsfwSwitch.svelte';
+
+	export let data: any;
 
 	let links: Link[] = [
 		{ name: 'store', href: '/store' },
@@ -23,7 +26,7 @@
 	{#if innerWidth < 913 && !animating}
 		<LogoNavDD {links} />
 	{:else if innerWidth >= 913}
-		<LogoNav {links} bind:animating />
+		<LogoNav {data} {links} bind:animating />
 	{/if}
 </div>
 
@@ -34,5 +37,6 @@
 		align-items: center;
 		padding: 0.9em;
 		box-shadow: 0 5px 20px #0d141a;
+		position: relative;
 	}
 </style>

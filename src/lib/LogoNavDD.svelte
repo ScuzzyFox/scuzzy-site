@@ -5,7 +5,10 @@
 	import { fly } from 'svelte/transition';
 	import { clickOutside } from './click_outside';
 	import { elasticOut } from 'svelte/easing';
+	import NsfwSwitch from './NsfwSwitch.svelte';
+	export let data: any;
 	let isChecked: boolean;
+
 	function handleOutclick() {
 		if (isChecked) {
 			isChecked = false;
@@ -24,7 +27,7 @@
 		><img src={logo} alt="scuzzyfox logo" /></label
 	>
 	<input type="checkbox" id="nav-toggle" class="nav-toggle" bind:checked={isChecked} />
-	<div>
+	<div id="dropdown-nav">
 		<a href="/" class="links">home</a>
 		{#if links.length > 0}
 			{#each links as link (link.href)}
@@ -33,6 +36,7 @@
 		{/if}
 	</div>
 </nav>
+<NsfwSwitch {data} mobile={true} />
 
 <style>
 	.nav-toggle {
@@ -54,10 +58,11 @@
 		background-color: #328586;
 		display: flex;
 		flex-direction: column;
-		position: absolute;
-		top: 4.5em;
-		left: 0;
 		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 90;
 	}
 
 	nav {
