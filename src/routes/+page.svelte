@@ -21,7 +21,7 @@
 </svelte:head>
 <img src={mainPageBanner} alt="" class="banner" />
 
-<h1>This is HOME page</h1>
+<h1>This is the home page</h1>
 
 <style>
 	.banner {
