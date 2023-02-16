@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
+	export let data: any;
 </script>
 
 <svelte:head>
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
 </svelte:head>
 
-<Header />
+<Header {data} />
 <div class="wrapper" id="slot-wrapper">
 	<slot />
 </div>

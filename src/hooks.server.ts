@@ -12,24 +12,29 @@ import * as jose from 'jose';
 export async function handle({ event, resolve }: { event: any; resolve: Function }) {
 	//check for user settings cookie from the request (cookies are passed with every request)
 	//this should be a jwt token
-	const userSettings = event.cookies.get('us');
+	const userSettingsCookie = event.cookies.get('us');
 
-	if (userSettings) {
+	if (userSettingsCookie) {
 		//have to encode secret to unit8array
 		const secret = new TextEncoder().encode(USER_SETTINGS_SECRET);
 
 		//verify that the cookie is valid using the secret environment variable
-		const { payload, protectedHeader } = await jose.jwtVerify(userSettings, secret, {
+		const { payload, protectedHeader } = await jose.jwtVerify(userSettingsCookie, secret, {
 			issuer: 'com.scuzzyfox.svelte',
 			audience: 'com.scuzzyfox.svelte'
 		});
 
 		//load functions and +server scripts can access the event.locals objects as { locals }
 		//todo: Need to double check that payload matches the shape of userSettings.
-		event.locals.userSettings = payload;
+
+		event.locals.userSettings = {
+			nsfwAllowed: payload.nsfwAllowed,
+			abdlAllowed: payload.abdlAllowed
+		};
 	} else {
 		event.locals.userSettings = null; //{ abdlAllowed: true, nsfwAllowed: false };
 	}
+
 	return resolve(event);
 }
 

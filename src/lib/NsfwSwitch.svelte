@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import AdultAlert from '$lib/AdultAlert.svelte';
+	import type { UserSettings } from '$lib/UserSettings';
 
 	export let data: any;
 	export let mobile: boolean = false;
 	let nsfwAllowed: boolean;
 	let agreedToAdult: boolean;
 	let displayAdultAlert: boolean = false;
+
 	onMount(async () => {
 		let tempUserSettings: any;
 		try {
@@ -15,6 +18,7 @@
 				tempUserSettings = null;
 			}
 		}
+
 		if (tempUserSettings) {
 			nsfwAllowed = data.userSettings.nsfwAllowed;
 			agreedToAdult = true;
@@ -28,17 +32,53 @@
 		if (!agreedToAdult && nsfwAllowed) {
 			displayAdultAlert = true;
 			nsfwAllowed = false;
+		} else if (agreedToAdult) {
+			let abdlAllowed;
+
+			/* if (!data.userSettings) {
+				abdlAllowed = false;
+			} else {
+				abdlAllowed = data.userSettings.abdlAllowed;
+			} */
+
+			try {
+				abdlAllowed = data.userSettings.abdlAllowed;
+			} catch (error) {
+				if (error instanceof TypeError) {
+					abdlAllowed = false;
+				}
+			}
+
+			updateUserSettings({ nsfwAllowed, abdlAllowed });
 		}
+	}
+
+	function handleCancelButton(event: any) {
+		displayAdultAlert = false;
+	}
+
+	function handleAgreeButton(event: any) {
+		agreedToAdult = true;
+		displayAdultAlert = false;
+		nsfwAllowed = true;
+	}
+
+	async function updateUserSettings(us: UserSettings) {
+		let response = await fetch('/settings', {
+			method: 'POST',
+			body: JSON.stringify(us),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		let success = await response.json();
+		return success;
 	}
 </script>
 
-{#if displayAdultAlert}
-	<p
-		oncontextmenu="return false;"
-		style="text-align: center; position: fixed; bottom: -10em; top: -10em; right: 0; left: 0; background-color: black; z-index: 91; display: flex; align-items: center; justify-content: center; color:white; font-weight: bold; text-decoration:dashed;"
-	>
-		ADULT ALERT
-	</p>
+{#if displayAdultAlert && !agreedToAdult}
+	<AdultAlert {handleCancelButton} {handleAgreeButton} {mobile} />
 {/if}
 
 {#if mobile}

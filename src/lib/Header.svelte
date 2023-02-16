@@ -24,7 +24,7 @@
 
 <div class="main">
 	{#if innerWidth < 913 && !animating}
-		<LogoNavDD {links} />
+		<LogoNavDD {data} {links} />
 	{:else if innerWidth >= 913}
 		<LogoNav {data} {links} bind:animating />
 	{/if}
