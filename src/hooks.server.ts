@@ -1,4 +1,5 @@
 import { jwt_alg } from '$lib/constants';
+import { userSettingsStore } from '$lib/stores';
 
 //secret
 import { USER_SETTINGS_SECRET } from '$env/static/private';
@@ -19,20 +20,29 @@ export async function handle({ event, resolve }: { event: any; resolve: Function
 		const secret = new TextEncoder().encode(USER_SETTINGS_SECRET);
 
 		//verify that the cookie is valid using the secret environment variable
-		const { payload, protectedHeader } = await jose.jwtVerify(userSettingsCookie, secret, {
-			issuer: 'com.scuzzyfox.svelte',
-			audience: 'com.scuzzyfox.svelte'
-		});
 
+		let payload;
+
+		try {
+			({ payload } = await jose.jwtVerify(userSettingsCookie, secret, {
+				issuer: 'com.scuzzyfox.svelte',
+				audience: 'com.scuzzyfox.svelte'
+			}));
+		} catch (error) {
+			//if there's any kind of error from jwtverify, then delete the cookie and make the user agree again.
+			event.cookies.delete('us');
+			payload = { nsfwAllowed: false, abdlAllowed: false };
+		}
 		//load functions and +server scripts can access the event.locals objects as { locals }
-		//todo: Need to double check that payload matches the shape of userSettings.
 
 		event.locals.userSettings = {
+			adultAgreed: true,
 			nsfwAllowed: payload.nsfwAllowed,
 			abdlAllowed: payload.abdlAllowed
 		};
 	} else {
-		event.locals.userSettings = null; //{ abdlAllowed: true, nsfwAllowed: false };
+		//if cookie doesn't exist, then user hasn't agreed.
+		event.locals.userSettings = { adultAgreed: false, nsfwAllowed: false, abdlAllowed: false };
 	}
 
 	return resolve(event);

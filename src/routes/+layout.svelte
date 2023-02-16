@@ -1,14 +1,21 @@
 <script lang="ts">
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import { onMount } from 'svelte';
+	import { userSettingsStore } from '$lib/stores';
 	export let data: any;
+
+	//populate userSettings Store
+	onMount(() => {
+		$userSettingsStore = data.userSettings;
+	});
 </script>
 
 <svelte:head>
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
 </svelte:head>
 
-<Header {data} />
+<Header />
 <div class="wrapper" id="slot-wrapper">
 	<slot />
 </div>

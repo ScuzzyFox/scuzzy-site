@@ -6,7 +6,6 @@
 	import { clickOutside } from './click_outside';
 	import { elasticOut } from 'svelte/easing';
 	import NsfwSwitch from './NsfwSwitch.svelte';
-	export let data: any;
 	let isChecked: boolean;
 
 	function handleOutclick() {
@@ -36,7 +35,7 @@
 		{/if}
 	</div>
 </nav>
-<NsfwSwitch {data} mobile={true} />
+<NsfwSwitch mobile={true} />
 
 <style>
 	.nav-toggle {

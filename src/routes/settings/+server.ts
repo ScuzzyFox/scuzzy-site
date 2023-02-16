@@ -3,7 +3,23 @@ import type { UserSettings } from '$lib/UserSettings';
 import { USER_SETTINGS_SECRET } from '$env/static/private';
 import * as jose from 'jose';
 import { jwt_alg } from '$lib/constants';
-import { json } from '@sveltejs/kit';
+import { json, type Cookies } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
+
+export async function load({ parent }: { parent: any }) {
+	//let { userSettings } = await parent();
+	//let userSettingsCookie = event.cookies.get('us');
+
+	console.log(JSON.stringify(await parent()));
+
+	/* if (!event.locals.userSettings.adultAgreed) {
+		throw redirect(307, '/');
+	}
+
+	return {
+		userSettings: event.locals.userSettings
+	}; */
+}
 
 export async function POST(event: RequestEvent) {
 	let success: boolean = true;

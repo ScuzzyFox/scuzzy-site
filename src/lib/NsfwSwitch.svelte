@@ -2,67 +2,53 @@
 	import { onMount } from 'svelte';
 	import AdultAlert from '$lib/AdultAlert.svelte';
 	import type { UserSettings } from '$lib/UserSettings';
+	import { userSettingsStore } from '$lib/stores';
+	import { fade } from 'svelte/transition';
 
-	export let data: any;
 	export let mobile: boolean = false;
-	let nsfwAllowed: boolean;
-	let agreedToAdult: boolean;
 	let displayAdultAlert: boolean = false;
 
-	onMount(async () => {
-		let tempUserSettings: any;
-		try {
-			tempUserSettings = data.userSettings;
-		} catch (error) {
-			if (error instanceof TypeError) {
-				tempUserSettings = null;
-			}
-		}
+	//just to tie the class boolean to the store boolean without having to write $userSet...fwAllowed
+	//inline with the element and in the css.
+	let nsfwAllowedClass: boolean;
 
-		if (tempUserSettings) {
-			nsfwAllowed = data.userSettings.nsfwAllowed;
-			agreedToAdult = true;
-		} else {
-			nsfwAllowed = false;
-			agreedToAdult = false;
-		}
+	//when the switch is first rendered, tie the class value to the store value
+	onMount(() => {
+		nsfwAllowedClass = $userSettingsStore.nsfwAllowed;
 	});
 
+	//every time the store is updated, sync the class and store value
+	$: nsfwAllowedClass = $userSettingsStore.nsfwAllowed;
+
+	//if the store value is trying to change, check if the user has agreed to the terms before updating the cookie.
 	$: {
-		if (!agreedToAdult && nsfwAllowed) {
+		//has user agreed to terms?
+		if ($userSettingsStore.adultAgreed) {
+			//if so, then update the user settings cookie.
+			updateUserSettings($userSettingsStore);
+			//if they haven't agreed and the switch is trying to activate
+		} else if (!$userSettingsStore.adultAgreed && $userSettingsStore.nsfwAllowed) {
+			//then display the agreement alert and set the switch to off.
 			displayAdultAlert = true;
-			nsfwAllowed = false;
-		} else if (agreedToAdult) {
-			let abdlAllowed;
-
-			/* if (!data.userSettings) {
-				abdlAllowed = false;
-			} else {
-				abdlAllowed = data.userSettings.abdlAllowed;
-			} */
-
-			try {
-				abdlAllowed = data.userSettings.abdlAllowed;
-			} catch (error) {
-				if (error instanceof TypeError) {
-					abdlAllowed = false;
-				}
-			}
-
-			updateUserSettings({ nsfwAllowed, abdlAllowed });
+			$userSettingsStore.nsfwAllowed = false;
 		}
 	}
 
+	//if the user doesn't agree to the alert, then just close the alert without doing anything.
 	function handleCancelButton(event: any) {
 		displayAdultAlert = false;
 	}
 
+	//if the user clicks agree, then turn on the nsfw switch, change the store to say they agreed, and save the uer settings cookie.
+	//and also close the alert.
 	function handleAgreeButton(event: any) {
-		agreedToAdult = true;
+		$userSettingsStore.adultAgreed = true;
+		$userSettingsStore.nsfwAllowed = true;
 		displayAdultAlert = false;
-		nsfwAllowed = true;
+		updateUserSettings($userSettingsStore);
 	}
 
+	//sends a POST request to the /settings endpoint to store the cookie so the server can sign it.
 	async function updateUserSettings(us: UserSettings) {
 		let response = await fetch('/settings', {
 			method: 'POST',
@@ -77,26 +63,30 @@
 	}
 </script>
 
-{#if displayAdultAlert && !agreedToAdult}
+<!--display the alert if the app requests it AND if they user hasn't agreed-->
+{#if displayAdultAlert && !$userSettingsStore.adultAgreed}
 	<AdultAlert {handleCancelButton} {handleAgreeButton} {mobile} />
 {/if}
 
+<!--The actual elements of the switch-->
+<!--The whole thing is just a checkbox label with the checked value tied to the store value and the checkbox set to invisible-->
+<!--the flex direction and knob color changes depending on if it's on or off-->
 {#if mobile}
 	<label
 		for="nsfw-switch-mobile"
 		class="switch-housing-mobile"
-		class:nsfwAllowed
+		class:nsfwAllowedClass
 		id="nsfw-switch-housing-mobile"
 	>
 		<div class="knob-mobile" id="knob-mobile">NSFW</div>
 
-		<input type="checkbox" id="nsfw-switch-mobile" bind:checked={nsfwAllowed} />
+		<input type="checkbox" id="nsfw-switch-mobile" bind:checked={$userSettingsStore.nsfwAllowed} />
 	</label>
 {:else}
-	<label for="nsfw-switch" class="switch-housing" class:nsfwAllowed id="nsfw-switch-housing">
+	<label for="nsfw-switch" class="switch-housing" class:nsfwAllowedClass id="nsfw-switch-housing">
 		<div class="knob" id="knob">NSFW</div>
 
-		<input type="checkbox" id="nsfw-switch" bind:checked={nsfwAllowed} />
+		<input type="checkbox" id="nsfw-switch" bind:checked={$userSettingsStore.nsfwAllowed} />
 	</label>
 {/if}
 
@@ -133,11 +123,11 @@
 		top: 20%;
 	}
 
-	#nsfw-switch-housing.nsfwAllowed {
+	#nsfw-switch-housing.nsfwAllowedClass {
 		justify-content: end;
 	}
 
-	#nsfw-switch-housing-mobile.nsfwAllowed {
+	#nsfw-switch-housing-mobile.nsfwAllowedClass {
 		justify-content: start;
 	}
 
@@ -159,12 +149,12 @@
 		font-size: 1rem;
 	}
 
-	.nsfwAllowed > .knob {
+	.nsfwAllowedClass > .knob {
 		background-color: var(--accnt-clr);
 		color: var(--white-txt);
 	}
 
-	.nsfwAllowed > .knob-mobile {
+	.nsfwAllowedClass > .knob-mobile {
 		background-color: var(--accnt-clr);
 		color: var(--white-txt);
 	}

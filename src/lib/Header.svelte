@@ -2,9 +2,7 @@
 	import LogoNav from './LogoNav.svelte';
 	import LogoNavDD from './LogoNavDD.svelte';
 	import type { Link } from './Link';
-	import NsfwSwitch from './NsfwSwitch.svelte';
-
-	export let data: any;
+	import { userSettingsStore } from '$lib/stores';
 
 	let links: Link[] = [
 		{ name: 'store', href: '/store' },
@@ -24,9 +22,9 @@
 
 <div class="main">
 	{#if innerWidth < 913 && !animating}
-		<LogoNavDD {data} {links} />
+		<LogoNavDD {links} />
 	{:else if innerWidth >= 913}
-		<LogoNav {data} {links} bind:animating />
+		<LogoNav {links} bind:animating />
 	{/if}
 </div>
 

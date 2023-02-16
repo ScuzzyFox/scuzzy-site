@@ -5,7 +5,6 @@
 	export let links: Link[] = [];
 	import { fly } from 'svelte/transition';
 	import NsfwSwitch from './NsfwSwitch.svelte';
-	export let data: any;
 	export let animating: boolean;
 </script>
 
@@ -24,7 +23,7 @@
 			>
 		{/each}
 	{/if}
-	<NsfwSwitch {data} />
+	<NsfwSwitch />
 </nav>
 
 <style>
