@@ -92,4 +92,10 @@
 		cursor: pointer;
 		width: max-content;
 	}
+
+	@media (max-width: 913px) {
+		label {
+			width: revert;
+		}
+	}
 </style>
