@@ -106,6 +106,7 @@
 		background-color: var(--scnd-clr);
 		justify-self: end;
 		font-family: inherit;
+		cursor: pointer;
 	}
 
 	.switch-housing-mobile {
@@ -121,6 +122,12 @@
 		right: 5%;
 		bottom: 20%;
 		top: 20%;
+		cursor: pointer;
+	}
+
+	.switch-housing-mobile:hover,
+	.switch-housing:hover {
+		box-shadow: 5px 5px 5px rgba(16, 5, 20, 0.6) inset;
 	}
 
 	#nsfw-switch-housing.nsfwAllowedClass {

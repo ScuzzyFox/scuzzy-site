@@ -27,4 +27,12 @@
 	.banner {
 		width: 100%;
 	}
+
+	@media (max-width: 913px) {
+		.banner {
+			width: 100vw;
+			min-height: 20vh;
+			object-fit: cover;
+		}
+	}
 </style>

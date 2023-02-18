@@ -1,55 +1,95 @@
 <script lang="ts">
-	export let data: any;
-	let pageTitle: string = 'User Settings';
+	let pageTitle: string = 'ScuzzyFox.com | User Settings';
 	let pageDescription: string =
 		'Change local user-based cookies settings if you have agreed to the terms.';
-	import favicon from '$lib/images/logos/favicon.png';
 	import { userSettingsStore } from '$lib/stores';
-	//if data.userSettings is truthy, then we should display the user settings here, check boxes to be able to change the data
-	//todo: display only the agree/disagree to cookies and adult rating box if userSettings is not defined. (or should we redirect?)
-	//once they click agree, nsfw and abdl ratings are set to false and their jwt cookie is stored (don't forget to textencode it)
+	import { fly } from 'svelte/transition';
+
+	interface Content {
+		content: string;
+		nsfw: boolean;
+		abdl: boolean;
+	}
+
+	let myContent: Content[] = [
+		{ content: 'SFW Content Visible', nsfw: false, abdl: false },
+		{ content: 'NSFW Content Visible', nsfw: true, abdl: false },
+		{ content: 'ABDL Content Visible', nsfw: false, abdl: true },
+		{ content: 'NSFW+ABDL Content Visible', nsfw: true, abdl: true }
+	];
+
+	let contentTest: boolean = false;
 </script>
 
 <svelte:head>
 	<title>{pageTitle}</title>
 	<meta name="description" content={pageDescription} />
-	<meta property="og:type" content="website" />
-	<meta property="og:image" content={favicon} />
-	<meta property="og:description" content={pageDescription} />
-	<meta property="og:title" content={pageTitle} />
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content={pageTitle} />
-	<meta name="twitter:site" content="@scuzzyfox" />
-	<meta name="twitter:creator" content="@scuzzyfox" />
-	<meta name="twitter:description" content={pageDescription} />
-	<meta name="twitter:image" content={favicon} />
 </svelte:head>
+<main>
+	<h1>User Settings</h1>
+	<div class="settings">
+		<label for="nsfwAllowedCheckbox">
+			<h2>Display NSFW Content?</h2>
+			<p>
+				NSFW Content includes explicit content meant for adults like pornography, genitala, or sex.
+			</p>
+			<input
+				type="checkbox"
+				bind:checked={$userSettingsStore.nsfwAllowed}
+				id="nsfwAllowedCheckbox"
+			/>Yes, gimme the yiff!
+		</label>
+		<label for="abdlAllowedCheckbox">
+			<h2>Display Diaper/Babyfur Content?</h2>
+			<p>
+				This includes diapers, diaper use, pacifiers, and general babyfur acts/content. This does
+				NOT mean cub porn.
+			</p>
+			<input
+				type="checkbox"
+				bind:checked={$userSettingsStore.abdlAllowed}
+				id="abdlAllowedCheckbox"
+			/>Yes, and also I need a change.
+		</label>
+	</div>
+	{#if contentTest}
+		{#each myContent as c (c.content)}
+			{#if !c.nsfw && !c.abdl}
+				<h3 transition:fly={{ duration: 200, x: -500 }}>{c.content}</h3>
+			{/if}
 
-<h1>User Settings</h1>
-
-{#if data.userSettings}
-	<!--Display settings options. upon changing a checkbox, their cookie is instantly updated?-->
-	<p>nsfwAllowed: {data.userSettings.nsfwAllowed}</p>
-	<p>abdlAllowed: {data.userSettings.abdlAllowed}</p>
-{:else}
-	<!--Display the adult and cookies agreement-->
-	<p>Not "logged in"</p>
-{/if}
-
-{#if $userSettingsStore.nsfwAllowed}
-	<img
-		src="https://static1.e621.net/data/00/dd/00ddadacc9912e9d33e5262e61085da4.png"
-		alt="porn"
-		class="image"
-	/>
-{/if}
+			{#if c.nsfw && !c.abdl}
+				{#if $userSettingsStore.nsfwAllowed}
+					<h3 transition:fly={{ duration: 200, x: -500 }}>{c.content}</h3>
+				{/if}
+			{/if}
+			{#if !c.nsfw && c.abdl}
+				{#if $userSettingsStore.abdlAllowed}
+					<h3 transition:fly={{ duration: 200, x: -500 }}>{c.content}</h3>
+				{/if}
+			{/if}
+			{#if c.nsfw && c.abdl}
+				{#if $userSettingsStore.abdlAllowed && $userSettingsStore.nsfwAllowed}
+					<h3 transition:fly={{ duration: 200, x: -500 }}>{c.content}</h3>
+				{/if}
+			{/if}
+		{/each}
+	{/if}
+</main>
 
 <style>
-	.image {
-		display: block;
-		margin: auto;
-		margin-top: 2em;
-		margin-bottom: 2em;
-		max-width: 70vw;
+	main {
+		margin: 10%;
+	}
+
+	.settings {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2em;
+	}
+
+	label {
+		cursor: pointer;
+		width: max-content;
 	}
 </style>

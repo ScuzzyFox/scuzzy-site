@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { userSettingsStore } from '$lib/stores';
 </script>
 
 <div class="main">
-	<a href="/">links</a>
-	<a href="/">links</a>
-	<a href="/">links</a>
-	<a href="/">links</a>
+	{#if $userSettingsStore.adultAgreed}
+		<a href="/settings">Site Settings</a>
+	{/if}
+	<p class="copyright">©️ScuzzyFox 2023. All rights reserved.</p>
 </div>
 
 <style>
@@ -18,6 +19,16 @@
 	}
 	a {
 		text-decoration: none;
-		color: #f9f1ff;
+		color: var(--link-txt-clr);
+	}
+
+	a:hover {
+		text-decoration: none;
+		color: var(--link-txt-clr-hvr);
+	}
+
+	a:active {
+		text-decoration: none;
+		color: var(--link-txt-clr-actv);
 	}
 </style>
