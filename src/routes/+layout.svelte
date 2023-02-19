@@ -24,6 +24,8 @@
 <style>
 	/* to be used later for global variables ? */
 	:global(html) {
+		--mobile-trans: 913px;
+
 		--white-txt: #f9f1ff;
 		--main-clr: #151c24;
 		--scnd-clr: #1b252e;

@@ -6,7 +6,8 @@
 	let mySelections: Selection[] = [
 		{ id: 0, name: 'Site TOS', selected: true },
 		{ id: 1, name: 'Commissions TOS', selected: false },
-		{ id: 2, name: 'FAQ', selected: false }
+		{ id: 2, name: 'FAQ', selected: false },
+		{ id: 3, name: "Will/(Not) Draw", selected: false}
 	];
 
 	export let data: any;
@@ -42,6 +43,8 @@
 				{@html data.commissionTosHtml}
 			{:else if selection.selected && selection.id === 2}
 				{@html data.FAQHtml}
+			{:else if selection.selected && selection.id === 3}
+				{@html data.willNotDrawHtml}
 			{/if}
 		{/each}
 

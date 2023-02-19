@@ -8,12 +8,14 @@ export const load = (async ({ params }) => {
 	let siteTosHtml: string = converter.makeHtml(await content(initPath + 'siteTos.md'));
 	let commissionTosHtml: string = converter.makeHtml(await content(initPath + 'commissionTos.md'));
 	let FAQHtml: string = converter.makeHtml(await content(initPath + 'FAQ.md'));
+	let willNotDrawHtml: string = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
 
 	//data for tos page (html made from markdown files)
 	return {
 		siteTosHtml,
 		commissionTosHtml,
-		FAQHtml
+		FAQHtml,
+		willNotDrawHtml
 	};
 }) satisfies PageServerLoad;
 
