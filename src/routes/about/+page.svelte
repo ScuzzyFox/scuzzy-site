@@ -144,7 +144,7 @@
 
 <style>
 	main {
-		padding: 10%;
+		padding: 5% 10% 10% 10%;
 	}
 
 	.pfp {

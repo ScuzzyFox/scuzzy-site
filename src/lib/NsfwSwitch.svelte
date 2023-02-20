@@ -145,6 +145,7 @@
 		color: #333;
 		border-radius: 0.8em;
 		font-size: 1rem;
+		z-index: 2;
 	}
 
 	.knob-mobile {
@@ -154,6 +155,15 @@
 		color: #333;
 		border-radius: 0.8em;
 		font-size: 1rem;
+		z-index: 2;
+	}
+
+	.knob:hover,
+	.knob-mobile:hover,
+	.nsfwAllowedClass > .knob:hover,
+	.nsfwAllowedClass > .knob-mobile:hover {
+		background-color: var(--accnt-clr-2);
+		color: var(--white-txt);
 	}
 
 	.nsfwAllowedClass > .knob {
@@ -164,5 +174,17 @@
 	.nsfwAllowedClass > .knob-mobile {
 		background-color: var(--accnt-clr);
 		color: var(--white-txt);
+	}
+
+	.switch-housing:active,
+	.switch-housing-mobile:active {
+		outline: 2px solid var(--accnt-clr-2);
+	}
+
+	.knob:active,
+	.knob-mobile:active,
+	.nsfwAllowedClass > .knob:active,
+	.nsfwAllowedClass > .knob-mobile:active {
+		outline: 2px solid var(--white-txt);
 	}
 </style>

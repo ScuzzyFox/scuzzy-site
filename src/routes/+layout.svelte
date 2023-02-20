@@ -36,11 +36,19 @@
 		--link-txt-clr-hvr: #ddd;
 		--link-txt-clr-actv: #0ee;
 
+		--btn-clr: #004e58;
+		--btn-clr-hvr: #027579;
+		--btn-clr-actv: #0ee;
+
 		--drp-shdw: 0 5px 5px rgba(15, 7, 20, 0.25);
 		--btn-drp-shdw: 5px 5px 5px rgba(15, 7, 20, 0.25);
 
 		--sans-family: Montserrat;
 		--serif-family: serif;
+
+		--link-btn-clr: #004e58;
+		--link-btn-clr-hvr: #027579;
+		--link-btn-clr-actv: #0ee;
 	}
 
 	:global(body) {

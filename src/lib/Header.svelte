@@ -21,9 +21,9 @@
 <svelte:window bind:innerWidth />
 
 <div class="main">
-	{#if innerWidth < 913 && !animating}
+	{#if innerWidth < 1010 && !animating}
 		<LogoNavDD {links} />
-	{:else if innerWidth >= 913}
+	{:else if innerWidth >= 1010}
 		<LogoNav {links} bind:animating />
 	{/if}
 </div>
