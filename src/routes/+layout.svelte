@@ -13,7 +13,7 @@
 
 <svelte:head>
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
-	<link rel="manifest" href="/manifest.json" />
+	<link rel="manifest" href="/scuzzyfox.webmanifest" />
 </svelte:head>
 
 <Header />
