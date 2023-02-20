@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "ScuzzyFox",
+    "short_name": "ScuzzyFox",
+    "start_url": ".",
+    "display": "fullscreen",
+    "background_color": "#151c24",
+    "description": "ScuzzyFox.com Furry commissions, badges, art, merchandise and more!",
+    "icons": [
+      {
+        "src": "/favicon.png",
+        "sizes": "766x802",
+        "type": "image/png"
+      }
+    ]
+  }
