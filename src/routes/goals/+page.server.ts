@@ -1,95 +1,135 @@
+import type { Goal } from '$lib/Goal';
 import type { Link } from '../../lib/Link';
+import { PAYPAL_USER, PAYPAL_PASSWORD, PAYPAL_SIGNATURE } from '$env/static/private';
 
-export const load = () => {
-	let currentGoal = getCurrentGoal();
-	let previousGoals = getPreviousGoals(3);
-	let paypalBalance = getPaypalBalance();
+export const load = async (event: any) => {
+	let allGoals = await getAllGoals(event);
+
+	let currentGoal = getCurrentGoal(allGoals);
+	let previousGoals = getPreviousGoals(allGoals, 2);
+	let nextGoal = getNextGoal(allGoals);
+	let paypalBalance = await getPaypalBalance(event);
 
 	return {
 		currentGoal,
 		previousGoals,
+		nextGoal,
+		allGoals,
 		paypalBalance
 	};
 };
 
-function getCurrentGoal() {
-	return {
-		id: 7,
-		name: 'fursuit',
-		description:
-			"I've always wanted a fursuit, and I don't think i'll be making one so I wanna buy from a maker!",
-		cost: 4750.69,
-		image: {
-			name: 'link to fursuit image',
-			href: 'https://i.etsystatic.com/15652127/r/il/c8cfb4/4635997669/il_1588xN.4635997669_fme5.jpg'
-		},
-		fulfilled: false,
-		dateAdded: Date()
-	};
+async function getAllGoals(event: any) {
+	const response = await event.fetch('/test/goals', {
+		method: 'GET',
+		headers: {
+			'content-type': 'application/json'
+		}
+	});
+
+	return await response.json();
 }
 
-function getPreviousGoals(limit: number) {
-	let previousGoals = [
-		{
-			id: 7,
-			name: 'fursuit',
-			description:
-				"I've always wanted a fursuit, and I don't think i'll be making one so I wanna buy from a maker!",
-			cost: 450.69,
-			image: {
-				name: 'link to fursuit image',
-				href: 'https://i.etsystatic.com/15652127/r/il/c8cfb4/4635997669/il_1588xN.4635997669_fme5.jpg'
-			},
-			fulfilled: false,
-			dateAdded: Date()
-		},
-		{
-			id: 2,
-			name: 'laptop',
-			description: 'A laptop for me to do coding and art on the move!',
-			cost: 2000.0,
-			image: {
-				name: 'link to laptop image',
-				href: 'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWBrzy?ver=85d4&q=90&m=6&h=705&w=1253&b=%23FFFFFFFF&f=jpg&o=f&p=140&aim=true'
-			},
-			fulfilled: true,
-			dateAdded: 'Tue Jan 31 2023 20:48:52 GMT-0700 (Mountain Standard Time)'
-		},
-		{
-			id: 4,
-			name: 'car',
-			description: 'I need a new car!',
-			cost: 40070.99,
-			image: {
-				name: 'link image of car',
-				href: 'https://media.wired.co.uk/photos/60f5a2fda98458eddde4f163/16:9/w_2560%2Cc_limit/2021-WIRED-Car1.jpg'
-			},
-			fulfilled: true,
-			dateAdded: 'Wed Feb 01 2023 20:48:52 GMT-0700 (Mountain Standard Time)'
-		}
-	];
+//the current goal should be the first unfulfilled goal when sorted by date added
+function getCurrentGoal(goals: Goal[]) {
+	goals = goals.sort(compareGoals);
+	let unfulfilledGoals = goals.filter((goal: Goal) => {
+		return !goal.fulfilled;
+	});
+	return unfulfilledGoals[0];
+}
 
-	previousGoals = previousGoals.filter((goal) => {
+function getPreviousGoals(goals: Goal[], limit: number) {
+	//filter for only fulfilled goals
+	let previousGoals = goals.filter((goal) => {
 		return goal.fulfilled;
 	});
 
-	function compare(a: any, b: any) {
-		let aDate = Date.parse(a.dateAdded);
-		let bDate = Date.parse(b.dateAdded);
-
-		if (aDate < bDate) {
-			return 1;
-		}
-		if (aDate > bDate) {
-			return -1;
-		}
-		return 0;
-	}
-	previousGoals = previousGoals.sort(compare);
+	//sort the filtered goals by date added
+	previousGoals = previousGoals.sort(compareGoals);
 
 	return previousGoals.slice(0, limit);
 }
 
-function getPaypalBalance() {
-	return (Math.random() * 700 + 300).toFixed(2);
+async function getPaypalBalance(event: any) {
+	let apiUrl = 'https://api-3t.paypal.com/nvp';
+
+	let nvp =
+		'METHOD=GetBalance&' +
+		PAYPAL_USER +
+		'&' +
+		PAYPAL_PASSWORD +
+		'&' +
+		PAYPAL_SIGNATURE +
+		'&RETURNALLCURRENCIES=0&VERSION=109.0';
+
+	let response = await fetch(apiUrl, {
+		method: 'POST',
+		body: nvp,
+		headers: {
+			'Content-Type': 'text/html'
+		}
+	});
+	let decodedResponse: string = decodeURIComponent(await response.text());
+
+	//extract KEY=value to a dictionary
+	let result: any = extractNvp(decodedResponse);
+
+	//check if ACK exists, if it doesn't, check if L_ERRORCODE0 exists, if it does Then get L_SHORTMESSAGE0 and throw error. If none of them exist then throw a general error code
+	if (result.ACK) {
+		//console.log(JSON.stringify(result));
+		if (result.L_ERRORCODE0) {
+			throw { name: 'PaypalResponseError', message: result.L_SHORTMESSAGE0 };
+		}
+	} else {
+		throw {
+			name: 'PaypalResponseError',
+			message: 'Neither ACK or L_ERRORCODE0 present in response: ' + JSON.stringify(result)
+		};
+	}
+
+	//get L_AMT0 value
+	let ppBal: number = parseFloat(result.L_AMT0);
+	//return L_AMT0 value
+
+	return ppBal;
+}
+
+//the next goal is the one after the current goal
+function getNextGoal(goals: Goal[]) {
+	let sortedGoals = goals.sort(compareGoals);
+
+	let currentGoalID = getCurrentGoal(sortedGoals).id;
+
+	let currentGoalIndex: number = sortedGoals.findIndex((goal) => {
+		return goal.id === currentGoalID;
+	});
+
+	//returns the goal after the current goal
+	return sortedGoals[currentGoalIndex + 1];
+}
+
+function compareGoals(a: Goal, b: Goal) {
+	let aDate: Date = a.dateAdded;
+	let bDate: Date = b.dateAdded;
+
+	if (aDate > bDate) {
+		return 1;
+	}
+	if (aDate < bDate) {
+		return -1;
+	}
+	return 0;
+}
+
+function extractNvp(data: string) {
+	const regex = /([A-Za-z0-9_]+)=([^&]+)/g;
+
+	let match;
+	const result: any = {};
+	while ((match = regex.exec(data)) !== null) {
+		result[match[1]] = match[2];
+	}
+
+	return result;
 }
