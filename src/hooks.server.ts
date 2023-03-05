@@ -22,21 +22,25 @@ export async function handle({ event, resolve }: { event: any; resolve: Function
 		//verify that the cookie is valid using the secret environment variable
 
 		let payload;
+		let hasAdultAgreed = false;
 
 		try {
 			({ payload } = await jose.jwtVerify(userSettingsCookie, secret, {
 				issuer: 'com.scuzzyfox.svelte',
 				audience: 'com.scuzzyfox.svelte'
 			}));
+			hasAdultAgreed = true;
 		} catch (error) {
 			//if there's any kind of error from jwtverify, then delete the cookie and make the user agree again.
+			console.log('Error with loading cookie');
 			event.cookies.delete('us');
 			payload = { nsfwAllowed: false, abdlAllowed: false };
+			hasAdultAgreed = false;
 		}
 		//load functions and +server scripts can access the event.locals objects as { locals }
 
 		event.locals.userSettings = {
-			adultAgreed: true,
+			adultAgreed: hasAdultAgreed,
 			nsfwAllowed: payload.nsfwAllowed,
 			abdlAllowed: payload.abdlAllowed
 		};

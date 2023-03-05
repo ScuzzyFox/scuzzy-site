@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { json } from '@sveltejs/kit';
-	import DonateButton from './DonateButton.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	export let data: any;
 	let pageDescription =
@@ -34,8 +33,10 @@
 
 			<ProgressBar goal={data.currentGoal} currentBalance={data.paypalBalance} />
 
-			<DonateButton />
-
+			<a
+				href="https://www.paypal.com/donate/?hosted_button_id=A42QXPFQF5LUY"
+				class="extra-links donate-link">Donate!</a
+			>
 			<a class="extra-links" href="/store">Store</a>
 			<a class="extra-links" href="/commissions">Commission</a>
 		</div>
@@ -104,6 +105,19 @@
 		color: var(--link-txt-clr-hvr);
 	}
 	.extra-links:active {
+		color: var(--link-txt-clr-actv);
+	}
+
+	.extra-links.donate-link {
+		color: rgb(231, 211, 0);
+		text-decoration: underline;
+	}
+
+	.extra-links.donate-link:hover {
+		color: var(--link-txt-clr-hvr);
+	}
+
+	.extra-links.donate-link:active {
 		color: var(--link-txt-clr-actv);
 	}
 </style>
