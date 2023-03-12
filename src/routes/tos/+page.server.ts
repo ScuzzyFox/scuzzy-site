@@ -12,7 +12,7 @@ export const load = (async ({ params }) => {
 		FAQHtml = converter.makeHtml(await content(initPath + 'FAQ.md'));
 		willNotDrawHtml = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
 	} catch (e) {
-		siteTosHtml = `<p>file not found: ${e}</p>`;
+		siteTosHtml = `<p>file not found: ${__dirname}</p>`;
 		commissionTosHtml = '<p>file not found.</p>';
 		FAQHtml = '<p>file not found.</p>';
 		willNotDrawHtml = `<p>file not found.</p>`;
