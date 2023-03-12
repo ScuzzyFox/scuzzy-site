@@ -30,11 +30,11 @@
 
 <style>
 	.main {
-		background-color: #1b252e;
-		color: #f9f1ff;
+		background-color: var(--main-lt-clr);
+		color: var(--white-txt);
 		align-items: center;
 		padding: 0.9em;
-		box-shadow: 0 5px 20px #0d141a;
+		box-shadow: 0 5px 20px var(--drp-shdw-clr);
 		position: relative;
 	}
 </style>

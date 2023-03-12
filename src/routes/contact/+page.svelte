@@ -4,7 +4,6 @@
 	import contactScuzzy from '$lib/images/contactScuzzy.png';
 	import { userSettingsStore } from '$lib/stores';
 	import type { Link, LinkCF } from '$lib/Link';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Linktree from './Linktree.svelte';
 
@@ -25,14 +24,14 @@
 		href: 'https://www.furaffinity.net/user/scuzzyfox'
 	};
 	let e621: LinkCF = {
-		name: 'e621',
+		name: 'e621 Tag',
 		href: 'https://e621.net/posts?tags=scuzzyfox',
 		nsfw: true,
 		abdl: false
 	};
 
 	let e926: Link = {
-		name: 'e926',
+		name: 'e926 Tag',
 		href: 'https://e926.net/posts?tags=scuzzyfox'
 	};
 
@@ -172,14 +171,15 @@
 
 <style>
 	main {
-		margin: 2% 10% 10%;
+		margin: 2% 2% 10%;
 		text-align: center;
 	}
 	.grid {
 		display: flex;
-		justify-content: space-evenly;
+		justify-content: center;
 		flex-wrap: wrap;
-		gap: 1.5em;
-		align-items: center;
+		gap: 0;
+		align-items: baseline;
+		flex: 1 1 0px;
 	}
 </style>

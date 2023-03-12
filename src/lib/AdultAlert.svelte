@@ -16,8 +16,8 @@
 		</p>
 		<p>If you are not an adult or are not willing to view this content, please close this alert.</p>
 		<div class="btn-flex-container">
-			<button class="adult-agree-btn" on:click={handleCancelButton}>Cancel</button>
-			<button class="adult-agree-btn" on:click={handleAgreeButton}>Agree</button>
+			<button class="adult-agree-btn disagree" on:click={handleCancelButton}>Cancel</button>
+			<button class="adult-agree-btn agree" on:click={handleAgreeButton}>Agree</button>
 		</div>
 	</div>
 </div>
@@ -43,16 +43,17 @@
 
 	.adult-alert-body {
 		max-width: 40%;
-		background-color: var(--scnd-clr);
-		margin: 0 1.5em;
-		padding: 1em;
+		background-color: var(--card-clr);
+		margin: 0 1.5rem;
+		padding: 1rem;
+		border-radius: 11px;
 	}
 
 	.adult-alert-body.mobile {
 		max-width: revert;
-		background-color: var(--scnd-clr);
-		margin: 0 1.5em;
-		padding: 1em;
+		background-color: var(--card-clr);
+		margin: 0 1.5rem;
+		padding: 1rem;
 	}
 
 	.btn-flex-container {
@@ -62,19 +63,29 @@
 
 	.adult-agree-btn {
 		box-shadow: var(--btn-drp-shdw);
-		background-color: var(--accnt-clr);
-		color: var(--white-txt);
-		font-family: var(--sans-family);
+		font-size: 1.2rem;
+		font-family: var(--main-font);
 		border: none;
-		padding: 0.5em 1em;
-		border-radius: 1.2em;
+		padding: 0.5rem 1rem;
+		border-radius: 3px;
+	}
+
+	.adult-agree-btn.agree {
+		background-color: var(--tertiary-clr);
+		color: var(--tertiary-clr-txt);
+		font-weight: bolder;
+	}
+
+	.adult-agree-btn.disagree {
+		background-color: var(--tertiary-lt-clr);
+		color: var(--tertiary-clr-txt);
 	}
 
 	.adult-agree-btn:hover {
-		background-color: var(--accnt-clr-2);
+		filter: brightness(150%) saturate(120%);
 	}
 
 	.adult-agree-btn:active {
-		background-color: var(--accnt-clr-2);
+		filter: brightness(60%) saturate(150%);
 	}
 </style>

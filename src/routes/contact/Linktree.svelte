@@ -42,36 +42,44 @@
 </div>
 
 <style>
-	* {
-		display: inline;
-	}
-
 	.links {
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-start;
 		align-items: center;
 		gap: 0.5em;
 		margin-top: 1em;
 		margin-bottom: 2em;
+		width: 280px;
 	}
 
 	.linktree-link {
+		text-align: center;
 		color: var(--white-txt);
 		text-decoration: none;
-		background-color: var(--link-btn-clr);
-		min-width: min-content;
-		max-width: max-content;
-		padding: 1em 2em;
+		background-color: var(--accnt-clr);
+		/* min-width: min-content;
+		max-width: max-content; */
+		width: 60%;
+		padding: 1rem 2rem;
 		box-shadow: var(--btn-drp-shdw);
-		border-radius: 0.25em;
+		border-radius: 0.25rem;
 		font-weight: bold;
+		transition-property: border-radius, outline, font-weight;
+		transition-duration: 0.2s;
+		display: inline-block;
 	}
 
 	.linktree-link:hover {
-		background-color: var(--link-btn-clr-hvr);
+		outline: 5px solid var(--accnt-clr);
+		filter: brightness(120%) saturate(120%);
+		border-radius: 0.75rem;
+		font-weight: 900;
 	}
 
 	.linktree-link:active {
-		background-color: var(--link-btn-clr-actv);
+		outline: 2px solid var(--accnt-clr);
+		filter: brightness(80%) saturate(150%);
+		border-radius: 1rem;
 	}
 </style>

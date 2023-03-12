@@ -149,7 +149,7 @@
 
 	.pfp {
 		width: 30%;
-		border-radius: 1em;
+		border-radius: 1rem;
 		box-shadow: var(--drp-shdw);
 	}
 
@@ -157,22 +157,32 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 2em;
+		gap: 2rem;
 		flex: 1;
 	}
 
 	.pronouonciation {
+		font-family: 'Courier New', Courier, monospace;
 		font-weight: 10;
 		font-style: italic;
 	}
 
+	h4 {
+		font-family: var(--main-font);
+	}
+
 	a {
 		text-decoration: none;
-		color: #027579;
+		color: var(--link-txt-clr);
 	}
 	a:hover {
-		text-decoration: none;
-		color: #32a5a9;
+		text-decoration: underline;
+		filter: brightness(120%) saturate(120%);
+	}
+
+	a:active {
+		text-decoration: underline;
+		color: var(--tertiary-clr);
 	}
 
 	.hobbies-list {

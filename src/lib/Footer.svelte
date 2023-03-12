@@ -11,9 +11,10 @@
 
 <style>
 	.main {
-		background-color: #1b252e;
+		background-color: var(--main-lt-clr);
+
 		padding: 1em;
-		color: #f9f1ff;
+		color: var(--white-txt);
 		display: flex;
 		flex-direction: column;
 	}
@@ -23,12 +24,12 @@
 	}
 
 	a:hover {
-		text-decoration: none;
-		color: var(--link-txt-clr-hvr);
+		text-decoration: underline;
+		filter: brightness(120%) saturate(120%);
 	}
 
 	a:active {
-		text-decoration: none;
+		text-decoration: underline;
 		color: var(--link-txt-clr-actv);
 	}
 </style>

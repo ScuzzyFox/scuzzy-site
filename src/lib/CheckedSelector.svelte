@@ -38,28 +38,42 @@
 	}
 
 	label {
-		background-color: #004e58;
-		padding: 0.5em 1em;
-		border-radius: 1em;
-		box-shadow: 3px 3px 5px #0f141b;
+		background-color: rgba(0, 0, 0, 0);
+		padding: 0.5rem 1rem;
+		border-radius: 100rem;
+		box-shadow: var(--btn-drp-shdw);
+		outline: 1.8px solid var(--btn-clr-avail);
+		color: var(--btn-clr-avail-txt);
 	}
 
 	label:hover {
-		background-color: #004050;
+		outline: 3px solid var(--btn-clr-avail);
+		filter: brightness(130%) saturate(120%);
 	}
 
 	div {
 		display: flex;
 		flex: 1;
 		justify-content: flex-start;
-		gap: 2em;
+		gap: 2rem;
+		flex-wrap: wrap;
 	}
 
 	input:checked + label {
-		background-color: #027579;
+		font-weight: 1000;
+		background-color: var(--btn-clr-sel);
+		color: var(--btn-clr-sel-txt);
+		outline: none;
 	}
 
-	@media (max-width: 600px) {
+	input:active + label {
+		background-color: var(--tertiary-clr);
+		color: var(--tertiary-clr-txt);
+		outline: none;
+		font-weight: 900;
+	}
+
+	@media (max-width: 900px) {
 		div {
 			flex-direction: column;
 			gap: 1em;

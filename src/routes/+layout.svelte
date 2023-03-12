@@ -3,8 +3,9 @@
 	import Footer from '$lib/Footer.svelte';
 	import { onMount } from 'svelte';
 	import { userSettingsStore } from '$lib/stores';
-	export let data: any;
+	import chroma from 'chroma-js';
 
+	export let data: any;
 	//populate userSettings Store
 	onMount(() => {
 		$userSettingsStore = data.userSettings;
@@ -12,7 +13,10 @@
 </script>
 
 <svelte:head>
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+	<link
+		href="https://fonts.googleapis.com/css?family=Montserrat|Gloria+Hallelujah"
+		rel="stylesheet"
+	/>
 	<link rel="manifest" href="/scuzzyfox.webmanifest" />
 </svelte:head>
 
@@ -27,29 +31,45 @@
 	:global(html) {
 		--mobile-trans: 913px;
 
-		--white-txt: #f9f1ff;
-		--main-clr: #151c24;
-		--scnd-clr: #1b252e;
-		--accnt-clr: #004e58;
-		--accnt-clr-2: #027579;
+		--white-txt: #f1f8ff;
 
-		--link-txt-clr: #fff;
-		--link-txt-clr-hvr: #ddd;
-		--link-txt-clr-actv: #0ee;
+		--main-clr: #0b1216;
+		--main-lt-clr: #142230;
 
-		--btn-clr: #004e58;
-		--btn-clr-hvr: #027579;
-		--btn-clr-actv: #0ee;
+		--accnt-clr: #1fa0e9;
 
-		--drp-shdw: 0 5px 5px rgba(15, 7, 20, 0.25);
-		--btn-drp-shdw: 5px 5px 5px rgba(15, 7, 20, 0.25);
+		--tertiary-clr: #efdb23;
+		--tertiary-clr-txt: #68611f;
 
-		--sans-family: Montserrat;
-		--serif-family: serif;
+		--tertiary-lt-clr: #e3db8e;
 
-		--link-btn-clr: #004e58;
-		--link-btn-clr-hvr: #027579;
-		--link-btn-clr-actv: #0ee;
+		--card-clr: #0b2331;
+		--card-clr-scnd: #254456;
+
+		--clr-selected: #6fbeea;
+		--txt-selected-clr: #11394f;
+
+		--link-txt-clr: #33b2fa;
+		--link-txt-clr-actv: var(--tertiary-clr);
+
+		--btn-clr: var(--accnt-clr);
+
+		--btn-clr-sel: #6fbeea;
+		--btn-clr-sel-txt: #11394f;
+
+		--btn-clr-avail: #4a758d;
+		--btn-clr-avail-txt: #1fa0e9;
+
+		--btn-clr-deact: #1e282e;
+		--btn-clr-deact-txt: #84a3b9;
+
+		--drp-shdw-clr: rgba(15, 7, 20, 0.25);
+		--drp-shdw-clr-drk: rgba(15, 7, 20, 0.65);
+		--drp-shdw: 0 5px 5px var(--drp-shdw-clr);
+		--btn-drp-shdw: 5px 5px 5px var(--drp-shdw-clr);
+
+		--main-font: Montserrat, arial, sans-serif;
+		--heading-font: Gloria Hallelujah, serif;
 	}
 
 	:global(body) {
@@ -58,15 +78,19 @@
 		border: 0;
 		font-size: 100%;
 		font: inherit;
-		vertical-align: baseline;
 		line-height: 1.2;
-		background-color: #151c24;
-		color: #f9f1ff;
-		font-family: Montserrat, sans-serif;
+		background-color: var(--main-clr);
+		color: var(--white-txt);
+		font-family: var(--main-font);
 		/* next 3 settings used to get footer on the bottom if there's not enough content */
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
+	}
+
+	:global(h1, h2, h3, h4, h5, h6) {
+		font-family: var(--heading-font);
+		font-weight: normal;
 	}
 
 	/* used to get the footer to stay at the bottom if not enough content... */
