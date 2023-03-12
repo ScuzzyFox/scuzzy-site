@@ -1,24 +1,19 @@
 import type { PageServerLoad } from './$types';
 import { readFile } from 'fs/promises';
 import showdown from 'showdown';
+
+//should probably use the import file from "$lib/markdown/siteTos.md?raw" pattern here!!!!!!!!
+import siteTosRaw from '$lib/markdown/siteTos.md?raw';
+import commissionTosRaw from '$lib/markdown/commissionTos.md?raw';
+import FAQRaw from '$lib/markdown/FAQ.md?raw';
+import willNotDrawRaw from '$lib/markdown/willNotDraw.md?raw';
 const converter = new showdown.Converter();
 
-import path from 'path';
-
 export const load = (async ({ params }) => {
-	let initPath: any = path.join(process.cwd(), 'static/');
-	let siteTosHtml, commissionTosHtml, FAQHtml, willNotDrawHtml;
-	try {
-		siteTosHtml = converter.makeHtml(await content(initPath + 'siteTos.md'));
-		commissionTosHtml = converter.makeHtml(await content(initPath + 'commissionTos.md'));
-		FAQHtml = converter.makeHtml(await content(initPath + 'FAQ.md'));
-		willNotDrawHtml = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
-	} catch (e) {
-		siteTosHtml = `<p>file not found:${e} </p>`;
-		commissionTosHtml = '<p>file not found.</p>';
-		FAQHtml = '<p>file not found.</p>';
-		willNotDrawHtml = `<p>file not found.</p>`;
-	}
+	let siteTosHtml = converter.makeHtml(siteTosRaw);
+	let commissionTosHtml = converter.makeHtml(commissionTosRaw);
+	let FAQHtml = converter.makeHtml(FAQRaw);
+	let willNotDrawHtml = converter.makeHtml(willNotDrawRaw);
 
 	//data for tos page (html made from markdown files)
 	return {
