@@ -12,10 +12,10 @@ export const load = (async ({ params }) => {
 		FAQHtml = converter.makeHtml(await content(initPath + 'FAQ.md'));
 		willNotDrawHtml = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
 	} catch (e) {
-		siteTosHtml = '<p>file not found.</p>';
+		siteTosHtml = `<p>file not found: ${e}</p>`;
 		commissionTosHtml = '<p>file not found.</p>';
 		FAQHtml = '<p>file not found.</p>';
-		willNotDrawHtml = '<p>file not found.</p>';
+		willNotDrawHtml = `<p>file not found.</p>`;
 	}
 
 	//data for tos page (html made from markdown files)
