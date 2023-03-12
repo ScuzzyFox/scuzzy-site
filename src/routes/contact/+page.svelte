@@ -64,6 +64,25 @@
 		href: 'mailto:scuzzyfox@gmail.com'
 	};
 
+	let TGChannel: Link = {
+		name: 'SFW Telegram Channel',
+		href: 'https://t.me/ScuzzyArtSFW'
+	};
+
+	let NSFWTGChannel: LinkCF = {
+		name: 'NSFW Telegram Channel',
+		href: 'https://t.me/ScuzzyArtNSFW',
+		nsfw: true,
+		abdl: false
+	};
+
+	let TGGroup: LinkCF = {
+		name: 'Telegram Group',
+		href: 'https://t.me/ScuzzyFoxChat',
+		nsfw: true,
+		abdl: false
+	};
+
 	let directContact: (Link | LinkCF)[] = [telegram, discord];
 
 	let galleries: (Link | LinkCF)[] = [
@@ -73,12 +92,17 @@
 		twitter,
 		twitterSmut,
 		twitterAbdl,
-		discordServer
+		discordServer,
+		TGGroup,
+		NSFWTGChannel,
+		TGChannel
 	];
 
 	let lessResponsive: (Link | LinkCF)[] = [twitter, twitterSmut, twitterAbdl, email];
 
 	let twitters: (Link | LinkCF)[] = [twitter, twitterSmut, twitterAbdl];
+
+	let telegrams: (Link | LinkCF)[] = [telegram, TGGroup, NSFWTGChannel, TGChannel];
 
 	let galleriesOnly: boolean,
 		twitterOnly: boolean,
@@ -93,6 +117,7 @@
 	$: twitterOnly = $page.url.searchParams.get('twitterOnly')?.toLocaleLowerCase() === 'true';
 	$: contactOnly = $page.url.searchParams.get('contactOnly')?.toLocaleLowerCase() === 'true';
 	$: allContact = $page.url.searchParams.get('allContact')?.toLocaleLowerCase() === 'true';
+	$: allTelegram = $page.url.searchParams.get('allTelegram')?.toLocaleLowerCase() === 'true';
 	$: forceNsfw = $page.url.searchParams.get('forceNsfw')?.toLocaleLowerCase() === 'true';
 	$: forceAbdl = $page.url.searchParams.get('forceAbdl')?.toLocaleLowerCase() === 'true';
 
@@ -114,6 +139,7 @@
 		twitterOnly = false;
 		contactOnly = false;
 		allContact = false;
+		allTelegram = false;
 	}
 
 	function onlyOneTrue(array: boolean[]) {
@@ -161,6 +187,8 @@
 		{:else if allContact}
 			<Linktree {allowNsfw} {allowAbdl} title="Direct Contact" links={directContact} />
 			<Linktree {allowNsfw} {allowAbdl} title="Less Responsive Options" links={lessResponsive} />
+		{:else if allTelegram}
+			<Linktree {allowNsfw} {allowAbdl} title="All Telegrams!" links={telegrams} />
 		{:else}
 			<Linktree {allowNsfw} {allowAbdl} title="Direct Contact" links={directContact} />
 			<Linktree {allowNsfw} {allowAbdl} title="Galleries and Social" links={galleries} />
