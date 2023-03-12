@@ -10,4 +10,4 @@
 
 ## Not Listed Here?
 
-Just ask!
+Don't be afraid to ask!
