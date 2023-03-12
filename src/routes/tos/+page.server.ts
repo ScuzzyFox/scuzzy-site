@@ -5,10 +5,18 @@ const converter = new showdown.Converter();
 let initPath: string = './static/';
 
 export const load = (async ({ params }) => {
-	let siteTosHtml: string = converter.makeHtml(await content(initPath + 'siteTos.md'));
-	let commissionTosHtml: string = converter.makeHtml(await content(initPath + 'commissionTos.md'));
-	let FAQHtml: string = converter.makeHtml(await content(initPath + 'FAQ.md'));
-	let willNotDrawHtml: string = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
+	let siteTosHtml, commissionTosHtml, FAQHtml, willNotDrawHtml;
+	try {
+		siteTosHtml = converter.makeHtml(await content(initPath + 'siteTos.md'));
+		commissionTosHtml = converter.makeHtml(await content(initPath + 'commissionTos.md'));
+		FAQHtml = converter.makeHtml(await content(initPath + 'FAQ.md'));
+		willNotDrawHtml = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
+	} catch (e) {
+		siteTosHtml = '<p>file not found.</p>';
+		commissionTosHtml = '<p>file not found.</p>';
+		FAQHtml = '<p>file not found.</p>';
+		willNotDrawHtml = '<p>file not found.</p>';
+	}
 
 	//data for tos page (html made from markdown files)
 	return {
