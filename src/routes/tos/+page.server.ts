@@ -11,8 +11,9 @@ export const load = (async ({ params }) => {
 		commissionTosHtml = converter.makeHtml(await content(initPath + 'commissionTos.md'));
 		FAQHtml = converter.makeHtml(await content(initPath + 'FAQ.md'));
 		willNotDrawHtml = converter.makeHtml(await content(initPath + 'willNotDraw.md'));
+		console.log(__dirname);
 	} catch (e) {
-		siteTosHtml = `<p>file not found: ${__dirname}</p>`;
+		siteTosHtml = `<p>file not found.</p>`;
 		commissionTosHtml = '<p>file not found.</p>';
 		FAQHtml = '<p>file not found.</p>';
 		willNotDrawHtml = `<p>file not found.</p>`;
