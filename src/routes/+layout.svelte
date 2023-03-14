@@ -3,12 +3,14 @@
 	import Footer from '$lib/Footer.svelte';
 	import { onMount } from 'svelte';
 	import { userSettingsStore } from '$lib/stores';
-	import chroma from 'chroma-js';
+	import { adminStore } from '$lib/stores';
 
 	export let data: any;
-	//populate userSettings Store
+	//populate userSettings and admin Store
 	onMount(() => {
+		// this data is coming from layout server load function
 		$userSettingsStore = data.userSettings;
+		$adminStore = data.admin;
 	});
 </script>
 

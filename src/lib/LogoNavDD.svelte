@@ -48,20 +48,27 @@
 
 	.nav-toggle:checked ~ div {
 		display: flex;
-		background-color: #1b252e;
-		box-shadow: 10px 20px 20px #0d141a;
+		background-color: var(--main-lt-clr);
+		box-shadow: 10px 20px 20px var(--drp-shdw-clr);
+		height: auto;
+		opacity: 1;
+		filter: saturate(100%) brightness(100%);
 	}
 
 	div {
 		margin-left: 0;
-		background-color: #328586;
-		display: flex;
+		background-color: var(--main-clr);
 		flex-direction: column;
-		display: none;
+		display: flex;
 		position: absolute;
 		top: 100%;
 		left: 0;
 		z-index: 90;
+		transition: opacity 0.2s ease, background-color 0.25s ease, filter 0.3s ease, height 0.5s ease;
+		filter: saturate(0) brightness(0);
+		opacity: 0;
+		height: 0;
+		overflow: hidden;
 	}
 
 	nav {
@@ -106,5 +113,10 @@
 	.links:hover {
 		color: white;
 		text-shadow: #f9f1ff 0 0 4px;
+	}
+
+	.links:active {
+		color: var(--accnt-clr);
+		text-shadow: var(--accnt-clr) 0 0 4px;
 	}
 </style>

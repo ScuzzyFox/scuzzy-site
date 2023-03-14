@@ -5,3 +5,10 @@ export const userSettingsStore = writable({
 	nsfwAllowed: false,
 	abdlAllowed: false
 });
+
+export const adminStore = writable({
+	username: '',
+	email: '',
+	loggedIn: false,
+	token: ''
+});

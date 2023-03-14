@@ -5,7 +5,9 @@ import type { RequestEvent } from './$types';
 
 export function load({ locals }: { locals: any }) {
 	return {
+		//locals is coming from either hooks or form actions.
 		//accessible in pages by data.userSettings.xxx
-		userSettings: locals.userSettings
+		userSettings: locals.userSettings,
+		admin: locals.admin
 	};
 }

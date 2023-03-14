@@ -152,6 +152,7 @@
 		border-radius: 0.8rem;
 		font-size: 1rem;
 		z-index: 2;
+		font-weight: normal;
 	}
 
 	.knob-mobile {
@@ -162,6 +163,7 @@
 		border-radius: 0.8rem;
 		font-size: 1rem;
 		z-index: 2;
+		font-weight: normal;
 	}
 
 	.knob:hover,
@@ -176,6 +178,7 @@
 	.nsfwAllowedClass > .knob-mobile {
 		background-color: var(--tertiary-clr);
 		color: var(--tertiary-clr-txt);
+		font-weight: 900;
 	}
 
 	.switch-housing:active,
