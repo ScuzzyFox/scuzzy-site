@@ -2,8 +2,9 @@
 	import { json } from '@sveltejs/kit';
 	import ProgressBar from './ProgressBar.svelte';
 	export let data: any;
-	let pageDescription =
-		'Help Scuzzy buy a ' + data.currentGoal.name + '! Donate, commission, or share!';
+	let pageDescription = data.currentGoal
+		? 'Help Scuzzy buy a ' + data.currentGoal.name + '! Donate, commission, or share!'
+		: "Check out scuzzy's goals and support by donating, buying, or commissioning stuff!";
 	let pageTitle = "ScuzzyFox's Goals";
 	//todo: current goal is meta image. Latest goal will also be built in to description (help scuzzy buy...he only needs $xxx more!)
 </script>
@@ -12,7 +13,10 @@
 	<title>{pageTitle}</title>
 	<meta name="description" content={pageDescription} />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content={data.currentGoal.image.href} />
+	{#if data.currentGoal}
+		<meta property="og:image" content={data.currentGoal.image} />
+		<meta name="twitter:image" content={data.currentGoal.image} />
+	{/if}
 	<meta property="og:description" content={pageDescription} />
 	<meta property="og:title" content={pageTitle} />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -20,39 +24,41 @@
 	<meta name="twitter:site" content="@scuzzyfox" />
 	<meta name="twitter:creator" content="@scuzzyfox" />
 	<meta name="twitter:description" content={pageDescription} />
-	<meta name="twitter:image" content={data.currentGoal.image.href} />
 </svelte:head>
 <main>
-	<h1>
-		Help Scuzzy Buy Stuff! (These goals are fake placeholders for now, feel free to donate anyway
-		though! 💖)
-	</h1>
+	<h1>Help Scuzzy Buy Stuff!</h1>
 	<div class="main-container">
-		<div class="current-goal goal-card">
-			<h2>Current Goal</h2>
+		{#if data.currentGoal}
+			<div class="current-goal goal-card">
+				<h2>Current Goal</h2>
 
-			<ProgressBar goal={data.currentGoal} currentBalance={data.paypalBalance} />
+				<ProgressBar goal={data.currentGoal} currentBalance={data.paypalBalance} />
 
-			<a
-				href="https://www.paypal.com/donate/?hosted_button_id=A42QXPFQF5LUY"
-				class="extra-links donate-link">Donate!</a
-			>
-			<a class="extra-links" href="/store">Store</a>
-			<a class="extra-links" href="/commissions">Commission</a>
-		</div>
-		<div class="previous-goal goal-card">
-			<h2>Previous Goal</h2>
-			<ProgressBar
-				goal={data.previousGoals[data.previousGoals.length - 1]}
-				currentBalance={data.previousGoals[data.previousGoals.length - 1].cost}
-			/>
-			<h3>Completed, thank you!</h3>
-		</div>
-		<div class="next-goal goal-card">
-			<h2>Upcoming Goal</h2>
-			<ProgressBar goal={data.nextGoal} currentBalance={0} />
-			<h3>Up Next!</h3>
-		</div>
+				<a
+					href="https://www.paypal.com/donate/?hosted_button_id=A42QXPFQF5LUY"
+					class="extra-links donate-link">Donate!</a
+				>
+				<a class="extra-links" href="/store">Store</a>
+				<a class="extra-links" href="/commissions">Commission</a>
+			</div>
+		{/if}
+		{#if data.previousGoals && data.previousGoals.length > 0}
+			<div class="previous-goal goal-card">
+				<h2>Previous Goal</h2>
+				<ProgressBar
+					goal={data.previousGoals[data.previousGoals.length - 1]}
+					currentBalance={data.previousGoals[data.previousGoals.length - 1].cost}
+				/>
+				<h3>Completed, thank you!</h3>
+			</div>
+		{/if}
+		{#if data.nextGoal}
+			<div class="next-goal goal-card">
+				<h2>Upcoming Goal</h2>
+				<ProgressBar goal={data.nextGoal} currentBalance={0} />
+				<h3>Up Next!</h3>
+			</div>
+		{/if}
 	</div>
 </main>
 

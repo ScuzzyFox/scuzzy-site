@@ -19,7 +19,7 @@
 
 <div class="component">
 	<h3>{goal.name}</h3>
-	<img src={goal.image.href} alt={goal.image.name} />
+	<img src={goal.image} alt={goal.imageAlt} />
 	<p>Cost: ${goal.cost.toFixed(2)}</p>
 	<div class="bar-container">
 		<div class="bar" style="height: {progress}%">

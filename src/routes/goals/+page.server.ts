@@ -1,13 +1,14 @@
 import type { Goal } from '$lib/Goal';
 import type { Link } from '../../lib/Link';
 import { PAYPAL_USER, PAYPAL_PASSWORD, PAYPAL_SIGNATURE } from '$env/static/private';
+import { snakeToCamel } from '$lib/Goal';
 
 export const load = async (event: any) => {
-	let allGoals = await getAllGoals(event);
+	let allGoals: Goal[] = await getAllGoals();
 
-	let currentGoal = getCurrentGoal(allGoals);
-	let previousGoals = getPreviousGoals(allGoals, 2);
-	let nextGoal = getNextGoal(allGoals);
+	let currentGoal: Goal | undefined = getCurrentGoal(allGoals);
+	let previousGoals: Goal[] | undefined = getPreviousGoals(allGoals, 2);
+	let nextGoal: Goal | undefined= getNextGoal(allGoals, currentGoal ? currentGoal.id : undefined);
 	let paypalBalance = await getPaypalBalance(event);
 
 	return {
@@ -19,31 +20,52 @@ export const load = async (event: any) => {
 	};
 };
 
-async function getAllGoals(event: any) {
-	const response = await event.fetch('/test/goals', {
+async function getAllGoals(): Promise<Goal[]> {
+	const response = await fetch('https://api.scuzzyfox.com/goals/', {
 		method: 'GET',
 		headers: {
 			'content-type': 'application/json'
 		}
 	});
 
-	return await response.json();
+	let input = await response.json();
+
+	let goals: Goal[] = input.map((snakeGoal: any) => {
+		return snakeToCamel(snakeGoal);
+	});
+
+	return goals;
 }
 
 //the current goal should be the first unfulfilled goal when sorted by date added
-function getCurrentGoal(goals: Goal[]) {
+function getCurrentGoal(goals: Goal[]): Goal | undefined {
+	if (goals.length < 1) {
+		return undefined;
+	} 
 	goals = goals.sort(compareGoals);
 	let unfulfilledGoals = goals.filter((goal: Goal) => {
 		return !goal.fulfilled;
 	});
+	if (!unfulfilledGoals || goals.length < 1) {
+		return undefined;
+	}
+
 	return unfulfilledGoals[0];
 }
 
-function getPreviousGoals(goals: Goal[], limit: number) {
+function getPreviousGoals(goals: Goal[], limit: number):Goal[] | undefined {
+	if (goals.length < 1) {
+		return undefined;
+	} 
+
 	//filter for only fulfilled goals
 	let previousGoals = goals.filter((goal) => {
 		return goal.fulfilled;
 	});
+
+	if (previousGoals.length < 2) {
+		return undefined;
+	} 
 
 	//sort the filtered goals by date added
 	previousGoals = previousGoals.sort(compareGoals);
@@ -96,22 +118,43 @@ async function getPaypalBalance(event: any) {
 }
 
 //the next goal is the one after the current goal
-function getNextGoal(goals: Goal[]) {
+function getNextGoal(goals: Goal[], currentGoalID: number | undefined): Goal |undefined {
+
+	if(!currentGoalID){
+		return undefined
+	}
+
+	if(goals.length<1){
+		return undefined
+	}
+
+
 	let sortedGoals = goals.sort(compareGoals);
 
-	let currentGoalID = getCurrentGoal(sortedGoals).id;
+	
 
 	let currentGoalIndex: number = sortedGoals.findIndex((goal) => {
 		return goal.id === currentGoalID;
 	});
 
-	//returns the goal after the current goal
-	return sortedGoals[currentGoalIndex + 1];
+	if(currentGoalIndex<0){
+		return undefined
+	}
+	let result;
+
+	try{
+		result = sortedGoals[currentGoalIndex + 1];
+		return result
+	} catch(e){
+		return undefined
+	}
+
+	
 }
 
 function compareGoals(a: Goal, b: Goal) {
-	let aDate: Date = a.dateAdded;
-	let bDate: Date = b.dateAdded;
+	let aDate: Date | any = a.created;
+	let bDate: Date | any = b.created;
 
 	if (aDate > bDate) {
 		return 1;
