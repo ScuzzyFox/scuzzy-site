@@ -115,7 +115,7 @@ async function getPaypalBalance(event: any) {
 	//return L_AMT0 value
 
 	return ppBal;
-}
+} 
 
 //the next goal is the one after the current goal
 function getNextGoal(goals: Goal[], currentGoalID: number | undefined): Goal |undefined {

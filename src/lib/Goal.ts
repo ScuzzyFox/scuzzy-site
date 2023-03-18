@@ -21,6 +21,7 @@ export function snakeToCamel(input: any): Goal | any {
 	goal['dateFulfilled'] = goal['date_fulfilled'];
 	goal['imageAlt'] = goal['image_alt'];
 	goal['image'] = goal['image_url'];
+	goal['cost'] = Number(goal['cost'])
 	
 
 	delete goal['use_case'];

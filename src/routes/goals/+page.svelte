@@ -79,7 +79,7 @@
 	}
 
 	.goal-card {
-		background-color: var(--scnd-clr);
+		background-color: var(--card-clr);
 		padding: 2em;
 		padding-top: 0;
 		min-width: min-content;
@@ -108,22 +108,26 @@
 	}
 
 	.extra-links:hover {
-		color: var(--link-txt-clr-hvr);
+		filter:brightness(120%) saturate(120%);
+		text-decoration: underline;
 	}
 	.extra-links:active {
-		color: var(--link-txt-clr-actv);
+		color: var(--tertiary-clr);
 	}
 
 	.extra-links.donate-link {
-		color: rgb(231, 211, 0);
+		color: var(--tertiary-clr);
+
 		text-decoration: underline;
 	}
 
 	.extra-links.donate-link:hover {
-		color: var(--link-txt-clr-hvr);
+				filter:brightness(120%) saturate(120%)
+
 	}
 
 	.extra-links.donate-link:active {
-		color: var(--link-txt-clr-actv);
+		color: var(--link-txt-clr);
+
 	}
 </style>
