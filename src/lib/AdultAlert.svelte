@@ -11,7 +11,7 @@
 		<h2>Hang on!</h2>
 		<p>You are about to turn on NSFW content.</p>
 		<p>
-			By agreeing to view NSFW/poronographic content, you certify that you are a consenting adult at
+			By agreeing to view NSFW/pornographic content, you certify that you are a consenting adult at
 			least 18 years of age AND are agreeing to the use of cookies 🍪 on this site.
 		</p>
 		<p>If you are not an adult or are not willing to view this content, please close this alert.</p>
