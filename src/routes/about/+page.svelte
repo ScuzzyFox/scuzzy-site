@@ -149,7 +149,7 @@
 
 	.pfp {
 		width: 30%;
-		border-radius: 1rem;
+		border-radius: var(--radius-img);
 		box-shadow: var(--drp-shdw);
 	}
 

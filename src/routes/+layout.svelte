@@ -70,8 +70,14 @@
 		--drp-shdw: 0 5px 5px var(--drp-shdw-clr);
 		--btn-drp-shdw: 5px 5px 5px var(--drp-shdw-clr);
 
+		--radius-btn: 2.5px;
+		--radius-card: 10px;
+		--radius-img: 16px;
+
 		--main-font: Montserrat, arial, sans-serif;
 		--heading-font: Gloria Hallelujah, serif;
+
+		height: 100%;
 	}
 
 	:global(body) {

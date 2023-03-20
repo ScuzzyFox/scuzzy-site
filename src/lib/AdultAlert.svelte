@@ -46,7 +46,7 @@
 		background-color: var(--card-clr);
 		margin: 0 1.5rem;
 		padding: 1rem;
-		border-radius: 11px;
+		border-radius: var(--radius-card);
 	}
 
 	.adult-alert-body.mobile {
@@ -67,7 +67,7 @@
 		font-family: var(--main-font);
 		border: none;
 		padding: 0.5rem 1rem;
-		border-radius: 3px;
+		border-radius: var(--radius-btn);
 	}
 
 	.adult-agree-btn.agree {
