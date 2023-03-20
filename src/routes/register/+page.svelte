@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import TextInput from '$lib/TextInput.svelte';
+	import PasswordInput from '$lib/TextInput.svelte';
+	import EmailInput from '$lib/TextInput.svelte';
+	import FormButton from '$lib/FormButton.svelte';
 	export let form;
 
 	let token: string;
@@ -54,6 +58,7 @@
 			invalidMessage = 'Password is not long enough.';
 		} else {
 			pwordValid = true;
+			invalidMessage = '';
 		}
 
 		if (!pwordPassesRegex(pword) && pword) {
@@ -62,6 +67,7 @@
 				'Password must contain Capital+lowercase letters, numbers, and special characters';
 		} else {
 			pwordValid = true;
+			invalidMessage = '';
 		}
 	}
 
@@ -71,6 +77,7 @@
 			invalidEmailMessage = 'Please enter a valid email address.';
 		} else {
 			emailValid = true;
+			invalidEmailMessage = '';
 		}
 	}
 
@@ -80,6 +87,7 @@
 			usernameInvalidMessage = 'Username is too long.';
 		} else {
 			usernameValid = true;
+			usernameInvalidMessage = '';
 		}
 	}
 
@@ -105,50 +113,59 @@
 </script>
 
 <main>
-	<h1>Register as a Site admin!</h1>
-	<form method="POST">
-		<label for="username-input">
-			<div>
-				Username {#if !usernameValid}<span class="pword-error">({usernameInvalidMessage})</span
-					>{/if}
-			</div>
-			<input type="text" name="username" id="username-input" bind:value={username} />
-		</label>
-
-		<label for="email-input">
-			<div>
-				email {#if !emailValid}<span class="pword-error">({invalidEmailMessage})</span>{/if}
-			</div>
-			<input type="email" name="email" id="email-input" bind:value={email} />
-		</label>
-
-		<label for="password-input">
-			<div>
-				Password {#if !pwordValid}<span class="pword-error">({invalidMessage})</span>{/if}
-			</div>
-			<input type="password" name="password" id="password-input" bind:value={pword} />
-		</label>
-
-		<label for="confirm-password-input">
-			<div>
-				Confirm password {#if !matchingPwords}<span class="pword-error"
-						>(Passwords do not match.)</span
-					>{/if}
-			</div>
-			<input
-				type="password"
-				name="confirm-password"
-				id="confirm-password-input"
-				bind:value={confirmPword}
+	<div class="card-hat">
+		<h1>Register as a Site admin!</h1>
+	</div>
+	<div class="card">
+		<form method="POST">
+			<TextInput
+				name={'username'}
+				inputId={'username-input'}
+				bind:value={username}
+				required={true}
+				placeholder={'Username'}
 			/>
-		</label>
-		<label for="token-input">
-			Registration token (Scuzzy should have given you this)
-			<input type="text" id="token-input" bind:value={token} name="token" />
-		</label>
+			<EmailInput
+				name={'email'}
+				inputId={'email-input'}
+				bind:value={email}
+				required={true}
+				placeholder={'email'}
+			/>
 
-		<button disabled={!buttonEnabled}>Register</button>
-	</form>
+			<PasswordInput
+				name={'password'}
+				inputId={'password-input'}
+				bind:value={pword}
+				required={true}
+				placeholder={'Password'}
+			/>
+			<PasswordInput
+				name={'confirm-password'}
+				inputId={'confirm-password-input'}
+				bind:value={confirmPword}
+				required={true}
+				placeholder={'Confirm Password'}
+			/>
+			<TextInput
+				name={'token'}
+				inputId={'token-input'}
+				bind:value={token}
+				required={true}
+				placeholder={'Token'}
+			/>
+			<FormButton buttonDisabled={!buttonEnabled} label={'Register'} />
+		</form>
+	</div>
+	{#if usernameInvalidMessage}
+		<p class="validity-error">{usernameInvalidMessage}</p>
+	{:else if invalidEmailMessage}
+		<p class="validity-error">{invalidEmailMessage}</p>
+	{:else if invalidMessage}
+		<p class="validity-error">{invalidMessage}</p>
+	{:else}
+		<p />
+	{/if}
 
 	{#if form?.failed}
 		{form.message}
@@ -157,24 +174,71 @@
 
 <style>
 	main {
-		margin: 2% 2% 10%;
+		margin: 2% 10% 10%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		flex: 1;
+
+		display: flex;
+	}
+
+	.card,
+	.card-hat {
+		padding: 1rem 1rem 2rem;
+		box-shadow: var(--drp-shdw);
+
+		width: 80vw;
+	}
+
+	.card-hat {
+		margin-top: 1rem;
+		background-color: var(--card-clr-scnd);
+		border-top-left-radius: var(--radius-card);
+		border-top-right-radius: var(--radius-card);
+		padding-bottom: 1rem;
+	}
+
+	.card {
+		background-color: var(--card-clr);
+		border-bottom-left-radius: var(--radius-card);
+		border-bottom-right-radius: var(--radius-card);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	h1 {
+		margin-top: 0;
 	}
 
 	form {
 		margin-left: 5%;
 		margin-right: 5%;
-
-		max-width: max-content;
-	}
-
-	label {
 		display: flex;
 		flex-direction: column;
-		margin: 1rem 0;
+		flex: 1;
+		justify-content: center;
+		align-items: center;
+		gap: 0.8rem;
+		flex-basis: 1;
 	}
 
-	.pword-error {
-		display: inline;
+	.validity-error {
 		color: var(--tertiary-clr);
+	}
+
+	@media (min-width: 918px) {
+		.card,
+		.card-hat {
+			padding: 1rem 1rem 2rem;
+			display: block;
+			width: 40vw;
+		}
+
+		.card-hat {
+			padding-bottom: 1rem;
+		}
 	}
 </style>

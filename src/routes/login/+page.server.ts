@@ -38,7 +38,12 @@ export const actions = {
 				};
 			} catch (e) {
 				event.cookies.delete('admin');
-				return { success: false, message: 'API Server response was not in the right format.' };
+				return {
+					success: false,
+					fail: true,
+
+					message: 'API Server response was not in the right format.'
+				};
 			}
 
 			return { success: true, userData: userData };
@@ -47,6 +52,7 @@ export const actions = {
 
 			return {
 				success: false,
+				fail: true,
 				message: await response.text()
 			};
 		}

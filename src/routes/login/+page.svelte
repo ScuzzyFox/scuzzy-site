@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { adminStore } from '$lib/stores';
 	import { onMount } from 'svelte';
-	export let data;
+	import TextInput from '$lib/TextInput.svelte';
+	import PasswordInput from '$lib/PasswordInput.svelte';
+	import FormButton from '$lib/FormButton.svelte';
+
 	export let form;
 
 	let username: string = '';
 	let password: string = '';
 	let buttonDisabled: boolean = true;
-	let passwordInput: HTMLElement;
 
 	$: username = username.toLowerCase();
 
@@ -32,12 +34,6 @@
 			}
 		}
 	});
-
-	function handleKeypress(event: any) {
-		if (event.key === 'Enter' || event.key === 'Space' || event.key === 'ArrowDown') {
-			passwordInput.focus();
-		}
-	}
 </script>
 
 <main>
@@ -46,34 +42,36 @@
 	</div>
 	<div class="login-card">
 		<form method="POST">
-			<label for="username-input">
-				<input
-					type="text"
-					id="username-input"
-					name="username"
-					bind:value={username}
-					required={true}
-					on:keypress={handleKeypress}
-				/>
-				<span class="label-text">Username</span>
-			</label>
-			<label for="password-input">
-				<input
-					type="password"
-					id="password-input"
-					name="password"
-					required={true}
-					bind:value={password}
-					bind:this={passwordInput}
-				/>
-				<span class="label-text">Password</span>
-			</label>
-			<button disabled={buttonDisabled}>Login</button>
+			<TextInput
+				inputId={'username-input'}
+				name={'username'}
+				bind:value={username}
+				required={true}
+				placeholder={'Username'}
+			/>
+
+			<PasswordInput
+				inputId={'password-input'}
+				name={'password'}
+				bind:value={password}
+				required={true}
+				placeholder={'Password'}
+			/>
+
+			<FormButton {buttonDisabled} label={'Log in'} />
 		</form>
 	</div>
+
+	{#if form?.fail}
+		<p class="error-message">Invalid username or password.</p>
+	{/if}
 </main>
 
 <style>
+	.error-message {
+		color: var(--tertiary-clr);
+	}
+
 	main {
 		margin: 0% 5% 0%;
 		flex-direction: column;
@@ -123,105 +121,6 @@
 		justify-content: center;
 		align-items: center;
 		gap: 0.8rem;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		gap: 0.2rem;
-		position: relative;
-	}
-
-	button {
-		background-color: var(--tertiary-clr);
-		color: var(--tertiary-clr-txt);
-		font-family: var(--main-font);
-		font-weight: 900;
-		font-size: 1.1rem;
-		border: none;
-		border-radius: var(--radius-btn);
-		padding: 0.5rem 1rem;
-		align-self: flex-end;
-		box-shadow: var(--btn-drp-shdw);
-		margin-top: 1rem;
-		transition: var(--transition-rate);
-	}
-
-	button:disabled {
-		background-color: var(--btn-clr-deact);
-		color: var(--btn-clr-deact-txt);
-		font-weight: normal;
-	}
-
-	button:hover {
-		filter: brightness(120%) saturate(120%);
-	}
-
-	button:active {
-		filter: brightness(60%) saturate(150%);
-	}
-
-	button:disabled:hover,
-	button:disabled:active {
-		filter: none;
-	}
-
-	input {
-		padding: 0.5rem;
-		border: none;
-		border-radius: 0;
-		border-top-left-radius: var(--radius-btn);
-		border-top-right-radius: var(--radius-btn);
-		border: 2px solid rgba(0, 0, 0, 0);
-		border-bottom: 2px solid var(--accnt-clr);
-		background-color: var(--card-clr);
-		color: var(--white-txt);
-		transition: var(--transition-rate);
-	}
-
-	input:focus {
-		border-radius: var(--radius-card);
-		border: none;
-		outline: none;
-		border: 2px solid var(--accnt-clr);
-	}
-
-	.label-text {
-		position: absolute;
-		left: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		color: var(--btn-clr-deact-txt);
-		transition: var(--transition-rate);
-	}
-
-	input:focus ~ span {
-		color: var(--accnt-clr);
-		transform: translate(20px, -50%);
-		font-size: 0.9rem;
-		background-color: var(--card-clr);
-	}
-
-	input:valid ~ span {
-		color: var(--accnt-clr);
-		top: 0;
-		transform: translate(20px, -50%);
-	}
-
-	input:-webkit-autofill,
-	input:autofill {
-		padding: 0.5rem;
-
-		border: 2px solid rgba(0, 0, 0, 0);
-		-webkit-border: 2px solid rgba(0, 0, 0, 0);
-		border-bottom: 2px solid var(--accnt-clr);
-		background-color: var(--card-clr);
-		transition: var(--transition-rate);
-		color: var(--tertiary-clr);
-
-		-webkit-text-fill-color: var(--tertiary-clr);
-		-webkit-box-shadow: 0 0 0px 1000px var(--card-clr) inset;
 	}
 
 	@media (min-width: 913px) {
