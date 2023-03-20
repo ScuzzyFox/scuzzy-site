@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { userSettingsStore } from '$lib/stores';
 	import { adminStore } from '$lib/stores';
+	import { page } from '$app/stores';
 </script>
 
 <div class="main">
 	{#if $adminStore.loggedIn}
 		<form method="POST" action="/admin?/logout">
 			<!-- <a href="/logout">Log Out</a> -->
+			<input type="hidden" name="currentUrl" value={$page.url.pathname} />
 			<button class="logout-link">Log out</button>
 		</form>
 		<a href="/admin">Admin</a>

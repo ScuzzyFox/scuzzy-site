@@ -2,13 +2,14 @@ import type { Goal } from '$lib/Goal';
 import type { Link } from '../../lib/Link';
 import { PAYPAL_USER, PAYPAL_PASSWORD, PAYPAL_SIGNATURE } from '$env/static/private';
 import { snakeToCamel } from '$lib/Goal';
+import { redirect } from '@sveltejs/kit';
 
 export const load = async (event: any) => {
 	let allGoals: Goal[] = await getAllGoals();
 
 	let currentGoal: Goal | undefined = getCurrentGoal(allGoals);
 	let previousGoals: Goal[] | undefined = getPreviousGoals(allGoals, 2);
-	let nextGoal: Goal | undefined= getNextGoal(allGoals, currentGoal ? currentGoal.id : undefined);
+	let nextGoal: Goal | undefined = getNextGoal(allGoals, currentGoal ? currentGoal.id : undefined);
 	let paypalBalance = await getPaypalBalance(event);
 
 	return {
@@ -41,7 +42,7 @@ async function getAllGoals(): Promise<Goal[]> {
 function getCurrentGoal(goals: Goal[]): Goal | undefined {
 	if (goals.length < 1) {
 		return undefined;
-	} 
+	}
 	goals = goals.sort(compareGoals);
 	let unfulfilledGoals = goals.filter((goal: Goal) => {
 		return !goal.fulfilled;
@@ -53,10 +54,10 @@ function getCurrentGoal(goals: Goal[]): Goal | undefined {
 	return unfulfilledGoals[0];
 }
 
-function getPreviousGoals(goals: Goal[], limit: number):Goal[] | undefined {
+function getPreviousGoals(goals: Goal[], limit: number): Goal[] | undefined {
 	if (goals.length < 1) {
 		return undefined;
-	} 
+	}
 
 	//filter for only fulfilled goals
 	let previousGoals = goals.filter((goal) => {
@@ -65,7 +66,7 @@ function getPreviousGoals(goals: Goal[], limit: number):Goal[] | undefined {
 
 	if (previousGoals.length < 2) {
 		return undefined;
-	} 
+	}
 
 	//sort the filtered goals by date added
 	previousGoals = previousGoals.sort(compareGoals);
@@ -115,41 +116,35 @@ async function getPaypalBalance(event: any) {
 	//return L_AMT0 value
 
 	return ppBal;
-} 
+}
 
 //the next goal is the one after the current goal
-function getNextGoal(goals: Goal[], currentGoalID: number | undefined): Goal |undefined {
-
-	if(!currentGoalID){
-		return undefined
+function getNextGoal(goals: Goal[], currentGoalID: number | undefined): Goal | undefined {
+	if (!currentGoalID) {
+		return undefined;
 	}
 
-	if(goals.length<1){
-		return undefined
+	if (goals.length < 1) {
+		return undefined;
 	}
-
 
 	let sortedGoals = goals.sort(compareGoals);
-
-	
 
 	let currentGoalIndex: number = sortedGoals.findIndex((goal) => {
 		return goal.id === currentGoalID;
 	});
 
-	if(currentGoalIndex<0){
-		return undefined
+	if (currentGoalIndex < 0) {
+		return undefined;
 	}
 	let result;
 
-	try{
+	try {
 		result = sortedGoals[currentGoalIndex + 1];
-		return result
-	} catch(e){
-		return undefined
+		return result;
+	} catch (e) {
+		return undefined;
 	}
-
-	
 }
 
 function compareGoals(a: Goal, b: Goal) {
@@ -176,3 +171,76 @@ function extractNvp(data: string) {
 
 	return result;
 }
+
+export const actions = {
+	editGoal: async (event) => {
+		const fd = await event.request.formData();
+		let token: string = String(fd.get('token'));
+		let pk: string = String(fd.get('pk'));
+
+		fd.delete('token');
+		fd.delete('pk');
+
+		const redirectTo: string = String(pk);
+		const response = await fetch(`https://api.scuzzyfox.com/mod-goals/${pk}/`, {
+			method: 'PUT',
+			headers: {
+				Authorization: 'JWT ' + token
+			},
+			body: fd
+		});
+
+		if (response.ok) {
+			throw redirect(303, `/goals/${redirectTo}`);
+		} else {
+			return {
+				fail: true,
+				message: await response.text()
+			};
+		}
+	},
+	deleteGoal: async (event) => {
+		const fd = await event.request.formData();
+		const response = await fetch(`https://api.scuzzyfox.com/mod-goals/${fd.get('pk')}/`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: 'JWT ' + fd.get('token')
+			}
+		});
+
+		throw redirect(303, '/goals');
+	},
+	makeFulfilled: async (event) => {
+		const fd = await event.request.formData();
+		const redirectTo: string = String(fd.get('slug'));
+		const pk: number = Number(fd.get('pk'));
+		const response = await fetch(`https://api.scuzzyfox.com/mod-goals/${pk}/fulfill/`, {
+			method: 'PUT',
+			headers: {
+				Authorization: 'JWT ' + fd.get('token')
+			}
+		});
+
+		throw redirect(303, `/goals/${redirectTo}`);
+	},
+	createGoal: async (event) => {
+		const fd = await event.request.formData();
+		const token: string = String(fd.get('token'));
+		fd.delete('token');
+
+		const response = await fetch(`https://api.scuzzyfox.com/mod-goals/`, {
+			method: 'POST',
+			headers: {
+				Authorization: 'JWT ' + token
+			},
+			body: fd
+		});
+
+		if (response.ok) {
+			let goal: Goal = snakeToCamel(await response.json());
+			throw redirect(303, `/goals/${goal.slug}`);
+		} else {
+			return { fail: true, message: await response.text() };
+		}
+	}
+};

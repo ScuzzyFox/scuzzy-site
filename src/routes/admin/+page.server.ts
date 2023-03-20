@@ -10,7 +10,7 @@ export async function load({ locals }: { locals: any }) {
 
 export const actions = {
 	logout: async (event) => {
-		console.log('logging out...');
+		let fd = await event.request.formData();
 		event.cookies.delete('admin');
 		event.locals.admin = {
 			username: undefined!,
@@ -19,6 +19,7 @@ export const actions = {
 			loggedIn: false
 		};
 
-		throw redirect(307, 'login/');
+		//using 303 here prevents a 405 error when redirecting (looks like svelte is trying to forward the form data to the new resource when 307 is used).
+		throw redirect(303, String(fd.get('currentUrl')));
 	}
 };

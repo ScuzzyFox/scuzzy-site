@@ -6,6 +6,9 @@
 <button disabled={buttonDisabled}>{label}</button>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
 	button {
 		background-color: var(--tertiary-clr);
 		color: var(--tertiary-clr-txt);

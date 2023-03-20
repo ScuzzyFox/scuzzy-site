@@ -85,7 +85,7 @@ export async function handle({ event, resolve }: { event: any; resolve: Function
 	} catch (e) {
 		//if something goes wrong, unset locals
 
-		console.log(e);
+		//console.log(e);
 		event.locals.admin = {
 			username: undefined,
 			email: undefined,

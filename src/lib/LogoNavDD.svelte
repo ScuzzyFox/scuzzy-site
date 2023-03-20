@@ -69,6 +69,7 @@
 		opacity: 0;
 		height: 0;
 		overflow: hidden;
+		border-bottom-right-radius: var(--radius-card);
 	}
 
 	nav {

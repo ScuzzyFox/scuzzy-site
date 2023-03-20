@@ -19,6 +19,7 @@
 
 <div class="component">
 	<h3>{goal.name}</h3>
+	<a href={`/goals/${goal.slug}`}>More info</a>
 	<img src={goal.image} alt={goal.imageAlt} />
 	<p>Cost: ${goal.cost.toFixed(2)}</p>
 	<div class="bar-container">
@@ -75,5 +76,22 @@
 		padding: 0;
 
 		transform: translate(-110%, -0.5em);
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--link-txt-clr);
+		margin-bottom: 0.8rem;
+		margin-top: 0rem;
+	}
+
+	a:hover {
+		filter: brightness(120%) saturate(120%);
+		text-decoration: underline;
+	}
+
+	a:active {
+		color: var(--tertiary-clr);
+		text-decoration: underline;
 	}
 </style>

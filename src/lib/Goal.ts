@@ -21,16 +21,15 @@ export function snakeToCamel(input: any): Goal | any {
 	goal['dateFulfilled'] = goal['date_fulfilled'];
 	goal['imageAlt'] = goal['image_alt'];
 	goal['image'] = goal['image_url'];
-	goal['cost'] = Number(goal['cost'])
-	
+	goal['cost'] = Number(goal['cost']);
 
 	delete goal['use_case'];
 	delete goal['date_fulfilled'];
 	delete goal['image_alt'];
 	delete goal['image_url'];
 
-	goal['dateFulfilled'] = new Date(goal['dateFulfilled']);
-	goal['created'] = new Date(goal['created']);
+	goal['dateFulfilled'] = goal['dateFulfilled'] ? new Date(goal['dateFulfilled']) : null;
+	goal['created'] = goal['created'] ? new Date(goal['created']) : null;
 
 	return goal;
 }
