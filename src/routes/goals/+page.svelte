@@ -8,7 +8,7 @@
 	import ProgressBar from './ProgressBar.svelte';
 	export let data: any;
 	let pageDescription = data.currentGoal
-		? 'Help Scuzzy buy a ' + data.currentGoal.name + '! Donate, commission, or share!'
+		? `Help Scuzzy buy a ` + data.currentGoal.name + `! Donate, commission, or share! Only $${data.currentGoal.cost-data.paypalBalance} more to go!`
 		: "Check out scuzzy's goals and support by donating, buying, or commissioning stuff!";
 	let pageTitle = "ScuzzyFox's Goals";
 	//todo: current goal is meta image. Latest goal will also be built in to description (help scuzzy buy...he only needs $xxx more!)
@@ -44,7 +44,7 @@
 	{/if}
 	<meta property="og:description" content={pageDescription} />
 	<meta property="og:title" content={pageTitle} />
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:title" content={pageTitle} />
 	<meta name="twitter:site" content="@scuzzyfox" />
 	<meta name="twitter:creator" content="@scuzzyfox" />
