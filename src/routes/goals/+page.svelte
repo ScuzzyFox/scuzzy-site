@@ -1,14 +1,15 @@
 <script lang="ts">
 	import FloatInput from '$lib/FloatInput.svelte';
-	import FormButton from '$lib/FormButton.svelte';
-	import NumberInput from '$lib/NumberInput.svelte';
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
-	import { json } from '@sveltejs/kit';
 	import ProgressBar from './ProgressBar.svelte';
 	export let data: any;
 	let pageDescription = data.currentGoal
-		? `Help Scuzzy buy a ` + data.currentGoal.name + `! Donate, commission, or share! Only $${data.currentGoal.cost-data.paypalBalance} more to go!`
+		? `Help Scuzzy buy a ` +
+		  data.currentGoal.name +
+		  `! Donate, commission, or share! Only $${
+				data.currentGoal.cost - data.paypalBalance
+		  } more to go!`
 		: "Check out scuzzy's goals and support by donating, buying, or commissioning stuff!";
 	let pageTitle = "ScuzzyFox's Goals";
 	//todo: current goal is meta image. Latest goal will also be built in to description (help scuzzy buy...he only needs $xxx more!)
