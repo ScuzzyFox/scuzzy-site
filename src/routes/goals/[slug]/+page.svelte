@@ -7,7 +7,28 @@
 
 	export let data;
 	let goal: Goal = data.goal;
+
+	let pageTitle: string = `${goal.name} Goal`;
+	let pageDescription: string =
+		`${goal.name} goal by scuzzyfox. ` + goal.fulfilled
+			? `Fulfilled on ${goal.dateFulfilled?.toLocaleDateString}.`
+			: `Donate or purchase to help reach the $${goal.cost.toFixed(2)} goal!`;
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={goal.image} />
+	<meta name="twitter:image" content={goal.image} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:title" content={pageTitle} />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:site" content="@scuzzyfox" />
+	<meta name="twitter:creator" content="@scuzzyfox" />
+	<meta name="twitter:description" content={pageDescription} />
+</svelte:head>
 
 <main>
 	<h1>Scuzzy's ${goal.cost.toFixed(2)} Goal</h1>
@@ -230,11 +251,6 @@
 		.card-hat,
 		.card {
 			width: 70vw;
-		}
-
-		.link-container {
-			margin: 1rem;
-			width: 100vw;
 		}
 
 		a {
