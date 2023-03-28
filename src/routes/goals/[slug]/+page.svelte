@@ -39,9 +39,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="link-container">
-		<a href="/goals">Back to Goals</a>
-	</div>
+	<a href="/goals">Back to Goals</a>
 
 	{#if $adminStore.loggedIn}
 		<form action="/goals?/deleteGoal" method="POST">
@@ -103,8 +101,12 @@
 	* {
 		box-sizing: border-box;
 	}
+
 	main {
 		margin: 5% 5% 15%;
+		display: flex;
+		flex: 1;
+		flex-direction: column;
 	}
 
 	img {
@@ -135,12 +137,6 @@
 		box-shadow: var(--drp-shdw);
 	}
 
-	.link-container {
-		display: flex;
-		justify-content: center;
-		margin: 1.2rem;
-	}
-
 	a {
 		background-color: var(--accnt-clr);
 		border-radius: var(--radius-btn);
@@ -152,6 +148,9 @@
 		align-self: center;
 		text-align: center;
 		font-weight: 900;
+		box-sizing: border-box;
+		margin: 1rem 0;
+		width: 100%;
 	}
 
 	a:hover {
@@ -161,6 +160,10 @@
 	a:active {
 		background-color: var(--tertiary-clr);
 		color: var(--tertiary-clr-txt);
+	}
+
+	form {
+		width: 100%;
 	}
 
 	.delete-button,
@@ -175,6 +178,7 @@
 		box-shadow: var(--btn-drp-shdw);
 		text-align: center;
 		font-weight: 900;
+		width: 100%;
 	}
 
 	.delete-button:hover,
