@@ -33,6 +33,7 @@
 		color: var(--white-txt);
 		transition: var(--transition-rate);
 		font-family: var(--main-font);
+		overflow: hidden;
 	}
 
 	input:focus {
