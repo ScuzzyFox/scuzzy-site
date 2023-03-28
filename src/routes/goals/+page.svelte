@@ -2,7 +2,7 @@
 	import FloatInput from '$lib/FloatInput.svelte';
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
-	import ProgressBar from './ProgressBar.svelte';
+	import GoalCard from './GoalCard.svelte';
 	export let data: any;
 	let pageDescription = data.currentGoal
 		? `Help Scuzzy buy a ` +
@@ -12,7 +12,6 @@
 		  } more to go!`
 		: "Check out scuzzy's goals and support by donating, buying, or commissioning stuff!";
 	let pageTitle = "ScuzzyFox's Goals";
-	//todo: current goal is meta image. Latest goal will also be built in to description (help scuzzy buy...he only needs $xxx more!)
 
 	let newGoalName: string = '';
 	let newGoalDescription: string = '';
@@ -53,40 +52,31 @@
 </svelte:head>
 <main>
 	<h1>Help Scuzzy Buy Stuff!</h1>
-	<div class="main-container">
+
+	<div class="goals-container">
 		{#if data.currentGoal}
-			<div class="current-goal goal-card">
-				<h2>Current Goal</h2>
-
-				<ProgressBar goal={data.currentGoal} currentBalance={data.paypalBalance} />
-
-				<a
-					href="https://www.paypal.com/donate/?hosted_button_id=A42QXPFQF5LUY"
-					class="extra-links donate-link">Donate!</a
-				>
-				<a class="extra-links" href="/store">Store</a>
-				<a class="extra-links" href="/commissions">Commission</a>
-			</div>
+			<GoalCard
+				goal={data.currentGoal}
+				currentBalance={data.paypalBalance}
+				title={'Current Goal'}
+				current={true}
+			/>
 		{/if}
 		{#if data.previousGoals && data.previousGoals.length > 0}
-			<div class="previous-goal goal-card">
-				<h2>Previous Goal</h2>
-				<ProgressBar
-					goal={data.previousGoals[data.previousGoals.length - 1]}
-					currentBalance={data.previousGoals[data.previousGoals.length - 1].cost}
-				/>
-				<h3>Completed, thank you!</h3>
-			</div>
+			<GoalCard
+				title={'Previous Goal'}
+				goal={data.previousGoals[data.previousGoals.length - 1]}
+				currentBalance={data.previousGoals[data.previousGoals.length - 1].cost}
+				previous={true}
+			/>
 		{/if}
 		{#if data.nextGoal}
-			<div class="next-goal goal-card">
-				<h2>Upcoming Goal</h2>
-				<ProgressBar goal={data.nextGoal} currentBalance={0} />
-				<h3>Up Next!</h3>
-			</div>
+			<GoalCard goal={data.nextGoal} currentBalance={0} next={true} title={'Upcoming Goal'} />
 		{/if}
+	</div>
 
-		{#if $adminStore.loggedIn}
+	{#if $adminStore.loggedIn}
+		<div class="admin-container">
 			<div class="form-container">
 				<div class="card-hat">
 					<h2 class="form-title">Create a new Goal</h2>
@@ -151,17 +141,80 @@
 					<button class="new-goal-btn" disabled={!newGoalButtonEnabled}>Create New Goal</button>
 				</form>
 			</div>
-		{/if}
-		{#if form?.fail}
-			<h3>Error:</h3>
-			<p>{form.message}</p>
-		{/if}
+			{#if form?.fail}
+				<h3>Error:</h3>
+				<p>{form.message}</p>
+			{/if}
+		</div>
+	{/if}
+
+	<div class="timeline-container">
+		<div class="timeline-card-hat">
+			<h2>All Goals</h2>
+		</div>
+		<div class="timeline-card">
+			{#each data.allGoals as tlGoal}
+				<a class="tl-item {tlGoal.fulfilled ? 'fulfilled' : ''}" href={`/goals/${tlGoal.slug}`}
+					><img class="tl-image" src={tlGoal.image} alt={tlGoal.imageAlt} />{tlGoal.name}</a
+				>
+			{/each}
+		</div>
 	</div>
 </main>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
+
+	.tl-image {
+		width: 30%;
+		border-radius: var(--radius-img);
+		aspect-ratio: 1;
+		object-fit: cover;
+	}
+
+	.tl-item {
+		color: var(--accnt-clr);
+		text-decoration: none;
+		background-color: var(--card-clr-scnd);
+		border-radius: var(--radius-btn);
+		padding: 1rem;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		transition: border-radius 200ms;
+		box-shadow: var(--drp-shdw);
+	}
+
+	.tl-item.fulfilled {
+		background-color: var(--btn-clr-deact);
+	}
+
+	.tl-item:hover {
+		filter: brightness(120%) saturate(120%);
+		border-radius: 30px;
+		text-decoration: underline;
+	}
+
+	.tl-item:active {
+		filter: brightness(50%) saturate(120%);
+		color: var(--tertiary-clr);
+		border-radius: 30px;
+		text-decoration: underline;
+	}
+
 	main {
 		margin: 2% 10% 10%;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	h2 {
+		margin: 0;
 	}
 
 	.main-container {
@@ -175,6 +228,18 @@
 		align-items: center;
 	}
 
+	.admin-container {
+		display: block;
+		width: 100%;
+	}
+
+	.goals-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: center;
+	}
+
 	.goal-card {
 		background-color: var(--card-clr);
 		padding: 2em;
@@ -184,46 +249,6 @@
 		min-height: 70vh;
 		border-radius: 0.5em;
 		box-shadow: var(--drp-shdw);
-	}
-
-	h2 {
-		margin-bottom: 0;
-		text-align: center;
-	}
-
-	h3 {
-		text-align: center;
-	}
-
-	.extra-links {
-		display: block;
-		margin: 0.5em 0;
-		text-align: center;
-		text-decoration: none;
-		color: var(--link-txt-clr);
-		font-size: 1.2rem;
-	}
-
-	.extra-links:hover {
-		filter: brightness(120%) saturate(120%);
-		text-decoration: underline;
-	}
-	.extra-links:active {
-		color: var(--tertiary-clr);
-	}
-
-	.extra-links.donate-link {
-		color: var(--tertiary-clr);
-
-		text-decoration: underline;
-	}
-
-	.extra-links.donate-link:hover {
-		filter: brightness(120%) saturate(120%);
-	}
-
-	.extra-links.donate-link:active {
-		color: var(--link-txt-clr);
 	}
 
 	.form-container {
@@ -304,9 +329,55 @@
 
 		border-radius: var(--radius-btn);
 		box-shadow: var(--btn-drp-shdw);
+		overflow: hidden;
 	}
 
 	.image-input-label.full {
 		background-color: var(--tertiary-clr);
+	}
+
+	.timeline-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		margin-bottom: 1rem;
+	}
+
+	.timeline-card-hat {
+		background-color: var(--card-clr-scnd);
+		border-top-left-radius: var(--radius-card);
+		border-top-right-radius: var(--radius-card);
+	}
+
+	.timeline-card {
+		background-color: var(--card-clr);
+		border-bottom-left-radius: var(--radius-card);
+		border-bottom-right-radius: var(--radius-card);
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		gap: 0.5rem;
+	}
+
+	.timeline-card-hat,
+	.timeline-card {
+		padding: 1rem;
+		box-shadow: var(--drp-shdw);
+	}
+
+	@media (min-width: 1013px) {
+		main {
+			margin: auto;
+			max-width: 70vw;
+		}
+
+		h1 {
+			align-self: flex-start;
+		}
+
+		.tl-image {
+			width: 10%;
+		}
 	}
 </style>

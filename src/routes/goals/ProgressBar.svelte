@@ -1,10 +1,12 @@
 <script lang="ts">
 	import type { Goal } from '$lib/Goal';
 	import { onMount } from 'svelte';
+	import chroma from 'chroma-js';
 
 	export let goal: Goal;
 	export let currentBalance: number = 0;
 	let progress: number;
+	let color: string;
 
 	onMount(() => {
 		progress = (currentBalance * 100) / goal.cost;
@@ -14,22 +16,35 @@
 		} else if (progress > 100) {
 			progress = 100;
 		}
+
+		color = getColor(progress);
 	});
+
+	function getColor(p: number): string {
+		let html = document.querySelector('html');
+		let tertiaryClr = chroma(getComputedStyle(html!).getPropertyValue('--tertiary-clr'));
+		let green = chroma('green');
+		let mixture = chroma.mix(tertiaryClr, green, p / 100);
+
+		let clr: string = mixture.hex();
+
+		return clr;
+	}
 </script>
 
 <div class="component">
-	<h3>{goal.name}</h3>
-	<a href={`/goals/${goal.slug}`}>More info</a>
-	<img src={goal.image} alt={goal.imageAlt} />
-	<p>Cost: ${goal.cost.toFixed(2)}</p>
 	<div class="bar-container">
-		<div class="bar" style="height: {progress}%">
+		<div class="bar" style="height: {progress}%; background-color: {color};">
 			<p class="curr-bal">${currentBalance.toFixed(2)}-</p>
 		</div>
 	</div>
 </div>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
+
 	.component {
 		display: flex;
 		flex-direction: column;
@@ -41,17 +56,9 @@
 		flex: 1;
 	}
 
-	img {
-		width: 80%;
-		aspect-ratio: 1;
-		object-fit: cover;
-		border-radius: 0.5em;
-		max-width: 10em;
-	}
-
 	.bar-container {
 		position: relative;
-		width: 30%;
+		width: 15%;
 		background-color: black;
 		border-radius: 0.2em;
 		flex-basis: 40vh;
@@ -60,7 +67,7 @@
 	.bar {
 		position: absolute;
 		width: 100%;
-		background-color: var(--white-txt);
+
 		border-radius: 0.2em;
 		bottom: 0;
 	}
@@ -76,22 +83,5 @@
 		padding: 0;
 
 		transform: translate(-110%, -0.5em);
-	}
-
-	a {
-		text-decoration: none;
-		color: var(--link-txt-clr);
-		margin-bottom: 0.8rem;
-		margin-top: 0rem;
-	}
-
-	a:hover {
-		filter: brightness(120%) saturate(120%);
-		text-decoration: underline;
-	}
-
-	a:active {
-		color: var(--tertiary-clr);
-		text-decoration: underline;
 	}
 </style>

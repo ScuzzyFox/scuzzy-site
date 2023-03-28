@@ -8,8 +8,11 @@ export const load = async (event: any) => {
 	let allGoals: Goal[] = await getAllGoals();
 
 	let currentGoal: Goal | undefined = getCurrentGoal(allGoals);
-	let previousGoals: Goal[] | undefined = getPreviousGoals(allGoals, 2);
-	let nextGoal: Goal | undefined = getNextGoal(allGoals, currentGoal ? currentGoal.id : undefined);
+	let previousGoals: Goal[] | undefined | null = getPreviousGoals(allGoals, 2);
+	let nextGoal: Goal | undefined | null = getNextGoal(
+		allGoals,
+		currentGoal ? currentGoal.id : undefined
+	);
 	let paypalBalance = await getPaypalBalance(event);
 
 	return {
@@ -21,6 +24,7 @@ export const load = async (event: any) => {
 	};
 };
 
+//might need to move to an api library
 async function getAllGoals(): Promise<Goal[]> {
 	const response = await fetch('https://api.scuzzyfox.com/goals/', {
 		method: 'GET',

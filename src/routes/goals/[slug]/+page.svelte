@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
-	import NumberInput from '$lib/NumberInput.svelte';
+	import FloatInput from '$lib/FloatInput.svelte';
 
 	export let data;
 	let goal: Goal = data.goal;
@@ -99,7 +99,7 @@
 				required={false}
 				inputId={'use-case-input'}
 			/>
-			<NumberInput
+			<FloatInput
 				name="cost"
 				value={goal.cost}
 				placeholder={'Cost'}
