@@ -11,7 +11,7 @@
 	let pageTitle: string = `${goal.name} Goal`;
 	let pageDescription: string =
 		`${goal.name} goal by scuzzyfox. ` +
-		(goal.fulfilled
+		(!!goal.fulfilled
 			? `Fulfilled on ${goal.dateFulfilled?.toLocaleDateString}.`
 			: `Donate or purchase to help reach the $${goal.cost.toFixed(2)} goal!`);
 </script>
