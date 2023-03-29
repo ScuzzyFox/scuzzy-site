@@ -108,7 +108,7 @@
 			/>
 			<label for="fulfilled-input">
 				Fulfilled?
-				<input type="checkbox" name="fulfilled" id="fulfilled-input" value={goal.fulfilled} />
+				<input type="checkbox" name="fulfilled" id="fulfilled-input" value={!!goal.fulfilled} />
 			</label>
 
 			<input type="hidden" value={$adminStore.token} name="token" />
