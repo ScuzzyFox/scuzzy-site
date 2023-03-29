@@ -15,12 +15,7 @@
 </script>
 
 <svelte:head>
-	<link
-		href="https://fonts.googleapis.com/css?family=Montserrat|Gloria+Hallelujah&display=swap"
-		rel="stylesheet"
-		media="print"
-		onload={this.media='all'}
-	/>
+	
 	<link rel="manifest" href="/scuzzyfox.webmanifest" />
 </svelte:head>
 
