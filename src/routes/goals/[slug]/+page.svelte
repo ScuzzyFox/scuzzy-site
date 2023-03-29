@@ -8,6 +8,7 @@
 	export let data;
 	let goal: Goal = data.goal;
 
+
 	let pageTitle: string = `${goal.name} Goal`;
 	let pageDescription: string =
 		`${goal.name} goal by scuzzyfox. ` +
@@ -108,7 +109,10 @@
 			/>
 			<label for="fulfilled-input">
 				Fulfilled?
-				<input type="checkbox" name="fulfilled" id="fulfilled-input" value={!!goal.fulfilled} />
+				<select name="fulfilled" id="fulfilled-input">
+					<option value={true}>Yes</option>
+					<option value={false}>No</option>
+				</select>
 			</label>
 
 			<input type="hidden" value={$adminStore.token} name="token" />
