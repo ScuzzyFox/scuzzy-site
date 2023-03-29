@@ -1,5 +1,5 @@
 <script lang="ts">
-	import mainPageBanner from '$lib/images/mainPageBanner.png';
+	import mainPageBanner from '$lib/images/mainPageBanner.png?webp';
 	import { userSettingsStore } from '$lib/stores';
 	let pageDescription = 'ScuzzyFox.com Furry commissions, badges, art, merchandise and more!';
 	let pageTitle = 'ScuzzyFox.com | Furry commissions, badges, art, merchandise and more!';
