@@ -39,6 +39,8 @@
 	alt="Site page banner of scuzzy's art"
 	class="banner"
 	on:load={handleLoad}
+	on:mouseover={handleLoad}
+	on:focus={handleLoad}
 />
 
 <h1>This is the home page. More to come soon!</h1>
