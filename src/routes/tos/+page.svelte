@@ -48,7 +48,7 @@
 			{/if}
 		{/each}
 
-		{@html "<style>.tos p a {text-decoration: none; color: var(--link-txt-clr);} .tos p a:hover {text-decoration: underline; filter: brightness(120%) saturate(120%);} .tos p a:active {text-decoration: underline; color: var(--tertiary-clr);}</style>"}
+		{@html "<style>.tos a {text-decoration: none; color: var(--link-txt-clr);} .tos a:hover {text-decoration: underline; filter: brightness(120%) saturate(120%);} .tos a:active {text-decoration: underline; color: var(--tertiary-clr);}</style>"}
 	</div>
 </div>
 
