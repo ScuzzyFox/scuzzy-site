@@ -4,6 +4,7 @@
 	import TextInput from '$lib/TextInput.svelte';
 	import PasswordInput from '$lib/PasswordInput.svelte';
 	import FormButton from '$lib/FormButton.svelte';
+	import { page } from '$app/stores';
 
 	export let form;
 
@@ -41,7 +42,7 @@
 		<h1>Log in</h1>
 	</div>
 	<div class="login-card">
-		<form method="POST">
+		<form method="POST" action="/login?/logmein">
 			<TextInput
 				inputId={'username-input'}
 				name={'username'}
@@ -57,6 +58,8 @@
 				required={true}
 				placeholder={'Password'}
 			/>
+
+			<input type="hidden" name="redirectTo" value={$page.url.pathname} />
 
 			<FormButton {buttonDisabled} label={'Log in'} />
 		</form>
