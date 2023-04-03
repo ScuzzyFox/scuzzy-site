@@ -22,6 +22,12 @@
 		copyLinkContent = copyLinkContent.slice(0, copyLinkContent.length - 1);
 	}
 
+	//this sets link copied to false if copyLinkContent changes.
+	$: {
+		copyLinkContent;
+		linkCopied = false;
+	}
+
 	let telegram: Link = {
 		href: 'https://t.me/scuzzyfox',
 		name: 'Telegram'
