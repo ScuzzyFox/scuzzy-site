@@ -9,7 +9,7 @@
 </script>
 
 <nav>
-	<a href="/" class="imga"><img height="43px" src={logo} alt="scuzzyfox logo" /></a>
+	<a href="/" class="imga"><img height="43px" width="125.7px" src={logo} alt="scuzzyfox logo" /></a>
 	{#if links.length > 0}
 		{#each links as link (link.href)}
 			<a
