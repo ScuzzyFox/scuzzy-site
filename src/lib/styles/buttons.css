@@ -1,0 +1,69 @@
+.yl-btn {
+	box-sizing: border-box;
+	background-color: var(--tertiary-clr);
+	color: var(--tertiary-clr-txt);
+	font-family: var(--main-font);
+	font-weight: 900;
+	font-size: 1rem;
+	border: none;
+	border-radius: var(--radius-btn);
+	padding: 0.5rem 1rem;
+	box-shadow: var(--btn-drp-shdw);
+	margin-top: 1rem;
+	transition: 200ms;
+	text-align: center;
+}
+
+.yl-btn:disabled {
+	background-color: var(--btn-clr-deact);
+	color: var(--btn-clr-deact-txt);
+	font-weight: normal;
+}
+
+.yl-btn:hover {
+	filter: brightness(120%) saturate(120%);
+}
+
+.yl-btn:active {
+	filter: brightness(60%) saturate(150%);
+}
+
+.yl-btn:disabled:hover,
+.yl-btn:disabled:active {
+	filter: none;
+}
+
+.yl-lt-btn {
+	box-sizing: border-box;
+	background-color: var(--tertiary-lt-clr);
+	color: var(--tertiary-clr-txt);
+	font-family: var(--main-font);
+	font-weight: normal;
+	font-size: 1rem;
+	border: none;
+	border-radius: var(--radius-btn);
+	padding: 0.5rem 1rem;
+	box-shadow: var(--btn-drp-shdw);
+	margin-top: 1rem;
+	transition: 200ms;
+	text-align: center;
+}
+
+.yl-lt-btn:disabled {
+	background-color: var(--btn-clr-deact);
+	color: var(--btn-clr-deact-txt);
+	font-weight: normal;
+}
+
+.yl-lt-btn:hover {
+	filter: brightness(120%) saturate(120%);
+}
+
+.yl-lt-btn:active {
+	filter: brightness(60%) saturate(150%);
+}
+
+.yl-lt-btn:disabled:hover,
+.yl-lt-btn:disabled:active {
+	filter: none;
+}
