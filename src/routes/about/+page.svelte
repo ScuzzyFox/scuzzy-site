@@ -1,5 +1,6 @@
 <script lang="ts">
-	import scuzzyPfp from '$lib/images/scuzzyPfp.png';
+	// @ts-ignore
+	import scuzzyPfp from '$lib/images/scuzzyPfp.png?webp';
 	let pageTitle = 'About ScuzzyFox';
 	let pageDescription = 'ScuzzyFox is a furry artist and maker';
 	import { userSettingsStore } from '$lib/stores';

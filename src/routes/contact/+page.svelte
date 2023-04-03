@@ -1,7 +1,8 @@
 <script lang="ts">
 	let pageTitle = 'Contact ScuzzyFox';
 	let pageDescription = 'Need to get in touch with Scuzzy? Here are multiple ways to reach out!';
-	import contactScuzzy from '$lib/images/contactScuzzy.png';
+	// @ts-ignore
+	import contactScuzzy from '$lib/images/contactScuzzy.png?webp';
 	import { userSettingsStore } from '$lib/stores';
 	import { adminStore } from '$lib/stores';
 	import type { Link, LinkCF } from '$lib/Link';
