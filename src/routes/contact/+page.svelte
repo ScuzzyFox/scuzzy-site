@@ -3,9 +3,24 @@
 	let pageDescription = 'Need to get in touch with Scuzzy? Here are multiple ways to reach out!';
 	import contactScuzzy from '$lib/images/contactScuzzy.png';
 	import { userSettingsStore } from '$lib/stores';
+	import { adminStore } from '$lib/stores';
 	import type { Link, LinkCF } from '$lib/Link';
 	import { page } from '$app/stores';
 	import Linktree from './Linktree.svelte';
+
+	let linkFilter: string;
+	let linkForceAbdl: boolean;
+	let linkForceNsfw: boolean;
+	let linkCopied: boolean = false;
+	let copyLinkContent: string;
+
+	$: copyLinkContent = `${$page.url.origin}/contact?${!!linkForceNsfw ? 'forceNsfw=true&' : ''}${
+		!!linkForceAbdl ? 'forceAbdl=true&' : ''
+	}${linkFilter ? linkFilter + '=true&' : ''}`;
+
+	$: if (copyLinkContent.at(-1) === '&' || copyLinkContent.at(-1) === '?') {
+		copyLinkContent = copyLinkContent.slice(0, copyLinkContent.length - 1);
+	}
 
 	let telegram: Link = {
 		href: 'https://t.me/scuzzyfox',
@@ -158,6 +173,11 @@
 			return true;
 		}
 	}
+
+	function handleLinkButton(e: any) {
+		navigator.clipboard.writeText(copyLinkContent);
+		linkCopied = true;
+	}
 </script>
 
 <svelte:head>
@@ -195,9 +215,50 @@
 			<Linktree {allowNsfw} {allowAbdl} title="Less Responsive Options" links={lessResponsive} />
 		{/if}
 	</div>
+	{#if $adminStore.loggedIn}
+		<div class="admin-container">
+			<h2>Copy a link to share!</h2>
+
+			<label for="select-only" />
+
+			<label for="force-nsfw">
+				Force NSFW?
+				<input type="checkbox" id="force-nsfw" bind:checked={linkForceNsfw} />
+			</label>
+			<label for="force-abdl">
+				Force ABDL?
+				<input type="checkbox" id="force-abdl" bind:checked={linkForceAbdl} />
+			</label>
+
+			<label for="link-filter-selector">
+				Filter Options:
+				<select id="link-filter-selector" bind:value={linkFilter}>
+					<option value="">Show All</option>
+					<option value="galleriesOnly">Just Galleries</option>
+					<option value="twitterOnly">Just Twitters</option>
+					<option value="contactOnly">Just Direct Contact</option>
+					<option value="allContact">All Contact</option>
+				</select>
+			</label>
+
+			<div class="copy-link-container">
+				<button class="link-display" type="button" on:click={handleLinkButton}>
+					{copyLinkContent}
+				</button>
+				<button
+					class={'copy-link-btn' + `${linkCopied ? ' link-copied' : ''}`}
+					type="button"
+					on:click={handleLinkButton}>{linkCopied ? 'Link Copied!' : 'Copy Link'}</button
+				>
+			</div>
+		</div>
+	{/if}
 </main>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
 	main {
 		margin: 2% 2% 10%;
 		text-align: center;
@@ -209,5 +270,45 @@
 		gap: 0;
 		align-items: baseline;
 		flex: 1 1 0px;
+	}
+
+	.admin-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.link-display {
+		font: inherit;
+		background-color: transparent;
+		color: var(--tertiary-clr);
+		border: none;
+		cursor: pointer;
+	}
+
+	.copy-link-btn {
+		font: inherit;
+		font-weight: 900;
+		background-color: var(--tertiary-clr);
+		border: none;
+		padding: 0.5rem;
+		color: var(--tertiary-clr-txt);
+		border-radius: var(--radius-btn);
+		box-shadow: var(--btn-drp-shdw);
+	}
+
+	.copy-link-btn.link-copied {
+		background-color: var(--tertiary-lt-clr);
+		font-weight: normal;
+	}
+
+	.copy-link-btn:hover,
+	.link-display:hover {
+		filter: brightness(120%) saturate(120%);
+	}
+
+	.copy-link-btn:active,
+	.link-display:active {
+		filter: brightness(60%) saturate(120%);
 	}
 </style>

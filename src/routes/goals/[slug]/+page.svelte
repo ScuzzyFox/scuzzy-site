@@ -126,7 +126,7 @@
 		</form>
 	{/if}
 
-	{#if showDeletePopup}
+	{#if showDeletePopup && $adminStore.loggedIn}
 		<div class="popup-darkener" transition:fade={{ duration: 250 }}>
 			<div class="popup-container" transition:fly={{ y: -600, duration: 250 }}>
 				<div class="popup-hat">
