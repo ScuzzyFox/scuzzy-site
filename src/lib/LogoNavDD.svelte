@@ -23,7 +23,7 @@
 		use:clickOutside
 		on:outclick={handleOutclick}
 		in:fly={{ y: -80, duration: 800, easing: elasticOut }}
-		><img src={logo} alt="scuzzyfox logo" /></label
+		><img height="43px" src={logo} alt="scuzzyfox logo" /></label
 	>
 	<input type="checkbox" id="nav-toggle" class="nav-toggle" bind:checked={isChecked} />
 	<div id="dropdown-nav">
@@ -91,9 +91,9 @@
 		cursor: pointer;
 	}
 
-	img {
+	/* img {
 		height: 2.7em;
-	}
+	} */
 
 	img:hover {
 		filter: drop-shadow(0 0 4px #f9f1ff);

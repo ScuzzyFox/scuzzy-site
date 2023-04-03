@@ -9,7 +9,7 @@
 </script>
 
 <nav>
-	<a href="/" class="imga"><img src={logo} alt="scuzzyfox logo" /></a>
+	<a href="/" class="imga"><img height="43px" src={logo} alt="scuzzyfox logo" /></a>
 	{#if links.length > 0}
 		{#each links as link (link.href)}
 			<a
@@ -42,9 +42,9 @@
 		height: 100%;
 	}
 
-	img {
+	/* img {
 		height: 2.7em;
-	}
+	} */
 
 	img:hover {
 		filter: drop-shadow(0 0 4px #f9f1ff);
