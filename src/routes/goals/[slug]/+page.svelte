@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Goal } from '$lib/Goal';
-	import { onMount } from 'svelte';
+	import { fly, fade } from 'svelte/transition';
+
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
 	import FloatInput from '$lib/FloatInput.svelte';
@@ -8,13 +9,18 @@
 	export let data;
 	let goal: Goal = data.goal;
 
-
 	let pageTitle: string = `${goal.name} Goal`;
 	let pageDescription: string =
 		`${goal.name} goal by scuzzyfox. ` +
 		(!!goal.fulfilled
 			? `Fulfilled on ${goal.dateFulfilled?.toLocaleDateString}.`
 			: `Donate or purchase to help reach the $${goal.cost.toFixed(2)} goal!`);
+
+	let showDeletePopup: boolean = false;
+
+	function handleDeleteButtonClick(e: any) {
+		showDeletePopup = !showDeletePopup;
+	}
 </script>
 
 <svelte:head>
@@ -65,11 +71,9 @@
 	<a href="/goals">Back to Goals</a>
 
 	{#if $adminStore.loggedIn}
-		<form action="/goals?/deleteGoal" method="POST">
-			<input type="hidden" value={$adminStore.token} name="token" />
-			<input type="hidden" name="pk" value={goal.id} />
-			<button class="delete-button">Delete Goal</button>
-		</form>
+		<button class="delete-button" type="button" on:click={handleDeleteButtonClick}
+			>Delete Goal</button
+		>
 
 		<form action="/goals?/makeFulfilled" style="margin-top: 1rem;" method="POST">
 			<input type="hidden" name="pk" value={goal.id} />
@@ -120,6 +124,30 @@
 
 			<button class="edit-button">Edit Goal</button>
 		</form>
+	{/if}
+
+	{#if showDeletePopup}
+		<div class="popup-darkener" transition:fade={{ duration: 250 }}>
+			<div class="popup-container" transition:fly={{ y: -600, duration: 250 }}>
+				<div class="popup-hat">
+					<h2>Are you sure you want to delete this goal?</h2>
+				</div>
+				<div class="popup-body">
+					<form action="/goals?/deleteGoal" method="POST" id="delete-form">
+						<input type="hidden" value={$adminStore.token} name="token" />
+						<input type="hidden" name="pk" value={goal.id} />
+						<div class="popup-button-row">
+							<button
+								class="delete-button cancel-btn"
+								type="button"
+								on:click={handleDeleteButtonClick}>Nevermind</button
+							>
+							<button class="delete-button" type="submit">Yes!</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	{/if}
 </main>
 
@@ -215,6 +243,7 @@
 	.edit-button:active {
 		filter: brightness(80%) saturate(150%);
 	}
+
 	form {
 		align-self: center;
 		display: flex;
@@ -231,6 +260,57 @@
 
 		padding: 1rem;
 		padding-top: 1.5rem;
+	}
+
+	.popup-darkener {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		position: fixed;
+		z-index: 91;
+		background-color: rgba(0, 0, 0, 0.65);
+
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+
+	.popup-container {
+		margin: 1rem;
+	}
+
+	.popup-hat {
+		background-color: var(--card-clr-scnd);
+		padding: 1rem;
+
+		border-top-left-radius: var(--radius-card);
+		border-top-right-radius: var(--radius-card);
+	}
+
+	.popup-body {
+		background-color: var(--card-clr);
+		padding: 1rem;
+
+		border-bottom-left-radius: var(--radius-card);
+		border-bottom-right-radius: var(--radius-card);
+	}
+
+	.popup-body,
+	.popup-hat {
+		box-shadow: var(--drp-shdw);
+	}
+
+	.popup-button-row {
+		display: flex;
+		gap: 1rem;
+		width: 100%;
+	}
+
+	.delete-button.cancel-btn {
+		background-color: var(--tertiary-lt-clr);
+		color: var(--tertiary-clr-txt);
 	}
 
 	@media (min-width: 918px) {
@@ -263,7 +343,7 @@
 		}
 
 		form {
-			width: 100vw;
+			width: 70vw;
 		}
 
 		.delete-button {
@@ -280,6 +360,10 @@
 
 		.edit-goal-form {
 			width: 70vw;
+		}
+
+		.popup-button-row {
+			width: 100%;
 		}
 	}
 </style>

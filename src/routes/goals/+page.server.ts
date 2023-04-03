@@ -68,7 +68,7 @@ function getPreviousGoals(goals: Goal[], limit: number): Goal[] | undefined {
 		return goal.fulfilled;
 	});
 
-	if (previousGoals.length < 2) {
+	if (previousGoals.length < 1) {
 		return undefined;
 	}
 
