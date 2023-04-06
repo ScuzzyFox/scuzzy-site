@@ -13,7 +13,13 @@ export const load = async (event: any) => {
 		allGoals,
 		currentGoal ? currentGoal.id : undefined
 	);
-	let paypalBalance = await getPaypalBalance(event);
+	let paypalBalance;
+	try{
+
+		paypalBalance = await getPaypalBalance(event);
+	} catch {
+		paypalBalance = 0;
+	}
 
 	return {
 		currentGoal,

@@ -3,6 +3,7 @@
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
 	import GoalCard from './GoalCard.svelte';
+	import Card from '$lib/Card.svelte';
 	export let data: any;
 	let pageDescription = data.currentGoal
 		? `Help Scuzzy buy a ` +
@@ -78,68 +79,67 @@
 	{#if $adminStore.loggedIn}
 		<div class="admin-container">
 			<div class="form-container">
-				<div class="card-hat">
-					<h2 class="form-title">Create a new Goal</h2>
-				</div>
-				<form
-					action="?/createGoal"
-					method="POST"
-					class="create-goal-form"
-					autocomplete="off"
-					enctype="multipart/form-data"
-				>
-					<label for="image-input" class={`image-input-label ${newGoalImage ? 'full' : ''}`}>
-						Upload Goal Image{#if newGoalImage}: {newGoalImage}
-						{/if}
-						<input
-							class="image-input"
-							type="file"
-							name="image"
-							id="image-input"
-							accept="image/*, image/png, image/webp"
-							bind:value={newGoalImage}
+				<Card h2="Create a new Goal">
+					<form
+						action="?/createGoal"
+						method="POST"
+						class="create-goal-form"
+						autocomplete="off"
+						enctype="multipart/form-data"
+					>
+						<label for="image-input" class={`image-input-label ${newGoalImage ? 'full' : ''}`}>
+							Upload Goal Image{#if newGoalImage}: {newGoalImage}
+							{/if}
+							<input
+								class="image-input"
+								type="file"
+								name="image"
+								id="image-input"
+								accept="image/*, image/png, image/webp"
+								bind:value={newGoalImage}
+							/>
+						</label>
+						<TextInput
+							name="image_alt"
+							bind:value={newGoalImageAlt}
+							required={true}
+							placeholder={'Image Description'}
+							inputId="image-alt-input"
 						/>
-					</label>
-					<TextInput
-						name="image_alt"
-						bind:value={newGoalImageAlt}
-						required={true}
-						placeholder={'Image Description'}
-						inputId="image-alt-input"
-					/>
-					<TextInput
-						name="name"
-						bind:value={newGoalName}
-						required={true}
-						placeholder={'Name'}
-						inputId="name-input"
-					/>
-					<TextInput
-						name="description"
-						bind:value={newGoalDescription}
-						required={true}
-						placeholder={'Description'}
-						inputId="description-input"
-					/>
-					<FloatInput
-						name="cost"
-						bind:value={newGoalCost}
-						required={true}
-						placeholder={'Cost'}
-						inputId="cost-input"
-					/>
-					<TextInput
-						name="use_case"
-						bind:value={newGoalUseCase}
-						required={false}
-						placeholder={'Use Case'}
-						inputId="use-case-input"
-					/>
+						<TextInput
+							name="name"
+							bind:value={newGoalName}
+							required={true}
+							placeholder={'Name'}
+							inputId="name-input"
+						/>
+						<TextInput
+							name="description"
+							bind:value={newGoalDescription}
+							required={true}
+							placeholder={'Description'}
+							inputId="description-input"
+						/>
+						<FloatInput
+							name="cost"
+							bind:value={newGoalCost}
+							required={true}
+							placeholder={'Cost'}
+							inputId="cost-input"
+						/>
+						<TextInput
+							name="use_case"
+							bind:value={newGoalUseCase}
+							required={false}
+							placeholder={'Use Case'}
+							inputId="use-case-input"
+						/>
 
-					<input type="hidden" name="token" value={$adminStore.token} />
+						<input type="hidden" name="token" value={$adminStore.token} />
 
-					<button class="new-goal-btn" disabled={!newGoalButtonEnabled}>Create New Goal</button>
-				</form>
+						<button class="new-goal-btn" disabled={!newGoalButtonEnabled}>Create New Goal</button>
+					</form>
+				</Card>
 			</div>
 			{#if form?.fail}
 				<h3>Error:</h3>
@@ -149,16 +149,16 @@
 	{/if}
 
 	<div class="timeline-container">
-		<div class="timeline-card-hat">
-			<h2>All Goals</h2>
-		</div>
-		<div class="timeline-card">
+		<Card h2="All Goals">
+			<div class="timeline-card">
 			{#each data.allGoals as tlGoal}
 				<a class="tl-item {tlGoal.fulfilled ? 'fulfilled' : ''}" href={`/goals/${tlGoal.slug}`}
 					><img class="tl-image" src={tlGoal.image} alt={tlGoal.imageAlt} />{tlGoal.name}</a
 				>
 			{/each}
 		</div>
+		</Card>
+		
 	</div>
 </main>
 
@@ -257,11 +257,7 @@
 		flex-direction: column;
 	}
 
-	.card-hat,
-	.create-goal-form {
-		padding: 1rem;
-		box-shadow: var(--drp-shdw);
-	}
+	
 	.form-title {
 		margin: 0;
 		text-align: left;
@@ -360,11 +356,7 @@
 		gap: 0.5rem;
 	}
 
-	.timeline-card-hat,
-	.timeline-card {
-		padding: 1rem;
-		box-shadow: var(--drp-shdw);
-	}
+	
 
 	@media (min-width: 1013px) {
 		main {

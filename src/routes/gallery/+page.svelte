@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Card from '$lib/Card.svelte';
 	import Wip from '$lib/Wip.svelte';
 	let pageDescription = "Check out ScuzzyFox's Furry art on scuzzyfox.com";
 	let pageTitle = "ScuzzyFox's Furry Art Gallery";
@@ -19,4 +20,5 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<!-- <meta name="twitter:image" content={metaImage} /> -->
 </svelte:head>
+
 <Wip />
