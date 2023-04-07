@@ -30,12 +30,17 @@
 <url>
   <loc>https://scuzzyfox.com/tos</loc>
 </url>
-
 <url>
   <loc>https://scuzzyfox.com/gallery</loc>
 </url>
 <url>
   <loc>https://scuzzyfox.com/settings</loc>
+</url>
+<url>
+  <loc>https://scuzzyfox.com/register</loc>
+</url>
+<url>
+  <loc>https://scuzzyfox.com/login</loc>
 </url>
 
 </urlset>

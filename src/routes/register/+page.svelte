@@ -5,6 +5,7 @@
 	import PasswordInput from '$lib/TextInput.svelte';
 	import EmailInput from '$lib/TextInput.svelte';
 	import FormButton from '$lib/FormButton.svelte';
+	import Card from '$lib/Card.svelte';
 	export let form;
 
 	let token: string;
@@ -113,10 +114,9 @@
 </script>
 
 <main>
-	<div class="card-hat">
-		<h1>Register as a Site admin!</h1>
-	</div>
-	<div class="card">
+	<div class="card-body">
+
+	<Card h1="Register as a Site Admin!">
 		<form method="POST">
 			<TextInput
 				name={'username'}
@@ -156,7 +156,9 @@
 			/>
 			<FormButton buttonDisabled={!buttonEnabled} label={'Register'} />
 		</form>
+	</Card>
 	</div>
+
 	{#if usernameInvalidMessage}
 		<p class="validity-error">{usernameInvalidMessage}</p>
 	{:else if invalidEmailMessage}
@@ -184,34 +186,18 @@
 		display: flex;
 	}
 
-	.card,
-	.card-hat {
+	.card-body {
 		padding: 1rem 1rem 2rem;
 		box-shadow: var(--drp-shdw);
 
 		width: 80vw;
 	}
 
-	.card-hat {
-		margin-top: 1rem;
-		background-color: var(--card-clr-scnd);
-		border-top-left-radius: var(--radius-card);
-		border-top-right-radius: var(--radius-card);
-		padding-bottom: 1rem;
-	}
 
-	.card {
-		background-color: var(--card-clr);
-		border-bottom-left-radius: var(--radius-card);
-		border-bottom-right-radius: var(--radius-card);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
 
-	h1 {
-		margin-top: 0;
-	}
+
+
+
 
 	form {
 		margin-left: 5%;
@@ -230,15 +216,12 @@
 	}
 
 	@media (min-width: 918px) {
-		.card,
-		.card-hat {
+		.card-body {
 			padding: 1rem 1rem 2rem;
 			display: block;
 			width: 40vw;
 		}
 
-		.card-hat {
-			padding-bottom: 1rem;
-		}
+	
 	}
 </style>

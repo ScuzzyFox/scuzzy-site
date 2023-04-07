@@ -2,10 +2,11 @@
 	import { userSettingsStore } from '$lib/stores';
 	import { adminStore } from '$lib/stores';
 	import { page } from '$app/stores';
-	import { fly, fade } from 'svelte/transition';
 	import TextInput from '$lib/TextInput.svelte';
 	import PasswordInput from '$lib/PasswordInput.svelte';
 	import FormButton from '$lib/FormButton.svelte';
+	import Popup from './Popup.svelte';
+	import Card from './Card.svelte';
 
 	let displayLogin: boolean = false;
 	let username: string = '';
@@ -42,12 +43,9 @@
 	<p class="copyright">©ScuzzyFox 2023. All rights reserved.</p>
 </div>
 {#if displayLogin}
-	<div class="login-darkness" transition:fade={{ duration: 250 }}>
-		<div class="popup-container" transition:fly={{ y: -600, duration: 250 }}>
-			<div class="popup-hat">
-				<h2>Log in as admin!</h2>
-			</div>
-			<div class="popup-body">
+	<Popup darken={true}>
+		<div class="card-contaier">
+			<Card h2="Log in as admin!">
 				<form method="POST" action="/login?/logmein">
 					<TextInput
 						inputId={'username-input'}
@@ -72,9 +70,9 @@
 						<FormButton {buttonDisabled} label={'Log in'} />
 					</div>
 				</form>
-			</div>
+			</Card>
 		</div>
-	</div>
+	</Popup>
 {/if}
 
 <style>
@@ -115,47 +113,11 @@
 		color: var(--link-txt-clr-actv);
 	}
 
-	.login-darkness {
-		position: fixed;
-		z-index: 91;
-		background-color: rgba(0, 0, 0, 0.65);
 
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-
-		display: flex;
+	.card-container {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.popup-container {
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.popup-hat {
-		background-color: var(--card-clr-scnd);
-		border-top-left-radius: var(--radius-card);
-		border-top-right-radius: var(--radius-card);
-	}
-
-	.popup-hat > h2 {
-		margin: 0;
-	}
-
-	.popup-body {
-		background-color: var(--card-clr);
-		border-bottom-left-radius: var(--radius-card);
-		border-bottom-right-radius: var(--radius-card);
-	}
-
-	.popup-hat,
-	.popup-body {
-		padding: 1rem;
 	}
 
 	.cancel-btn {
@@ -188,7 +150,7 @@
 	}
 
 	@media (min-width: 1010px) {
-		.popup-container {
+		.card-container {
 			width: 60vw;
 		}
 	}
