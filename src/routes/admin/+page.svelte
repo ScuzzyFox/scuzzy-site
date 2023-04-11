@@ -3,6 +3,9 @@
 	import { adminStore } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+
+	export let data;
 
 	let registrationLink: string;
 	let copyButton = 'Copy Link';
@@ -27,6 +30,8 @@
 	}
 </script>
 
+<PageViewTelemetry />
+
 <main>
 	<h1>Welcome {$adminStore.username}!</h1>
 	<form method="POST" action="?/logout">
@@ -38,6 +43,24 @@
 		<a href={registrationLink}>{registrationLink}</a>
 		<button on:click={handleCopyButton}>{copyButton}</button>
 	{/if}
+
+	{#if data.siteStatus}
+		<p>
+			Commissions: {data.siteStatus.commissions_open ? 'Open' : 'Closed'}
+		</p>
+		<p>Store: {data.siteStatus.store_open ? 'Open' : 'Closed'}</p>
+		<p>Requests: {data.siteStatus.requests_open ? 'Open' : 'Closed'}</p>
+		<p>
+			Art Trades: {data.siteStatus.art_trades_open ? 'Open' : 'Closed'}
+		</p>
+		<p>Website views: {data.siteStatus.website_views}</p>
+		<p>Page Views:</p>
+		{#each data.siteStatus.page_views as pageView}
+			<p>page: {pageView.pathname} | {pageView.view_count} views</p>
+		{/each}
+	{/if}
+
+	<!-- insert site status form component here -->
 </main>
 
 <style>

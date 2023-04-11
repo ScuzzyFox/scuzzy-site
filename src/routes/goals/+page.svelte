@@ -4,6 +4,8 @@
 	import TextInput from '$lib/TextInput.svelte';
 	import GoalCard from './GoalCard.svelte';
 	import Card from '$lib/Card.svelte';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+
 	export let data: any;
 	let pageDescription = data.currentGoal
 		? `Help Scuzzy buy a ` +
@@ -34,6 +36,8 @@
 		newGoalUseCase = undefined!;
 	}
 </script>
+
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>
@@ -151,14 +155,13 @@
 	<div class="timeline-container">
 		<Card h2="All Goals">
 			<div class="timeline-card">
-			{#each data.allGoals as tlGoal}
-				<a class="tl-item {tlGoal.fulfilled ? 'fulfilled' : ''}" href={`/goals/${tlGoal.slug}`}
-					><img class="tl-image" src={tlGoal.image} alt={tlGoal.imageAlt} />{tlGoal.name}</a
-				>
-			{/each}
-		</div>
+				{#each data.allGoals as tlGoal}
+					<a class="tl-item {tlGoal.fulfilled ? 'fulfilled' : ''}" href={`/goals/${tlGoal.slug}`}
+						><img class="tl-image" src={tlGoal.image} alt={tlGoal.imageAlt} />{tlGoal.name}</a
+					>
+				{/each}
+			</div>
 		</Card>
-		
 	</div>
 </main>
 
@@ -257,7 +260,6 @@
 		flex-direction: column;
 	}
 
-	
 	.form-title {
 		margin: 0;
 		text-align: left;
@@ -355,8 +357,6 @@
 		flex: 1;
 		gap: 0.5rem;
 	}
-
-	
 
 	@media (min-width: 1013px) {
 		main {

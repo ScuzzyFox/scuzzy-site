@@ -5,6 +5,7 @@
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
 	import FloatInput from '$lib/FloatInput.svelte';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	export let data;
 	let goal: Goal = data.goal;
@@ -22,6 +23,8 @@
 		showDeletePopup = !showDeletePopup;
 	}
 </script>
+
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>

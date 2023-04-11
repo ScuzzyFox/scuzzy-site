@@ -5,6 +5,7 @@
 	import PasswordInput from '$lib/PasswordInput.svelte';
 	import FormButton from '$lib/FormButton.svelte';
 	import { page } from '$app/stores';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	export let form;
 
@@ -36,6 +37,8 @@
 		}
 	});
 </script>
+
+<PageViewTelemetry />
 
 <main>
 	<div class="login-card-hat">

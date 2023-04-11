@@ -4,7 +4,10 @@
 	let pageTitle = 'About ScuzzyFox';
 	let pageDescription = 'ScuzzyFox is a furry artist and maker';
 	import { userSettingsStore } from '$lib/stores';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 </script>
+
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>

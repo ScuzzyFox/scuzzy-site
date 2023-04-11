@@ -8,6 +8,7 @@
 	import type { Link, LinkCF } from '$lib/Link';
 	import { page } from '$app/stores';
 	import Linktree from './Linktree.svelte';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	let linkFilter: string;
 	let linkForceAbdl: boolean;
@@ -201,6 +202,8 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={contactScuzzy} />
 </svelte:head>
+
+<PageViewTelemetry />
 
 <main>
 	<h1>Where to Find Me!</h1>

@@ -3,6 +3,8 @@
 	import Wip from '$lib/Wip.svelte';
 	let pageDescription = "Check out ScuzzyFox's Furry art on scuzzyfox.com";
 	let pageTitle = "ScuzzyFox's Furry Art Gallery";
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+
 	//todo: meta image will be either latest submission, or a random submission
 </script>
 
@@ -20,5 +22,6 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<!-- <meta name="twitter:image" content={metaImage} /> -->
 </svelte:head>
+<PageViewTelemetry />
 
 <Wip />

@@ -2,6 +2,8 @@
 	import CheckedSelector from '$lib/CheckedSelector.svelte';
 	import type { Selection } from '../../lib/Selection';
 	import favicon from '$lib/images/logos/favicon.png';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+
 
 	let mySelections: Selection[] = [
 		{ id: 0, name: 'Site TOS', selected: true },
@@ -15,6 +17,7 @@
 	let pageTitle = "ScuzzyFox Terms of Service";
 	let pageDescription="Terms of Service for scuzzyfox.com and ScuzzyFox commissions, detailing what you can do with your furry art, commission process, and refund agreement.";
 </script>
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>

@@ -6,6 +6,8 @@
 	import EmailInput from '$lib/TextInput.svelte';
 	import FormButton from '$lib/FormButton.svelte';
 	import Card from '$lib/Card.svelte';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+
 	export let form;
 
 	let token: string;
@@ -113,50 +115,51 @@
 	}
 </script>
 
+<PageViewTelemetry />
+
 <main>
 	<div class="card-body">
+		<Card h1="Register as a Site Admin!">
+			<form method="POST">
+				<TextInput
+					name={'username'}
+					inputId={'username-input'}
+					bind:value={username}
+					required={true}
+					placeholder={'Username'}
+				/>
+				<EmailInput
+					name={'email'}
+					inputId={'email-input'}
+					bind:value={email}
+					required={true}
+					placeholder={'email'}
+				/>
 
-	<Card h1="Register as a Site Admin!">
-		<form method="POST">
-			<TextInput
-				name={'username'}
-				inputId={'username-input'}
-				bind:value={username}
-				required={true}
-				placeholder={'Username'}
-			/>
-			<EmailInput
-				name={'email'}
-				inputId={'email-input'}
-				bind:value={email}
-				required={true}
-				placeholder={'email'}
-			/>
-
-			<PasswordInput
-				name={'password'}
-				inputId={'password-input'}
-				bind:value={pword}
-				required={true}
-				placeholder={'Password'}
-			/>
-			<PasswordInput
-				name={'confirm-password'}
-				inputId={'confirm-password-input'}
-				bind:value={confirmPword}
-				required={true}
-				placeholder={'Confirm Password'}
-			/>
-			<TextInput
-				name={'token'}
-				inputId={'token-input'}
-				bind:value={token}
-				required={true}
-				placeholder={'Token'}
-			/>
-			<FormButton buttonDisabled={!buttonEnabled} label={'Register'} />
-		</form>
-	</Card>
+				<PasswordInput
+					name={'password'}
+					inputId={'password-input'}
+					bind:value={pword}
+					required={true}
+					placeholder={'Password'}
+				/>
+				<PasswordInput
+					name={'confirm-password'}
+					inputId={'confirm-password-input'}
+					bind:value={confirmPword}
+					required={true}
+					placeholder={'Confirm Password'}
+				/>
+				<TextInput
+					name={'token'}
+					inputId={'token-input'}
+					bind:value={token}
+					required={true}
+					placeholder={'Token'}
+				/>
+				<FormButton buttonDisabled={!buttonEnabled} label={'Register'} />
+			</form>
+		</Card>
 	</div>
 
 	{#if usernameInvalidMessage}
@@ -193,12 +196,6 @@
 		width: 80vw;
 	}
 
-
-
-
-
-
-
 	form {
 		margin-left: 5%;
 		margin-right: 5%;
@@ -221,7 +218,5 @@
 			display: block;
 			width: 40vw;
 		}
-
-	
 	}
 </style>

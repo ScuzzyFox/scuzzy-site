@@ -4,6 +4,7 @@
 		'Change local user-based cookies settings if you have agreed to the terms.';
 	import { userSettingsStore } from '$lib/stores';
 	import { fly } from 'svelte/transition';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	interface Content {
 		content: string;
@@ -20,6 +21,8 @@
 
 	let contentTest: boolean = false;
 </script>
+
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>

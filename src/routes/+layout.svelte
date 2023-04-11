@@ -15,7 +15,6 @@
 </script>
 
 <svelte:head>
-	
 	<link rel="manifest" href="/scuzzyfox.webmanifest" />
 </svelte:head>
 

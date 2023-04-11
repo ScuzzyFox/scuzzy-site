@@ -2,6 +2,7 @@
 	import mainPageBanner from '$lib/images/mainPageBanner.png?width=1024&format=webp';
 	import mainPageBannerFullRes from '$lib/images/mainPageBanner.png?webp';
 	import { userSettingsStore } from '$lib/stores';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 	let pageDescription = 'ScuzzyFox.com Furry commissions, badges, art, merchandise and more!';
 	let pageTitle = 'ScuzzyFox.com | Furry commissions, badges, art, merchandise and more!';
 	let hiResLoaded: boolean = false;
@@ -19,6 +20,8 @@
 		}, 500);
 	}
 </script>
+
+<PageViewTelemetry />
 
 <svelte:head>
 	<title>{pageTitle}</title>

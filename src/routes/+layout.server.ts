@@ -3,7 +3,7 @@ import { USER_SETTINGS_SECRET } from '$env/static/private';
 import * as jose from 'jose';
 import type { RequestEvent } from './$types';
 
-export function load({ locals }: { locals: any }) {
+export async function load({ locals }: { locals: any }) {
 	return {
 		//locals is coming from either hooks or form actions.
 		//accessible in pages by data.userSettings.xxx
