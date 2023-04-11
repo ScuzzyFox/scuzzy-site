@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+	import StatusForm from './StatusForm.svelte';
 
 	export let data;
 
@@ -59,8 +60,11 @@
 			<p>page: {pageView.pathname} | {pageView.view_count} views</p>
 		{/each}
 	{/if}
-
-	<!-- insert site status form component here -->
+	<div class="status-form-container">
+		<div class="status-form">
+			<StatusForm />
+		</div>
+	</div>
 </main>
 
 <style>
@@ -81,5 +85,16 @@
 	a:active {
 		color: var(--tertiary-clr);
 		text-decoration: underline;
+	}
+
+	@media (min-width: 1010px) {
+		.status-form {
+			width: 70vw;
+		}
+
+		.status-form-container {
+			display: flex;
+			justify-content: center;
+		}
 	}
 </style>

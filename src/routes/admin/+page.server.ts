@@ -31,6 +31,7 @@ export const actions = {
 	},
 	updateStatus: async (event) => {
 		let fd = await event.request.formData();
+
 		let redirectTo;
 		try {
 			redirectTo = fd.get('redirectTo');
@@ -42,7 +43,6 @@ export const actions = {
 		fd.delete('redirectTo');
 		fd.delete('token');
 		fd.delete('origin');
-
 		await updateSiteStatus(origin, fd, token);
 
 		if (redirectTo) {

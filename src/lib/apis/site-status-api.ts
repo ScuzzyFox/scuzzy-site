@@ -88,10 +88,11 @@ export async function updateSiteStatus(
 	fd: FormData,
 	token: string | undefined
 ) {
-	const response = await fetch(baseUrl + 'update-site-status/' + origin + '/', {
+	let uri = baseUrl + 'update-site-status/' + origin + '/';
+
+	const response = await fetch(uri, {
 		method: 'PUT',
 		headers: {
-			'Content-Type': 'application/json',
 			Authorization: `JWT ${token}`
 		},
 		body: fd
