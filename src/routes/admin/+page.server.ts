@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { getSiteStatus, updateSiteStatus } from '$lib/apis/site-status-api';
+import { notifyDiscordUsers, notifyTelegramUsers } from './notifyApi.js';
 
 export async function load({ locals, url }: any) {
 	//if NOT logged in
@@ -38,12 +39,41 @@ export const actions = {
 		} catch {
 			redirectTo = null;
 		}
+
+		let notifyUsers: boolean | undefined | null;
+
+		try {
+			notifyUsers = !!fd.get('notify_commissions');
+			fd.delete('notify_commissions');
+		} catch {
+			notifyUsers = null;
+		}
+
+
+
 		let token = fd.get('token')?.toString();
 		let origin = fd.get('origin')?.toString();
 		fd.delete('redirectTo');
 		fd.delete('token');
 		fd.delete('origin');
 		await updateSiteStatus(origin, fd, token);
+
+		let siteStatus = await getSiteStatus(event.url.hostname);
+
+		if(notifyUsers && !!siteStatus.commissions_open){
+			try{
+
+				await notifyTelegramUsers();
+			} catch(e){
+				console.log("Couldn't notify telegram users")
+				console.log(e)
+			}
+			try {
+				await notifyDiscordUsers();
+			} catch {
+				console.log("Couldn't notify discord users");
+			}
+		}
 
 		if (redirectTo) {
 			throw redirect(303, redirectTo.toString());

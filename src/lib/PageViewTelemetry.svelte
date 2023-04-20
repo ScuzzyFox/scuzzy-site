@@ -5,6 +5,5 @@
 
 	onMount(async () => {
 		let pageView = await getPageViewAndIncrement($page.url.hostname, $page.url.pathname);
-		console.log(pageView);
 	});
 </script>

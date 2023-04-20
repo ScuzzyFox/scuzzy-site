@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import StatusBar from '$lib/StatusBar.svelte';
 	import { onMount } from 'svelte';
 	import { userSettingsStore } from '$lib/stores';
 	import { adminStore } from '$lib/stores';
+	import { statusStore } from '$lib/stores';
 
 	export let data: any;
 	//populate userSettings and admin Store
@@ -11,6 +13,7 @@
 		// this data is coming from layout server load function
 		$userSettingsStore = data.userSettings;
 		$adminStore = data.admin;
+		$statusStore = data.status;
 	});
 </script>
 
@@ -19,6 +22,7 @@
 </svelte:head>
 
 <Header />
+<StatusBar />
 <div class="wrapper" id="slot-wrapper">
 	<slot />
 </div>

@@ -12,3 +12,10 @@ export const adminStore = writable({
 	loggedIn: false,
 	token: ''
 });
+
+export const statusStore = writable({
+	store_open: false,
+	commissions_open: false,
+	requests_open: false,
+	art_trades_open: false
+})

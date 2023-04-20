@@ -7,11 +7,20 @@
 
 <Card h2={'Update Site Status'}>
 	<form action="/admin?/updateStatus" method="POST">
-		<label for="commissions-select">Commissions</label>
-		<select name="commissions_open" id="commissions-select">
-			<option value={'False'}>Closed</option>
-			<option value={'True'}>Open</option>
-		</select>
+		
+			<label for="commissions-select" class="commissions-select"
+				><div class="comms-container">Commissions<label for="commissions-notify"
+					><input type="checkbox" name="notify_commissions" id="commissions-notify" value={true} /> Notify
+					users?</label
+				></div>
+
+				<select name="commissions_open" id="commissions-select">
+					<option value={'False'}>Closed</option>
+					<option value={'True'}>Open</option>
+				</select>
+			</label>
+		
+
 		<label for="store-select">Store</label>
 		<select name="store_open" id="store-select">
 			<option value={'False'}>Closed</option>
@@ -40,5 +49,14 @@
 	form {
 		display: flex;
 		flex-direction: column;
+	}
+	.commissions-select {
+		display: flex;
+		flex-direction: column;
+	}
+	.comms-container {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
 	}
 </style>
