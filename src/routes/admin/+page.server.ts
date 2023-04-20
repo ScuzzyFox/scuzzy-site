@@ -49,8 +49,6 @@ export const actions = {
 			notifyUsers = null;
 		}
 
-
-
 		let token = fd.get('token')?.toString();
 		let origin = fd.get('origin')?.toString();
 		fd.delete('redirectTo');
@@ -58,20 +56,21 @@ export const actions = {
 		fd.delete('origin');
 		await updateSiteStatus(origin, fd, token);
 
+		//confirm that the site updated
 		let siteStatus = await getSiteStatus(event.url.hostname);
 
-		if(notifyUsers && !!siteStatus.commissions_open){
-			try{
-
+		if (notifyUsers && !!siteStatus.commissions_open) {
+			try {
 				await notifyTelegramUsers();
-			} catch(e){
-				console.log("Couldn't notify telegram users")
-				console.log(e)
+			} catch (e) {
+				console.log("Couldn't notify telegram users");
+				console.log(e);
 			}
 			try {
 				await notifyDiscordUsers();
-			} catch {
+			} catch (e) {
 				console.log("Couldn't notify discord users");
+				console.log(e);
 			}
 		}
 
