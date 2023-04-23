@@ -61,7 +61,7 @@ export const actions = {
 
 		if (notifyUsers && !!siteStatus.commissions_open) {
 			try {
-				await notifyTelegramUsers();
+				await notifyTelegramUsers(token);
 			} catch (e) {
 				console.log("Couldn't notify telegram users");
 				console.log(e);
