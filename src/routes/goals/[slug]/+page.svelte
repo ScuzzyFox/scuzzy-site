@@ -6,6 +6,7 @@
 	import TextInput from '$lib/TextInput.svelte';
 	import FloatInput from '$lib/FloatInput.svelte';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+	import NumberInput from '$lib/NumberInput.svelte';
 
 	export let data;
 	let goal: Goal = data.goal;
@@ -114,11 +115,18 @@
 				required={false}
 				inputId={'cost-input'}
 			/>
+			<NumberInput
+				name="priority"
+				value={goal.priority}
+				placeholder={'Priority'}
+				required={false}
+				inputId={'priority-input'}
+			/>
 			<label for="fulfilled-input">
 				Fulfilled?
 				<select name="fulfilled" id="fulfilled-input">
-					<option value={true}>Yes</option>
-					<option value={false}>No</option>
+					<option selected={!goal.fulfilled} value={true}>Yes</option>
+					<option selected={!goal.fulfilled} value={false}>No</option>
 				</select>
 			</label>
 

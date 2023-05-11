@@ -12,6 +12,7 @@ export interface Goal {
 	useCase?: string;
 	imageAlt: string;
 	slug?: string;
+	priority: number;
 }
 
 export function snakeToCamel(input: any): Goal | any {

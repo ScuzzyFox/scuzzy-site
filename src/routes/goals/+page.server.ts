@@ -14,8 +14,8 @@ export const load = async (event: any) => {
 		currentGoal ? currentGoal.id : undefined
 	);
 	let paypalBalance;
-	try{
 
+	try {
 		paypalBalance = await getPaypalBalance(event);
 	} catch {
 		paypalBalance = 0;
@@ -48,7 +48,7 @@ async function getAllGoals(): Promise<Goal[]> {
 	return goals;
 }
 
-//the current goal should be the first unfulfilled goal when sorted by date added
+//the current goal should be the first unfulfilled goal when sorted by priority
 function getCurrentGoal(goals: Goal[]): Goal | undefined {
 	if (goals.length < 1) {
 		return undefined;
@@ -158,8 +158,8 @@ function getNextGoal(goals: Goal[], currentGoalID: number | undefined): Goal | u
 }
 
 function compareGoals(a: Goal, b: Goal) {
-	let aDate: Date | any = a.created;
-	let bDate: Date | any = b.created;
+	let aDate: number = a.priority;
+	let bDate: number = b.priority;
 
 	if (aDate > bDate) {
 		return 1;
