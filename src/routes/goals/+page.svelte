@@ -2,6 +2,7 @@
 	import FloatInput from '$lib/FloatInput.svelte';
 	import { adminStore } from '$lib/stores';
 	import TextInput from '$lib/TextInput.svelte';
+	import NumberInput from '$lib/NumberInput.svelte';
 	import GoalCard from './GoalCard.svelte';
 	import Card from '$lib/Card.svelte';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
@@ -22,6 +23,7 @@
 	let newGoalImage: any;
 	let newGoalImageAlt: string = '';
 	let newGoalCost: number = undefined!;
+	let newGoalPriority: number = 0;
 
 	let newGoalButtonEnabled: boolean = false;
 	export let form;
@@ -138,7 +140,13 @@
 							placeholder={'Use Case'}
 							inputId="use-case-input"
 						/>
-
+						<NumberInput
+							name="priority"
+							bind:value={newGoalPriority}
+							placeholder={'Priority'}
+							required={true}
+							inputId={'priority-input'}
+						/>
 						<input type="hidden" name="token" value={$adminStore.token} />
 
 						<button class="new-goal-btn" disabled={!newGoalButtonEnabled}>Create New Goal</button>
