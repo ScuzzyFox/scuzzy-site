@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Link } from '$lib/Link';
-	import { statusStore } from '$lib/stores';
+	import { adminStore, statusStore } from '$lib/stores';
 	import Wip from '$lib/Wip.svelte';
 	import mainPageBanner from '$lib/images/mainPageBanner.png'; // todo: replace with appropriate banner image
 	import CommissionCard from './CommissionCard.svelte';
@@ -41,9 +41,40 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={mainPageBanner} />
 </svelte:head>
-
+{#if $adminStore.loggedIn}
+	<a class="link-btn" href="/admin/commissions">Commissions Admin</a>
+{/if}
 {#if $statusStore.commissions_open}
 	<Wip />
 {:else}
 	<h1>Sorry, Commissions Are Currently Closed!</h1>
 {/if}
+
+<style>
+	.link-btn {
+		display: block;
+		box-sizing: border-box;
+		background-color: var(--tertiary-clr);
+		color: var(--tertiary-clr-txt);
+		font-family: var(--main-font);
+		font-weight: 900;
+		font-size: 1.1rem;
+		border: none;
+		border-radius: var(--radius-btn);
+		padding: 0.5rem 1rem;
+		align-self: flex-end;
+		box-shadow: var(--btn-drp-shdw);
+		margin-top: 1rem;
+		transition: var(--transition-rate);
+		text-decoration: none;
+		text-align: center;
+	}
+
+	.link-btn:hover {
+		filter: brightness(120%) saturate(120%);
+	}
+
+	.link-btn:active {
+		filter: brightness(60%) saturate(150%);
+	}
+</style>
