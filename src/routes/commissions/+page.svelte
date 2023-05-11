@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Link } from '$lib/Link';
+	import { statusStore } from '$lib/stores';
 	import Wip from '$lib/Wip.svelte';
 	import mainPageBanner from '$lib/images/mainPageBanner.png'; // todo: replace with appropriate banner image
 	import CommissionCard from './CommissionCard.svelte';
@@ -40,6 +41,9 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={mainPageBanner} />
 </svelte:head>
-<Wip />
 
-<CommissionCard title={'Big Titles'} {srcset} />
+{#if $statusStore.commissions_open}
+	<Wip />
+{:else}
+	<h1>Sorry, Commissions Are Currently Closed!</h1>
+{/if}

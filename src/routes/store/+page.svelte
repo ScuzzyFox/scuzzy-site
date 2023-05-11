@@ -2,6 +2,7 @@
 	import Wip from '$lib/Wip.svelte';
 	import mainPageBanner from '$lib/images/mainPageBanner.png';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+	import { statusStore } from '$lib/stores';
 
 	let pageTitle = 'ScuzzyFox Store | Furry merchandise and novelty items';
 	let pageDescription =
@@ -24,4 +25,8 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={mainPageBanner} />
 </svelte:head>
-<Wip />
+{#if $statusStore.store_open}
+	<Wip />
+{:else}
+	<h1>Sorry, Store Is Currently Closed!</h1>
+{/if}

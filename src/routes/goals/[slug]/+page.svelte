@@ -125,8 +125,8 @@
 			<label for="fulfilled-input">
 				Fulfilled?
 				<select name="fulfilled" id="fulfilled-input">
-					<option selected={!goal.fulfilled} value={true}>Yes</option>
-					<option selected={!goal.fulfilled} value={false}>No</option>
+					<option selected={goal.fulfilled ? true : null} value={true}>Yes</option>
+					<option selected={goal.fulfilled ? null : true} value={false}>No</option>
 				</select>
 			</label>
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { adminStore } from '$lib/stores';
+	import { statusStore } from '$lib/stores';
 	import { page } from '$app/stores';
 	import Card from '$lib/Card.svelte';
 	import '$lib/styles/buttons.css';
@@ -7,34 +8,36 @@
 
 <Card h2={'Update Site Status'}>
 	<form action="/admin?/updateStatus" method="POST">
-		
-			<label for="commissions-select" class="commissions-select"
-				><div class="comms-container">Commissions<label for="commissions-notify"
+		<label for="commissions-select" class="commissions-select"
+			><div class="comms-container">
+				Commissions<label for="commissions-notify"
 					><input type="checkbox" name="notify_commissions" id="commissions-notify" value={true} /> Notify
 					users?</label
-				></div>
+				>
+			</div>
 
-				<select name="commissions_open" id="commissions-select">
-					<option value={'False'}>Closed</option>
-					<option value={'True'}>Open</option>
-				</select>
-			</label>
-		
+			<select name="commissions_open" id="commissions-select">
+				<option selected={$statusStore.commissions_open ? null : true} value={'False'}
+					>Closed</option
+				>
+				<option selected={$statusStore.commissions_open ? true : null} value={'True'}>Open</option>
+			</select>
+		</label>
 
 		<label for="store-select">Store</label>
 		<select name="store_open" id="store-select">
-			<option value={'False'}>Closed</option>
-			<option value={'True'}>Open</option>
+			<option selected={$statusStore.store_open ? null : true} value={'False'}>Closed</option>
+			<option selected={$statusStore.store_open ? true : null} value={'True'}>Open</option>
 		</select>
 		<label for="requests-select">Requests</label>
 		<select name="requests_open" id="requests-select">
-			<option value={'False'}>Closed</option>
-			<option value={'True'}>Open</option>
+			<option selected={$statusStore.requests_open ? null : true} value={'False'}>Closed</option>
+			<option selected={$statusStore.requests_open ? true : null} value={'True'}>Open</option>
 		</select>
 		<label for="art-trades-select">Art Trades</label>
 		<select name="art_trades_open" id="art-trades-select">
-			<option value={'False'}>Closed</option>
-			<option value={'True'}>Open</option>
+			<option selected={$statusStore.art_trades_open ? null : true} value={'False'}>Closed</option>
+			<option selected={$statusStore.art_trades_open ? true : null} value={'True'}>Open</option>
 		</select>
 
 		<input type="hidden" name="token" value={$adminStore.token} />
