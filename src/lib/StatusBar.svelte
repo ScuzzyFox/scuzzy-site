@@ -51,7 +51,6 @@
 		text-decoration: inherit;
 	}
 	.status-bar {
-		width: 100%;
 		display: flex;
 		gap: 1rem;
 		justify-content: center;
@@ -59,6 +58,7 @@
 		background-color: var(--card-clr);
 		padding: 0.2rem;
 		position: relative;
+		margin: 0;
 	}
 
 	.closed {
