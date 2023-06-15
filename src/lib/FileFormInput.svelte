@@ -26,7 +26,7 @@
 		transition: 250ms;
 		text-align: center;
 		padding: 0.5rem 1rem;
-
+		display: block;
 		border-radius: var(--radius-btn);
 		box-shadow: var(--btn-drp-shdw);
 		overflow: hidden;
@@ -34,5 +34,10 @@
 
 	.file-input-label.full {
 		background-color: var(--tertiary-clr);
+	}
+
+	label,
+	input {
+		box-sizing: border-box;
 	}
 </style>

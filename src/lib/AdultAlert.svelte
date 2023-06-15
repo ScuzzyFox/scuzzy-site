@@ -10,28 +10,28 @@
 
 <Popup darken={true}>
 	<div class="adult-alert-body" class:mobile>
-
 		<Card h2="Hang on!">
 			<p>You are about to turn on NSFW content.</p>
 			<p>
-				By agreeing to view NSFW/pornographic content, you certify that you are a consenting adult at
-				least 18 years of age AND are agreeing to the use of cookies 🍪 on this site.
+				By agreeing to view NSFW/pornographic content, you certify that you are a consenting adult
+				at least 18 years of age AND are agreeing to the use of cookies 🍪 on this site.
 			</p>
-			<p>If you are not an adult or are not willing to view this content, please close this alert.</p>
+			<p>
+				If you are not an adult or are not willing to view this content, please close this alert.
+			</p>
 			<div class="btn-flex-container">
-				<button type="button" class="adult-agree-btn disagree" on:click={handleCancelButton}>Cancel</button>
-				<button type="button" class="adult-agree-btn agree" on:click={handleAgreeButton}>Agree</button>
+				<button type="button" class="adult-agree-btn disagree" on:click={handleCancelButton}
+					>Cancel</button
+				>
+				<button type="button" class="adult-agree-btn agree" on:click={handleAgreeButton}
+					>Agree</button
+				>
 			</div>
 		</Card>
 	</div>
 </Popup>
 
-
-
 <style>
-	
-	
-
 	.adult-alert-body {
 		max-width: 40%;
 		margin: 0 1.5rem;

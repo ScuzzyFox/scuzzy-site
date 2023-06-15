@@ -1,67 +1,67 @@
 .input-label {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 0.2rem;
-    position: relative;
-    --transition-rate: 200ms ease;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 0.2rem;
+	position: relative;
+	--transition-rate: 200ms ease;
 }
 
 .input-text-box {
-    padding: 0.5rem;
-    border: none;
-    border-radius: 0;
-    border-top-left-radius: var(--radius-btn);
-    border-top-right-radius: var(--radius-btn);
-    border: 2px solid rgba(0, 0, 0, 0);
-    border-bottom: 2px solid var(--accnt-clr);
-    background-color: var(--card-clr);
-    color: var(--white-txt);
-    transition: var(--transition-rate);
-    font-family: var(--main-font);
-    overflow: hidden;
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0;
+	border-top-left-radius: var(--radius-btn);
+	border-top-right-radius: var(--radius-btn);
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-bottom: 2px solid var(--accnt-clr);
+	background-color: var(--card-clr);
+	color: var(--white-txt);
+	transition: var(--transition-rate);
+	font-family: var(--main-font);
+	overflow: hidden;
 }
 
 .input-text-box:focus {
-    border-radius: var(--radius-card);
-    border: none;
-    outline: none;
-    border: 2px solid var(--accnt-clr);
+	border-radius: var(--radius-card);
+	border: none;
+	outline: none;
+	border: 2px solid var(--accnt-clr);
 }
 
 .input-label-text {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--btn-clr-deact-txt);
-    transition: var(--transition-rate);
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--btn-clr-deact-txt);
+	transition: var(--transition-rate);
 }
 
 .input-text-box:focus ~ span {
-    color: var(--accnt-clr);
-    transform: translate(20px, -50%);
-    font-size: 0.9rem;
-    background-color: var(--card-clr);
+	color: var(--accnt-clr);
+	transform: translate(20px, -50%);
+	font-size: 0.9rem;
+	background-color: var(--card-clr);
 }
 
 .input-text-box:valid ~ span {
-    color: var(--accnt-clr);
-    top: 0;
-    transform: translate(20px, -50%);
+	color: var(--accnt-clr);
+	top: 0;
+	transform: translate(20px, -50%);
 }
 
 .input-text-box:-webkit-autofill,
 .input-text-box:autofill {
-    padding: 0.5rem;
+	padding: 0.5rem;
 
-    border: 2px solid rgba(0, 0, 0, 0);
-    -webkit-border: 2px solid rgba(0, 0, 0, 0);
-    border-bottom: 2px solid var(--accnt-clr);
-    background-color: var(--card-clr);
-    transition: var(--transition-rate);
-    color: var(--tertiary-clr);
+	border: 2px solid rgba(0, 0, 0, 0);
+	-webkit-border: 2px solid rgba(0, 0, 0, 0);
+	border-bottom: 2px solid var(--accnt-clr);
+	background-color: var(--card-clr);
+	transition: var(--transition-rate);
+	color: var(--tertiary-clr);
 
-    -webkit-text-fill-color: var(--tertiary-clr);
-    -webkit-box-shadow: 0 0 0px 1000px var(--card-clr) inset;
+	-webkit-text-fill-color: var(--tertiary-clr);
+	-webkit-box-shadow: 0 0 0px 1000px var(--card-clr) inset;
 }

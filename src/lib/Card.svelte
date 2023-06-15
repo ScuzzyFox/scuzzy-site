@@ -2,6 +2,7 @@
 	export let h1: string | undefined | null = undefined;
 	export let h2: string | undefined | null = undefined;
 	export let h3: string | undefined | null = undefined;
+	export let padding: boolean = true;
 </script>
 
 <div class="card-hat">
@@ -13,13 +14,17 @@
 		<h3 class="card-title">{h3}</h3>
 	{/if}
 </div>
-<div class="card-body">
+<div class="card-body" class:padding>
 	<slot />
 </div>
 
 <style>
 	* {
 		box-sizing: border-box;
+	}
+
+	.padding {
+		padding: 1rem;
 	}
 
 	.card-title {
@@ -30,6 +35,7 @@
 		border-top-right-radius: var(--radius-card);
 		border-top-left-radius: var(--radius-card);
 		background-color: var(--card-clr-scnd);
+		padding: 1rem;
 	}
 
 	.card-body {
@@ -41,6 +47,10 @@
 	.card-hat,
 	.card-body {
 		box-shadow: var(--drp-shdw);
-		padding: 1rem;
+	}
+	h1,
+	h2,
+	h3 {
+		overflow-wrap: break-word;
 	}
 </style>
