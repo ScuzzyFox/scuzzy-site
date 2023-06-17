@@ -18,7 +18,7 @@
 	}
 </script>
 
-<form action="?/addVisual" method="POST" enctype="multipart/form-data">
+<form action="?/addVisual" method="POST" enctype="multipart/form-data" autocomplete="off">
 	<h3>Add Commission Visual</h3>
 	<FileFormInput
 		name="visual"
@@ -62,5 +62,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		width: 100%;
 	}
 </style>

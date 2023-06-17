@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { userSettingsStore, adminStore } from '$lib/stores';
+	import { userSettingsStore, adminStore, statusStore } from '$lib/stores';
 	import { page } from '$app/stores';
 	import PageDisclaimer from './PageDisclaimer.svelte';
 	import Card from '$lib/Card.svelte';
 	import SlidingCarousel from '$lib/SlidingCarousel.svelte';
 	import { onMount } from 'svelte';
 	import AddCommissionVisualForm from './AddCommissionVisualForm.svelte';
+	import Notification from '$lib/Notification.svelte';
+	import AssignOptionForm from './AssignOptionForm.svelte';
 
 	export let data: any;
+	export let form: any;
 	let outerWidth: any;
 	let carouselDiv: any;
 	let commission: any;
+	let options: any;
 	let displayDisclaimer: boolean;
 
 	let forceNsfw: boolean = false;
@@ -21,6 +25,10 @@
 	let carouselAspectRatio: number;
 	let carouselHeight: number;
 	let working: boolean | undefined;
+
+	let pageTitle: string;
+	let pageDescription: string;
+	let pageImage: string;
 
 	//set page params.
 	$: forceNsfw = $page.url.searchParams.get('forceNsfw')?.toLocaleLowerCase() === 'true';
@@ -43,7 +51,7 @@
 							abdl: commission.abdl
 						});
 						clearInterval(imageSetInterval);
-						let visualsSet = commission.commission_visuals;
+						let visualsSet: any[] = commission.commission_visuals;
 						//check nsfw
 						if (!forceNsfw) {
 							if (!$userSettingsStore.nsfwAllowed) {
@@ -85,6 +93,10 @@
 							}
 						});
 
+						visualsSet.sort((a: any, b: any) => {
+							return a.order - b.order;
+						});
+
 						workingCarouselImageSet = [
 							...workingCarouselImageSet,
 							...visualsSet.map((visual: any, index: any) => {
@@ -103,22 +115,36 @@
 
 	onMount(() => {
 		commission = data.commission;
-		{
-			if (
-				(!$userSettingsStore.nsfwAllowed && data.commission.adult) ||
-				(!$userSettingsStore.abdlAllowed && data.commission.abdl)
-			) {
-				//if user hasn't agreed to content settings, display disclaimer where they can enable it.
-				displayDisclaimer = true;
-			} else {
-				displayDisclaimer = false;
-			}
-			if ($adminStore.loggedIn || forceNsfw || forceAbdl) {
-				displayDisclaimer = false;
-			}
-		}
+		options = data.options;
+		pageTitle = commission.title + ' Furry Commission';
+		pageDescription =
+			commission.active && $statusStore.commissions_open
+				? commission.title + ' | Get a commission from ScuzzyFox today!'
+				: commission.title + ' | A ScuzzyFox Commission.';
+		pageImage = commission.ad_image_url;
 
-		console.log('calling from on mount');
+		setTimeout(() => {
+			if (commission.adult) {
+				if (!$userSettingsStore.nsfwAllowed) {
+					displayDisclaimer = true;
+				}
+			}
+
+			if (commission.abdl) {
+				if (!$userSettingsStore.abdlAllowed) {
+					displayDisclaimer = true;
+				}
+			}
+
+			if (
+				($userSettingsStore.nsfwAllowed && $userSettingsStore.abdlAllowed) ||
+				$adminStore.loggedIn ||
+				(forceAbdl && forceNsfw)
+			) {
+				displayDisclaimer = false;
+			}
+		}, 500);
+
 		calculateImageSet();
 	});
 
@@ -169,6 +195,23 @@
 </script>
 
 <svelte:window bind:innerWidth={outerWidth} />
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={pageImage} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:title" content={pageTitle} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:site" content="@scuzzyfox" />
+	<meta name="twitter:creator" content="@scuzzyfox" />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={pageImage} />
+</svelte:head>
+
+<Notification {form} />
 
 <a href="/commissions" class="link-btn">Back to Commissions</a>
 {#if displayDisclaimer}
@@ -222,7 +265,9 @@
 					<!--Commission order form-->
 					<!--admin stuff-->
 					<h2 id="admin">{commission.title} Admin</h2>
+
 					<AddCommissionVisualForm commission={commission.id} />
+					<AssignOptionForm {commission} {options} />
 				</Card>
 			</div>
 		</div>

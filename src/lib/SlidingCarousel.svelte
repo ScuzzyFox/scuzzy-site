@@ -275,7 +275,7 @@
 	}
 
 	img {
-		object-fit: cover;
+		object-fit: contain;
 		position: absolute;
 		transition-property: transform;
 		transition-timing-function: ease-out;
