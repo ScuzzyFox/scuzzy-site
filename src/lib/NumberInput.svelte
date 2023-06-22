@@ -9,6 +9,6 @@
 </script>
 
 <label class="input-label" for={inputId}>
-	<input class="input-text-box" type="number" id={inputId} {name} bind:value {required} />
+	<input class="input-text-box" type="number" id={inputId} {name} bind:value {required} step="1" />
 	<span class="input-label-text">{placeholder}</span>
 </label>

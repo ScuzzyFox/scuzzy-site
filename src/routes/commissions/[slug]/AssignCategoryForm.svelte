@@ -4,16 +4,15 @@
 	import FormButton from '$lib/FormButton.svelte';
 	import TextInput from '$lib/TextInput.svelte';
 	export let commission: any;
-	export let unfilteredOptions: any;
-	let options: any = unfilteredOptions;
-	let option: number;
 	let buttonDisabled = true;
 	let assign: boolean = true;
 	let previousAssign: boolean = false;
 	let previousUnassign: boolean = true;
 	let unassign: boolean = false;
 	let selected: number | undefined | null;
-	let optionFilter: string | undefined;
+	let categoryFilter: string | undefined;
+	export let unfilteredCategories: any;
+	let categories: any = unfilteredCategories;
 
 	function flipAssign() {
 		if (previousAssign == assign) {
@@ -35,10 +34,10 @@
 
 	function select(event: any) {
 		let element = event.target;
-		if (selected == element.dataset.option) {
+		if (selected == element.dataset.category) {
 			selected = null;
 		} else {
-			selected = element.dataset.option;
+			selected = element.dataset.category;
 		}
 	}
 
@@ -47,15 +46,15 @@
 	$: if (selected) {
 		if (
 			assign &&
-			commission.options.filter((option: any) => {
-				return option.id == selected;
+			commission.categories.filter((category: any) => {
+				return category.id == selected;
 			}).length > 0
 		) {
 			buttonDisabled = true;
 		} else if (
 			unassign &&
-			commission.options.filter((option: any) => {
-				return option.id == selected;
+			commission.categories.filter((category: any) => {
+				return category.id == selected;
 			}).length == 0
 		) {
 			buttonDisabled = true;
@@ -66,85 +65,70 @@
 		buttonDisabled = true;
 	}
 
-	$: if (optionFilter?.trim()) {
-		options = unfilteredOptions.filter((option: any) => {
-			return (
-				option.name.toLocaleLowerCase().includes(optionFilter?.toLocaleLowerCase().trim()) ||
-				option.description.toLocaleLowerCase().includes(optionFilter?.toLocaleLowerCase().trim())
-			);
+	$: if (categoryFilter?.trim()) {
+		categories = unfilteredCategories.filter((category: any) => {
+			return category.name.toLocaleLowerCase().includes(categoryFilter?.toLocaleLowerCase().trim());
 		});
 	} else {
-		options = unfilteredOptions;
+		categories = unfilteredCategories;
 	}
 </script>
 
-<form action="?/assignOption" enctype="multipart/form-data" autocomplete="off" method="POST">
-	<h3>Assign Option to Commission</h3>
+<form action="?/assignCategory" enctype="multipart/form-data" autocomplete="off" method="POST">
+	<h3>Assign Category to Commission</h3>
 	<TextInput
-		name="option-filter"
-		placeholder="Filter Options"
-		bind:value={optionFilter}
+		name="category-filter"
+		placeholder="Filter Category"
+		bind:value={categoryFilter}
 		required={false}
-		inputId="option-filter-input"
+		inputId="category-filter-input"
 	/>
 	<div class="options-container">
-		{#each options as option, index (option.id)}
+		{#each categories as category, index (category.id)}
 			<div
 				class="option"
 				on:click={select}
 				on:keydown={handleKeyDown}
-				data-option={option.id}
-				class:selected={selected == option.id}
-				class:assigned={commission.options
+				data-category={category.id}
+				class:selected={selected == category.id}
+				class:assigned={commission.categories
 					//@ts-ignore
 					.map((opt) => {
 						return opt.id;
 					})
-					.includes(option.id)}
+					.includes(category.id)}
 			>
-				<div class="horizontal-option-info" data-option={option.id}>
-					<section class="option-info" data-option={option.id}>
-						{option.name}
-					</section>
-					{#if option.example_image_url}
-						<img
-							class="option-image"
-							src={option.example_image_url}
-							alt={'Thumbnail for commission option ' + option.name}
-							data-option={option.id}
-						/>
-					{/if}
-				</div>
-				{#if selected == option.id}
-					<div
-						class="option-description"
-						class:descriptionSelected={selected == option.id}
-						data-option={option.id}
-					>
-						<p data-option={option.id}>{option.description}</p>
-					</div>
-				{/if}
+				<section class="option-info" data-category={category.id}>
+					{category.name}
+				</section>
+
+				<!--
+
+                <section data-option={option.id}>
+                    {commission.options.includes(option) ? 'Assigned' : 'Not assigned'}
+                </section>
+            -->
 			</div>
 		{/each}
 	</div>
 
 	<BooleanInput
 		name="assign"
-		inputId="assign-checkbox"
+		inputId="assign-category-checkbox"
 		required={false}
 		bind:checked={assign}
 		placeholder="Assign?"
 	/>
 	<BooleanInput
 		name="unassign"
-		inputId="unassign-checkbox"
+		inputId="unassign-category-checkbox"
 		required={false}
 		bind:checked={unassign}
 		placeholder="Unassign?"
 	/>
 	<input type="hidden" bind:value={commission.id} name="commission" />
-	<input type="hidden" bind:value={selected} name="option" />
-	<FormButton bind:buttonDisabled label={assign ? 'Assign Option' : 'Unassign Option'} />
+	<input type="hidden" bind:value={selected} name="category" />
+	<FormButton bind:buttonDisabled label={assign ? 'Assign Category' : 'Unassign Category'} />
 </form>
 
 <style>
@@ -165,39 +149,19 @@
 
 	.option {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
 		outline: 1.8px solid var(--btn-clr-avail);
 		border-radius: var(--radius-card);
 		transition: background-color 200ms;
 		overflow: hidden;
-		background-color: var(--card-clr-scnd);
-	}
-
-	.horizontal-option-info {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
 	}
 
 	.selected {
 		background-color: var(--btn-clr-sel);
 		color: var(--btn-clr-sel-txt);
 		font-weight: 900;
-	}
-	.descriptionSelected {
-		border-top: 1.8px solid var(--btn-clr-avail);
-	}
-
-	.option-description {
-		width: 100%;
-	}
-
-	.option-description > p {
-		margin: 0.5rem;
 	}
 
 	.assigned {

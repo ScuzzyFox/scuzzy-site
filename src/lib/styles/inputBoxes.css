@@ -7,6 +7,28 @@
 	--transition-rate: 200ms ease;
 }
 
+.input-dropdown {
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0;
+	border-top-left-radius: var(--radius-btn);
+	border-top-right-radius: var(--radius-btn);
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-bottom: 2px solid var(--accnt-clr);
+	background-color: var(--card-clr);
+	color: var(--white-txt);
+	transition: var(--transition-rate);
+	font-family: var(--main-font);
+	overflow: hidden;
+}
+
+.input-dropdown:focus {
+	border-radius: var(--radius-card);
+	border: none;
+	outline: none;
+	border: 2px solid var(--accnt-clr);
+}
+
 .input-text-box {
 	padding: 0.5rem;
 	border: none;
@@ -20,6 +42,7 @@
 	transition: var(--transition-rate);
 	font-family: var(--main-font);
 	overflow: hidden;
+	z-index: 1;
 }
 
 .input-text-box:focus {
@@ -36,6 +59,7 @@
 	transform: translateY(-50%);
 	color: var(--btn-clr-deact-txt);
 	transition: var(--transition-rate);
+	z-index: 2;
 }
 
 .input-text-box:focus ~ span {
@@ -46,6 +70,12 @@
 }
 
 .input-text-box:valid ~ span {
+	color: var(--accnt-clr);
+	top: 0;
+	transform: translate(20px, -50%);
+}
+
+.input-text-box.valid ~ span {
 	color: var(--accnt-clr);
 	top: 0;
 	transform: translate(20px, -50%);
@@ -62,6 +92,32 @@
 	transition: var(--transition-rate);
 	color: var(--tertiary-clr);
 
+	-webkit-text-fill-color: var(--tertiary-clr);
+	-webkit-box-shadow: 0 0 0px 1000px var(--card-clr) inset;
+}
+
+.input-dropdown:focus ~ span {
+	color: var(--accnt-clr);
+	transform: translate(20px, -50%);
+	font-size: 0.9rem;
+	background-color: var(--card-clr);
+}
+
+.input-dropdown:valid ~ span {
+	color: var(--accnt-clr);
+	top: 0;
+	transform: translate(20px, -50%);
+}
+
+.input-dropdown:-webkit-autofill,
+.input-dropdown:autofill {
+	padding: 0.5rem;
+	border: 2px solid rgba(0, 0, 0, 0);
+	-webkit-border: 2px solid rgba(0, 0, 0, 0);
+	border-bottom: 2px solid var(--accnt-clr);
+	background-color: var(--card-clr);
+	transition: var(--transition-rate);
+	color: var(--tertiary-clr);
 	-webkit-text-fill-color: var(--tertiary-clr);
 	-webkit-box-shadow: 0 0 0px 1000px var(--card-clr) inset;
 }

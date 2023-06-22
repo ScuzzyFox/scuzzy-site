@@ -8,6 +8,10 @@
 	import AddCommissionVisualForm from './AddCommissionVisualForm.svelte';
 	import Notification from '$lib/Notification.svelte';
 	import AssignOptionForm from './AssignOptionForm.svelte';
+	import AssignCategoryForm from './AssignCategoryForm.svelte';
+	import EditCommissionForm from './EditCommissionForm.svelte';
+	import DeleteCommissionForm from './DeleteCommissionForm.svelte';
+	import OrderCommissionForm from './OrderCommissionForm.svelte';
 
 	export let data: any;
 	export let form: any;
@@ -15,6 +19,7 @@
 	let carouselDiv: any;
 	let commission: any;
 	let options: any;
+	let categories: any;
 	let displayDisclaimer: boolean;
 
 	let forceNsfw: boolean = false;
@@ -35,11 +40,10 @@
 	$: forceAbdl = $page.url.searchParams.get('forceAbdl')?.toLocaleLowerCase() === 'true';
 
 	function calculateImageSet() {
-		console.log('entering calculate image set');
-		console.log('working', working);
+		//console.log('entering calculate image set');
+		//console.log('working', working);
 		if (!working) {
 			working = true;
-			console.log('now working, working=', working);
 			carouselImageSet = new Promise((resolve, reject) => {
 				let workingCarouselImageSet: any = [];
 				let imageSetInterval = setInterval(() => {
@@ -104,8 +108,8 @@
 							})
 						];
 						working = false;
-						console.log('done working, working=', working);
-						console.log('resoliving promise');
+						//console.log('done working, working=', working);
+						//console.log('resoliving promise');
 						resolve(workingCarouselImageSet);
 					}
 				}, 200);
@@ -116,11 +120,9 @@
 	onMount(() => {
 		commission = data.commission;
 		options = data.options;
+		categories = data.categories;
 		pageTitle = commission.title + ' Furry Commission';
-		pageDescription =
-			commission.active && $statusStore.commissions_open
-				? commission.title + ' | Get a commission from ScuzzyFox today!'
-				: commission.title + ' | A ScuzzyFox Commission.';
+		pageDescription = commission.ad_blurb;
 		pageImage = commission.ad_image_url;
 
 		setTimeout(() => {
@@ -155,8 +157,8 @@
 			carouselWidth = outerWidth - 30;
 			carouselAspectRatio = 1.333333333;
 			carouselHeight = Math.ceil(carouselWidth * carouselAspectRatio);
-			console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
-			console.log('calling from size reaction');
+			//console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
+			//console.log('calling from size reaction');
 
 			calculateImageSet();
 		}
@@ -165,9 +167,9 @@
 			carouselWidth = Math.ceil(0.7 * outerWidth);
 			carouselAspectRatio = 0.75;
 			carouselHeight = Math.ceil(carouselWidth * carouselAspectRatio);
-			console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
+			//console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
 
-			console.log('calling from size reaction');
+			//console.log('calling from size reaction');
 
 			calculateImageSet();
 		}
@@ -213,13 +215,16 @@
 
 <Notification {form} />
 
-<a href="/commissions" class="link-btn">Back to Commissions</a>
+<a href="/commissions" class="link-btn top-btn">Back to Commissions</a>
+{#if $adminStore.loggedIn}
+	<a href="/admin/commissions" class="link-btn top-btn">Commissions Admin Console</a>
+{/if}
 {#if displayDisclaimer}
 	<PageDisclaimer {commission} bind:disclaimer={displayDisclaimer} />
 {:else}
 	<!--regular content here-->
 	{#if $adminStore.loggedIn}
-		<a href="#admin" class="nav-btn">{data.commission.title} Admin</a>
+		<a href="#admin" class="nav-btn top-btn">{data.commission.title} Admin</a>
 	{/if}
 	{#if commission}
 		<div class="flex-wrapper">
@@ -241,33 +246,92 @@
 								buttons={true}
 								bind:width={carouselWidth}
 								bind:height={carouselHeight}
+								detailView={true}
 							/>
 						</div>
 					{/await}
 					<div class="metadata">
-						<section class="base-price">Base price: ${commission.base_price}*</section>
-						<section class="views">{commission.view_count}</section>
-						<section class="orders">
-							{commission.order_count}
-							{commission.order_count === 1 ? 'Order' : 'Orders'}
-						</section>
-						{#if commission.available}
-							<a href="#order-now">Order Now</a>
-						{:else}
-							<section>Commission Not Available for Order</section>
-						{/if}
+						<div class="metadata-stack-row">
+							<section class="metadata-stack">
+								<section class="views">{commission.view_count}</section>
+								<section class="metadata-label">Views</section>
+							</section>
+							<section class="metadata-stack">
+								<section class="orders">
+									{commission.order_count}
+								</section>
+								<section class="metadata-label">
+									{commission.order_count === 1 ? 'Order' : 'Orders'}
+								</section>
+							</section>
+							<section class="metadata-stack">
+								<section class="base-price">
+									<span class="price">${commission.base_price}</span>*
+								</section>
+								<section class="metadata-label">Base Price*</section>
+							</section>
+						</div>
 					</div>
+					{#if commission.available && commission.visible && $statusStore.commissions_open}
+						<a class="nav-order-btn" href="#order-now">Order Now</a>
+					{:else}
+						<div class="nav-order-btn deact">Commission Not Available for Order</div>
+					{/if}
+
+					{#if commission.categories.length > 0}
+						<div class="categories">
+							{#each commission.categories as category (category.id)}
+								<span class="category">{category.name}</span>
+							{/each}
+						</div>
+					{/if}
+
 					<div class="description">
 						{@html commission.verbose_description}
 					</div>
-					<div class="categories">list of categories</div>
-					<!--Available options | as a carousel?-->
 					<!--Commission order form-->
+					{#if (commission.available && commission.visible && $statusStore.commissions_open) || $adminStore.loggedIn}
+						<div class="order-form">
+							<h2 id="order-now">Commission Request Form</h2>
+							<p>Fill out this form to request this commission!</p>
+							<p>
+								Note: To view NSFW/ABDL/babyfur content or to request a commission with this
+								content, you must enable those settings by clicking on the 'NSFW' switch in the
+								top-right. You can then edit your settings at any time in the <a
+									target="_blank"
+									rel="noopener noreferrer"
+									href="/settings">settings page</a
+								>.
+							</p>
+							<p>
+								Before filling out this form, please <a
+									href="/tos"
+									target="_blank"
+									rel="noopener noreferrer">read my terms of service!</a
+								> In requesting this commission, you agree to those terms.
+							</p>
+							<p>
+								WARNING: This page does not save your progress if you close it in the middle of
+								entering information.
+							</p>
+							<OrderCommissionForm {commission} {forceNsfw} {forceAbdl} />
+						</div>
+					{:else}
+						<!--display available options here if commission is not available to order-->
+						<div class="order-form">
+							<h2>View pricing Estimate</h2>
+							<OrderCommissionForm {commission} {forceNsfw} {forceAbdl} orderable={false} />
+						</div>
+					{/if}
 					<!--admin stuff-->
-					<h2 id="admin">{commission.title} Admin</h2>
-
-					<AddCommissionVisualForm commission={commission.id} />
-					<AssignOptionForm {commission} {options} />
+					{#if $adminStore.loggedIn}
+						<h2 id="admin">{commission.title} Admin</h2>
+						<EditCommissionForm {commission} />
+						<AddCommissionVisualForm commission={commission.id} />
+						<AssignOptionForm {commission} unfilteredOptions={options} />
+						<AssignCategoryForm {commission} unfilteredCategories={categories} />
+						<DeleteCommissionForm {commission} />
+					{/if}
 				</Card>
 			</div>
 		</div>
@@ -275,6 +339,143 @@
 {/if}
 
 <style>
+	.main {
+		padding-bottom: 1rem;
+		padding-top: 1rem;
+	}
+	a {
+		color: var(--link-txt-clr);
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+		filter: brightness(120%) saturate(120%);
+	}
+
+	a:active {
+		text-decoration: underline;
+		color: var(--link-txt-clr-actv);
+	}
+	#admin {
+		display: block;
+		text-align: center;
+		margin-left: 1rem;
+		margin-right: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.order-form {
+		box-sizing: border-box;
+		border: 2px solid var(--card-clr-scnd);
+		padding: 1rem;
+		line-height: 1.6;
+	}
+
+	.metadata-stack {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.metadata-stack-row {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+		align-items: center;
+		justify-content: space-evenly;
+		box-sizing: border-box;
+		border: 2px solid var(--card-clr-scnd);
+		padding: 1rem;
+	}
+
+	.metadata-label {
+		font-size: 14px;
+		color: var(--btn-clr-deact-txt);
+		font-weight: 900;
+	}
+
+	.nav-order-btn {
+		text-decoration: none;
+		display: block;
+		box-sizing: border-box;
+		background-color: var(--accnt-clr);
+		color: var(--white-txt);
+		font-family: var(--main-font);
+		font-weight: 900;
+		font-size: 1rem;
+		border: none;
+		border-radius: var(--radius-btn);
+		padding: 0.5rem 1rem;
+		box-shadow: var(--btn-drp-shdw);
+		margin: 1rem;
+		transition: 200ms;
+		text-align: center;
+	}
+
+	.nav-order-btn:hover {
+		filter: brightness(120%) saturate(120%);
+	}
+
+	.nav-order-btn:active {
+		filter: brightness(60%) saturate(150%);
+	}
+
+	.deact {
+		background-color: var(--btn-clr-deact);
+		color: var(--btn-clr-deact-txt);
+		font-weight: normal;
+	}
+
+	.deact:hover,
+	.nav-order-btn.deact:hover {
+		background-color: var(--btn-clr-deact);
+		color: var(--btn-clr-deact-txt);
+		font-weight: normal;
+	}
+
+	.deact:active,
+	.nav-order-btn.deact:active {
+		background-color: var(--btn-clr-deact);
+		color: var(--btn-clr-deact-txt);
+		font-weight: normal;
+	}
+
+	.category {
+		box-sizing: border-box;
+		font-size: 14px;
+		outline: 1.8px solid var(--btn-clr-avail);
+		border-radius: var(--radius-card);
+		padding: 0.5rem;
+	}
+
+	.categories {
+		box-sizing: border-box;
+		border: 2px solid var(--card-clr-scnd);
+		padding: 0.5rem;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		row-gap: 0.5rem;
+	}
+
+	.description {
+		box-sizing: border-box;
+		border: 2px solid var(--card-clr-scnd);
+		border-top: none;
+		padding: 1rem;
+		margin-top: 0;
+		margin-bottom: 1rem;
+		line-height: 1.6;
+	}
+
+	.price {
+		color: green;
+		font-weight: 900;
+	}
 	.carousel-placeholder-image {
 		width: 100%;
 		object-fit: cover;
@@ -339,5 +540,10 @@
 
 	.nav-btn:active {
 		filter: brightness(60%) saturate(150%);
+	}
+
+	.top-btn {
+		margin-left: 1rem;
+		margin-right: 1rem;
 	}
 </style>

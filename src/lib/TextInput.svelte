@@ -3,7 +3,7 @@
 
 	export let value: string = '';
 	export let inputId: string;
-	export let name: string;
+	export let name: string | null | undefined = null;
 	export let required: boolean;
 	export let placeholder: string;
 </script>

@@ -10,6 +10,7 @@
 	export let dots: boolean = false;
 	export let showButtons: boolean = true;
 	export let href: string | null = null;
+	export let detailView: boolean = false;
 	let swipeStyle: string, imageStyle: string;
 	let swipeTranslation: number = 0;
 	let interval: number | NodeJS.Timer;
@@ -197,6 +198,23 @@
 				<!--the position is the order-->
 				{#if href}
 					<a {href}>
+						<img
+							pos={position.position}
+							src={position.src}
+							alt={position.alt}
+							{width}
+							{height}
+							style={position.position === 0 || position.position === positioning.length - 1
+								? `left: 0; transform: translateX(${
+										position.position * width
+								  }px); transition: none;`
+								: `left: 0; transform: translateX(${
+										position.position * width
+								  }px); transition: transform ${transitionDuration}ms;`}
+						/>
+					</a>
+				{:else if detailView}
+					<a href={position.src} target="_blank">
 						<img
 							pos={position.position}
 							src={position.src}

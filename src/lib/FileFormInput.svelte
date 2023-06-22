@@ -2,16 +2,33 @@
 	import '$lib/styles/inputBoxes.css';
 
 	export let inputId: string;
-	export let name: string;
+	export let name: string | undefined | null = null;
 	export let placeholder: string;
 	export let file: string;
 	export let accept: string;
+	export let multiple: boolean | undefined | null = null;
+	let inputElement: HTMLInputElement;
+	export let files: any = null;
+
+	function handleChange(event: Event) {
+		files = inputElement.files;
+	}
 </script>
 
 <label for={inputId} class={`file-input-label ${file ? 'full' : ''}`}>
 	{placeholder}{#if file}: {file}
 	{/if}
-	<input class="file-input" type="file" {name} id={inputId} {accept} bind:value={file} />
+	<input
+		on:change={handleChange}
+		class="file-input"
+		type="file"
+		{name}
+		id={inputId}
+		{accept}
+		{multiple}
+		bind:value={file}
+		bind:this={inputElement}
+	/>
 </label>
 
 <style>

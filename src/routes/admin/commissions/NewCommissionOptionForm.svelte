@@ -15,10 +15,9 @@
 	let exclusive_with: string;
 	let required: string;
 	let example_image: any;
-
 	let createOptionButtonDisabled: boolean = true;
 
-	$: if (name && description && cost && example_image) {
+	$: if (name && description && cost != null && cost != undefined && example_image) {
 		createOptionButtonDisabled = false;
 	} else {
 		createOptionButtonDisabled = true;
