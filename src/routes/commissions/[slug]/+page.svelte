@@ -330,6 +330,11 @@
 						<AddCommissionVisualForm commission={commission.id} />
 						<AssignOptionForm {commission} unfilteredOptions={options} />
 						<AssignCategoryForm {commission} unfilteredCategories={categories} />
+						<div class="pseudo-form">
+							<a class="yl-btn visuals-link" href={`/commissions/${commission.slug}/visuals`}
+								>Visuals Page</a
+							>
+						</div>
 						<DeleteCommissionForm {commission} />
 					{/if}
 				</Card>
@@ -545,5 +550,21 @@
 	.top-btn {
 		margin-left: 1rem;
 		margin-right: 1rem;
+	}
+
+	.pseudo-form {
+		box-sizing: border-box;
+		border: 2px solid var(--card-clr-scnd);
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.visuals-link {
+		background-color: var(--accnt-clr);
+		color: var(--white-txt);
+		display: block;
 	}
 </style>
