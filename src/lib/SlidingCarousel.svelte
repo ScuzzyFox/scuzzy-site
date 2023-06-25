@@ -17,7 +17,8 @@
 	let positioning: { position: number; src: string; alt: string }[];
 	let initialimageCount: number;
 	let currentDot: number = 0;
-	let listItems: any = [];
+	let listItems: any;
+	let initializing: boolean = false;
 
 	//reactions-----------------------------
 	//$: console.log(currentDot);
@@ -128,14 +129,17 @@
 		}
 	});
 
-	onMount(() => {
+	function initializeData() {
+		listItems = [];
+
 		//create the positioning object array (so you just have to apply a src and alt in an array)
 
 		//stupid way of solving bug where if there are 4 or less images, the scrolling doesn't work right.
 		//also allows us to put in just one image.
 		let setCopy = [...imageSet];
-		while (imageSet.length < 5) {
-			imageSet = [...imageSet, ...setCopy];
+		let modifiedImageSet = [...imageSet];
+		while (modifiedImageSet.length < 5) {
+			modifiedImageSet = [...modifiedImageSet, ...setCopy];
 		}
 		//since we're manipulating the array length, this will be useful for the dots.
 		initialimageCount = setCopy.length;
@@ -144,7 +148,7 @@
 			listItems = [...listItems, i];
 		}
 
-		positioning = imageSet.map((image, ind) => {
+		positioning = modifiedImageSet.map((image, ind) => {
 			return {
 				position: ind,
 				src: image.src,
@@ -179,11 +183,15 @@
 		}px; transform: translateX(-${swipeTranslation}px)`;
 
 		//if autoscroll is set, start the interval with a slight amount of randomness.
-		if (autoscroll) {
+		if (autoscroll && !interval) {
 			autoscrollRate = Math.round((Math.random() * (1.1 - 0.9) + 0.9) * autoscrollRate);
 			interval = setInterval(next, autoscrollRate);
 		}
-	});
+	}
+
+	$: if (imageSet && width && height) initializeData();
+
+	onMount(initializeData);
 </script>
 
 <svelte:head>

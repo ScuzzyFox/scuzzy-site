@@ -12,10 +12,12 @@
 	import EditCommissionForm from './EditCommissionForm.svelte';
 	import DeleteCommissionForm from './DeleteCommissionForm.svelte';
 	import OrderCommissionForm from './OrderCommissionForm.svelte';
+	import type { CommissionVisual } from '$lib/CommissionTypes';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	export let data: any;
 	export let form: any;
-	let outerWidth: any;
+	let innerWidth: any;
 	let carouselDiv: any;
 	let commission: any;
 	let options: any;
@@ -36,85 +38,97 @@
 	let pageImage: string;
 
 	//set page params.
-	$: forceNsfw = $page.url.searchParams.get('forceNsfw')?.toLocaleLowerCase() === 'true';
-	$: forceAbdl = $page.url.searchParams.get('forceAbdl')?.toLocaleLowerCase() === 'true';
+	$: forceNsfw = $page.url.searchParams.get('fn')?.toLocaleLowerCase() === 'true';
+	$: forceAbdl = $page.url.searchParams.get('fa')?.toLocaleLowerCase() === 'true';
 
 	function calculateImageSet() {
-		//console.log('entering calculate image set');
-		//console.log('working', working);
-		if (!working) {
-			working = true;
-			carouselImageSet = new Promise((resolve, reject) => {
-				let workingCarouselImageSet: any = [];
-				let imageSetInterval = setInterval(() => {
-					if (commission && commission.ad_image_url) {
-						workingCarouselImageSet.push({
-							src: commission.ad_image_url,
-							alt: commission.title + 'ad image.',
-							adult: commission.adult,
-							abdl: commission.abdl
-						});
-						clearInterval(imageSetInterval);
-						let visualsSet: any[] = commission.commission_visuals;
-						//check nsfw
-						if (!forceNsfw) {
-							if (!$userSettingsStore.nsfwAllowed) {
-								visualsSet = visualsSet.filter((visual: any) => {
-									return !visual.adult;
-								});
-							}
-						}
+		carouselImageSet = new Promise((resolve, reject) => {
+			let visuals: CommissionVisual[] = commission.commission_visuals;
+			let maxSize = innerWidth;
+			let minSize = Math.pow(2, Math.floor(Math.log2(innerWidth)) - 1);
 
-						//check abdl
-						if (!forceAbdl) {
-							if (!$userSettingsStore.abdlAllowed) {
-								visualsSet = visualsSet.filter((visual: any) => {
-									return !visual.abdl;
-								});
-							}
-						}
+			minSize = innerWidth;
+			maxSize = Math.pow(2, Math.ceil(Math.log2(innerWidth)) + 1);
 
-						//filter to include only images that match the selected size.
-						visualsSet = visualsSet.filter((visual: any) => {
-							let rx: RegExp = /_\d{3,4}/gm;
-							let size: string | RegExpExecArray | null | number = rx.exec(visual.visual_url);
-
-							if (size) {
-								size = size[0].replace('_', '');
-								size = parseInt(size);
-							} else {
-								size = null;
-							}
-
-							if (selectedSize) {
-								return size === selectedSize;
-							} else {
-								if (size) {
-									return false;
-								} else {
-									return true;
-								}
-							}
-						});
-
-						visualsSet.sort((a: any, b: any) => {
-							return a.order - b.order;
-						});
-
-						workingCarouselImageSet = [
-							...workingCarouselImageSet,
-							...visualsSet.map((visual: any, index: any) => {
-								return { src: visual.visual_url, alt: commission.title + ' visual ' + index };
-							})
-						];
-						working = false;
-						//console.log('done working, working=', working);
-						//console.log('resoliving promise');
-						resolve(workingCarouselImageSet);
-					}
-				}, 200);
+			visuals = visuals.filter((vis) => {
+				return !vis.is_video;
 			});
-		}
+
+			let showAdult = forceNsfw || $userSettingsStore.nsfwAllowed;
+			let showAbdl = forceAbdl || $userSettingsStore.abdlAllowed;
+
+			if (!showAdult) {
+				visuals = visuals.filter((vis) => {
+					return !vis.adult;
+				});
+			}
+
+			if (!showAbdl) {
+				visuals = visuals.filter((vis) => {
+					return !vis.abdl;
+				});
+			}
+			let imageSet = [{ src: commission.ad_image_url, alt: 'Commission Advertisement' }];
+			let groupSet = new Set();
+			visuals.forEach((vis) => {
+				groupSet.add(vis.group_identifier);
+			});
+
+			let rx: RegExp = /_\d{3,4}/g;
+
+			let tempArray = visuals.map((vis) => {
+				let size: any;
+				let visual_url = vis.visual_url;
+				let order = vis.order;
+				let group_identifier = vis.group_identifier;
+
+				if (typeof visual_url == 'string') {
+					size = visual_url.match(rx);
+				}
+
+				if (size) {
+					size = size[0].replace('_', '');
+					size = parseInt(size);
+				} else {
+					size = null;
+				}
+
+				return { size: size, order: order, visual_url: visual_url, group_identifier };
+			});
+
+			let tempArray2: any[] = [];
+			groupSet.forEach((group_id) => {
+				//get the visuals that match the group id
+				let group = tempArray.filter((a) => {
+					return a.group_identifier == group_id;
+				});
+
+				//filter group to find only max-sized images since this is the detail view page.
+				let filtered = group.filter((g) => {
+					return g.size == null;
+				});
+
+				if (filtered.length == 1) {
+					//if length is 1, then a size was found, we should put this into tempArray2
+					tempArray2.push(filtered[0]);
+				}
+			});
+			//tempArray2 should now be full of unique visuals of a particular size.
+			//they can be sorted and then mapped into imageset.
+			tempArray2.sort((a, b) => {
+				let ay = a.order;
+				let be = b.order;
+
+				return ay - be;
+			});
+
+			let toPutIntoImageSet = tempArray2.map((item) => {
+				return { src: item.visual_url + '', alt: 'visual ' + item.order };
+			});
+
+			imageSet = [...imageSet, ...toPutIntoImageSet];
+			resolve(imageSet);
+		});
 	}
 
 	onMount(() => {
@@ -152,9 +166,9 @@
 
 	$: $userSettingsStore.abdlAllowed, $userSettingsStore.nsfwAllowed, calculateImageSet();
 
-	$: if (outerWidth < 1018) {
-		if (!(carouselWidth === outerWidth - 30)) {
-			carouselWidth = outerWidth - 30;
+	$: if (innerWidth < 1018) {
+		if (!(carouselWidth === innerWidth - 30)) {
+			carouselWidth = innerWidth - 30;
 			carouselAspectRatio = 1.333333333;
 			carouselHeight = Math.ceil(carouselWidth * carouselAspectRatio);
 			//console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
@@ -162,9 +176,9 @@
 
 			calculateImageSet();
 		}
-	} else if (outerWidth >= 1018) {
-		if (!(carouselWidth === Math.ceil(0.7 * outerWidth))) {
-			carouselWidth = Math.ceil(0.7 * outerWidth);
+	} else if (innerWidth >= 1018) {
+		if (!(carouselWidth === Math.ceil(0.7 * innerWidth))) {
+			carouselWidth = Math.ceil(0.7 * innerWidth);
 			carouselAspectRatio = 0.75;
 			carouselHeight = Math.ceil(carouselWidth * carouselAspectRatio);
 			//console.log('width', carouselWidth, 'height', carouselHeight, 'aspect', carouselAspectRatio);
@@ -196,7 +210,9 @@
 	//list with button to add/remove options
 </script>
 
-<svelte:window bind:innerWidth={outerWidth} />
+<PageViewTelemetry />
+
+<svelte:window bind:innerWidth />
 
 <svelte:head>
 	<title>{pageTitle}</title>
@@ -496,8 +512,8 @@
 	.link-btn {
 		display: block;
 		box-sizing: border-box;
-		background-color: var(--tertiary-clr);
-		color: var(--tertiary-clr-txt);
+		background-color: var(--accnt-clr);
+		color: var(--white-txt);
 		font-family: var(--main-font);
 		font-weight: 900;
 		font-size: 1.1rem;
@@ -514,10 +530,12 @@
 
 	.link-btn:hover {
 		filter: brightness(120%) saturate(120%);
+		text-decoration: underline;
 	}
 
 	.link-btn:active {
 		filter: brightness(60%) saturate(150%);
+		text-decoration: underline;
 	}
 
 	.nav-btn {

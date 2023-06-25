@@ -7,9 +7,21 @@ import TelegramBot from 'node-telegram-bot-api';
 const viewOrdersUrl: string = 'https://scuzzyfox.com/commission-orders/';
 const scuzzyChatId = 136847371;
 
+async function incrementViewCount(id: number) {
+	const response = await fetch(
+		`https://api.scuzzyfox.com/commissions/${id}/increment-view-count/`,
+		{
+			method: 'PUT',
+			headers: {
+				Authorization: 'Poken ' + DJANGO_API_TOKEN
+			}
+		}
+	);
+}
+
 function deleteOrder(orderId: number) {
 	console.log('HAD TO DELETE AN ORDER');
-	fetch(`https://api.scuzzyfox.com/commissions/orders/${orderId}`, {
+	fetch(`https://api.scuzzyfox.com/commissions/orders/${orderId}/`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: 'Poken ' + DJANGO_API_TOKEN
@@ -92,6 +104,8 @@ export const load = async (event) => {
 		let commission = await response.json();
 		let options = await optionsResponse.json();
 		let categories = await categoriesResponse.json();
+
+		incrementViewCount(commission.id);
 
 		if (event.locals.admin.loggedIn || commission.visible) {
 			//display page and data if user is logged in or if commission is visible.

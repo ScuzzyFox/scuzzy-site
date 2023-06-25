@@ -13,6 +13,7 @@
 	import Popup from '$lib/Popup.svelte';
 	import NumberInput from '$lib/NumberInput.svelte';
 	import AddRemoveOptionForm from './AddRemoveOptionForm.svelte';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	export let data;
 	export let form;
@@ -130,6 +131,8 @@
 		btnDisabled = true;
 	}
 </script>
+
+<PageViewTelemetry />
 
 <Notification bind:form />
 

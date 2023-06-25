@@ -5,6 +5,7 @@
 	import Card from '$lib/Card.svelte';
 	import TextInput from '$lib/TextInput.svelte';
 	import { flip } from 'svelte/animate';
+	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 
 	export let data;
 	let orders: CommissionOrder[];
@@ -36,6 +37,8 @@
 	$: filterOrders(orderFilter);
 </script>
 
+<PageViewTelemetry />
+<a href="/commissions" class="link-btn">To Commissions</a>
 <div class="legend-container">
 	<Card h2="Status Legend">
 		<div class="legend-row">
@@ -171,5 +174,36 @@
 		display: inline-block;
 		height: 100%;
 		flex: 1;
+	}
+
+	.link-btn {
+		display: block;
+		box-sizing: border-box;
+		background-color: var(--accnt-clr);
+		color: var(--white-txt);
+		font-family: var(--main-font);
+		font-weight: 900;
+		font-size: 1.1rem;
+		border: none;
+		border-radius: var(--radius-btn);
+		padding: 0.5rem 1rem;
+		align-self: flex-end;
+		box-shadow: var(--btn-drp-shdw);
+		margin-top: 1rem;
+		transition: var(--transition-rate);
+		text-decoration: none;
+		text-align: center;
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+
+	.link-btn:hover {
+		filter: brightness(120%) saturate(120%);
+		text-decoration: underline;
+	}
+
+	.link-btn:active {
+		filter: brightness(60%) saturate(150%);
+		text-decoration: underline;
 	}
 </style>
