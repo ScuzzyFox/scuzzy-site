@@ -30,12 +30,15 @@
 	}
 
 	function setCarouselWidthHeight() {
-		setTimeout(() => {
-			if (innerWidth && aspectRatio) {
+		if (innerWidth && aspectRatio) {
+			if (innerWidth < 700) {
 				carouselWidth = Math.floor(innerWidth * 0.8);
 				carouselHeight = Math.floor(aspectRatio * carouselWidth);
+			} else if (innerWidth >= 700) {
+				carouselWidth = 280;
+				carouselHeight = Math.floor(aspectRatio * carouselWidth);
 			}
-		}, 100);
+		}
 	}
 
 	function setVisualsApplyImageSet() {

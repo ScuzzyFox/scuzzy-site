@@ -14,6 +14,7 @@
 	import NumberInput from '$lib/NumberInput.svelte';
 	import AddRemoveOptionForm from './AddRemoveOptionForm.svelte';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+	import favicon from '$lib/images/logos/favicon.png';
 
 	export let data;
 	export let form;
@@ -41,6 +42,9 @@
 	let abdl: boolean = false;
 	let options: any;
 	let completed: boolean;
+	let pageTitle: string;
+	let pageDescription: string;
+	let pageImage: string = favicon;
 
 	function assignData() {
 		if (!data.order || !data.statuses || !data.options) {
@@ -70,6 +74,12 @@
 			}
 
 			options = data.options;
+
+			pageImage = favicon;
+			pageDescription = `Order ${order.id} submitted by: ${customerName}.${
+				completed ? ' Order completed.' : ''
+			}`;
+			pageTitle = 'Order ' + order.id + ' details.';
 		}
 	}
 
@@ -135,6 +145,20 @@
 <PageViewTelemetry />
 
 <Notification bind:form />
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={pageImage} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:title" content={pageTitle} />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:site" content="@scuzzyfox" />
+	<meta name="twitter:creator" content="@scuzzyfox" />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={pageImage} />
+</svelte:head>
 
 <div class="main-container">
 	<a class="yl-btn" href="/commission-orders">Back to Commission Orders</a>
@@ -227,10 +251,10 @@
 						{#each order.selected_options as option}
 							<div class="content-box" style:padding={'0'}>
 								<div class="option-row">
-									<section style:margin="0.5rem">
+									<section style:margin="0.5rem" class="section-image" style:font-weight="900">
 										{option.name}
 									</section>
-									<section>
+									<section class="section-image">
 										<img class="option-image" src={option.example_image_url} alt="example option" />
 									</section>
 								</div>
@@ -561,5 +585,32 @@
 
 	.popup-container {
 		margin: 1rem;
+	}
+
+	@media (min-width: 1018px) {
+		.main-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.card-container {
+			width: 60vw;
+		}
+
+		img,
+		.image {
+			width: 50%;
+			align-self: center;
+		}
+
+		.section-image {
+			display: flex;
+			justify-content: center;
+		}
+
+		.yl-btn {
+			width: 60vw;
+		}
 	}
 </style>

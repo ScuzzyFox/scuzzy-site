@@ -39,6 +39,20 @@
 					return !com.adult;
 				});
 			}
+
+			let featuredCommissions = commissions.filter((com) => {
+				return com.featured;
+			});
+
+			if (featuredCommissions.length == 0) {
+				featuredCommissions = commissions;
+			}
+
+			let upperBound = featuredCommissions.length - 1;
+			let featuredCommission =
+				featuredCommissions[Math.floor(Math.random() * (upperBound - 0 + 1) + 0)];
+
+			pageImage = featuredCommission.ad_image_url;
 		}
 		loading = false;
 	}
@@ -65,10 +79,12 @@
 </svelte:head>
 
 <div class="main-content">
-	{#if $adminStore.loggedIn}
-		<a class="link-btn" href="/admin/commissions">Commissions Admin</a>
-	{/if}
-	<a href="/commission-orders" class="link-btn">To Orders Page</a>
+	<div class="link-btn-container">
+		{#if $adminStore.loggedIn}
+			<a class="link-btn" href="/admin/commissions">Commissions Admin</a>
+		{/if}
+		<a href="/commission-orders" class="link-btn">To Orders Page</a>
+	</div>
 
 	{#if $statusStore.commissions_open || $adminStore.loggedIn}
 		<div class="info-box">
@@ -154,7 +170,6 @@
 		border: none;
 		border-radius: var(--radius-btn);
 		padding: 0.5rem 1rem;
-		align-self: flex-end;
 		box-shadow: var(--btn-drp-shdw);
 		margin-top: 1rem;
 		transition: var(--transition-rate);
@@ -220,5 +235,26 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+	}
+
+	.link-btn-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	/* Desktop mode: */
+	@media (min-width: 1018px) {
+		.link-btn-container {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.link-btn {
+			max-width: 60vw;
+			align-self: unset;
+		}
 	}
 </style>

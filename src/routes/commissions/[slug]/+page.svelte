@@ -42,6 +42,9 @@
 	$: forceAbdl = $page.url.searchParams.get('fa')?.toLocaleLowerCase() === 'true';
 
 	function calculateImageSet() {
+		if (!commission) {
+			return;
+		}
 		carouselImageSet = new Promise((resolve, reject) => {
 			let visuals: CommissionVisual[] = commission.commission_visuals;
 			let maxSize = innerWidth;
@@ -231,16 +234,20 @@
 
 <Notification {form} />
 
-<a href="/commissions" class="link-btn top-btn">Back to Commissions</a>
-{#if $adminStore.loggedIn}
-	<a href="/admin/commissions" class="link-btn top-btn">Commissions Admin Console</a>
-{/if}
+<div class="top-btn-container">
+	<a href="/commissions" class="link-btn top-btn">Back to Commissions</a>
+	{#if $adminStore.loggedIn}
+		<a href="/admin/commissions" class="link-btn top-btn">Commissions Admin Console</a>
+	{/if}
+</div>
 {#if displayDisclaimer}
 	<PageDisclaimer {commission} bind:disclaimer={displayDisclaimer} />
 {:else}
 	<!--regular content here-->
 	{#if $adminStore.loggedIn}
-		<a href="#admin" class="nav-btn top-btn">{data.commission.title} Admin</a>
+		<div class="top-btn-container">
+			<a href="#admin" class="nav-btn top-btn">{data.commission.title} Admin</a>
+		</div>
 	{/if}
 	{#if commission}
 		<div class="flex-wrapper">
@@ -481,6 +488,7 @@
 		align-items: center;
 		justify-content: center;
 		row-gap: 0.5rem;
+		gap: 0.4rem;
 	}
 
 	.description {
@@ -568,6 +576,20 @@
 	.top-btn {
 		margin-left: 1rem;
 		margin-right: 1rem;
+		width: 100%;
+	}
+
+	.top-btn-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+
+	.top-btn-container > a {
+		align-self: unset;
+		flex: 1 1 0px;
 	}
 
 	.pseudo-form {
@@ -584,5 +606,13 @@
 		background-color: var(--accnt-clr);
 		color: var(--white-txt);
 		display: block;
+	}
+
+	@media (min-width: 1018px) {
+		.top-btn {
+			max-width: 70vw;
+			margin-left: 1rem;
+			margin-right: 1rem;
+		}
 	}
 </style>

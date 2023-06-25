@@ -6,11 +6,16 @@
 	import TextInput from '$lib/TextInput.svelte';
 	import { flip } from 'svelte/animate';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
+	import favicon from '$lib/images/logos/favicon.png';
 
 	export let data;
 	let orders: CommissionOrder[];
 	let statuses: CommissionStatus[];
 	let orderFilter: string;
+	let pageTitle: string = 'ScuzzyFox Commissions Order List';
+	let pageDescription: string =
+		'Submitted a commission request for ScuzzyFox? Check up on its status here!';
+	let pageImage = favicon;
 
 	function assignData() {
 		if (!data.orders || !data.statuses) {
@@ -18,6 +23,7 @@
 		} else {
 			orders = data.orders;
 			statuses = data.statuses;
+			pageImage = favicon;
 		}
 	}
 
@@ -38,60 +44,77 @@
 </script>
 
 <PageViewTelemetry />
-<a href="/commissions" class="link-btn">To Commissions</a>
-<div class="legend-container">
-	<Card h2="Status Legend">
-		<div class="legend-row">
-			<span><div class="legend-color-block" style:background-color={'green'} /></span><span>=</span
-			><span>completed</span>
-		</div>
-		{#if statuses}
-			{#each statuses as status (status.id)}
-				<div class="legend-row">
-					<span><div class="legend-color-block" style:background-color={status.color} /></span>
-					<span>=</span><span>{status.status}</span>
-				</div>
-			{/each}
-		{/if}
-	</Card>
-</div>
-<div class="card-container">
-	<Card h1="Commission Requests">
-		{#if orders}
-			<TextInput
-				bind:value={orderFilter}
-				required={true}
-				placeholder="Filter Requests"
-				inputId="order-filter-input"
-			/>
-			{#each orders as order (order.id)}
-				<a
-					animate:flip={{ duration: 200 }}
-					id={`order-${order.id}`}
-					class="order-link"
-					href={`commission-orders/${order.id}`}
-					><div class="order-container" class:completed={order.completed}>
-						<section class="order-id">ID: {order.id}</section>
-						<div class="name-status-container">
-							{order.customer_name}
-							<div class="status-bar">
-								{#if order.statuses}
-									{#each order.statuses as status}
-										<div
-											class="status-element"
-											style={order.completed
-												? 'background-color:green'
-												: `background-color:${status.color}`}
-										/>
-									{/each}
-								{/if}
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content={pageImage} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:title" content={pageTitle} />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:site" content="@scuzzyfox" />
+	<meta name="twitter:creator" content="@scuzzyfox" />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={pageImage} />
+</svelte:head>
+<div class="main-content">
+	<a href="/commissions" class="link-btn">To Commissions</a>
+	<div class="legend-container">
+		<Card h2="Status Legend">
+			<div class="legend-row">
+				<span><div class="legend-color-block" style:background-color={'green'} /></span><span
+					>=</span
+				><span>completed</span>
+			</div>
+			{#if statuses}
+				{#each statuses as status (status.id)}
+					<div class="legend-row">
+						<span><div class="legend-color-block" style:background-color={status.color} /></span>
+						<span>=</span><span>{status.status}</span>
+					</div>
+				{/each}
+			{/if}
+		</Card>
+	</div>
+	<div class="card-container">
+		<Card h1="Commission Requests">
+			{#if orders}
+				<TextInput
+					bind:value={orderFilter}
+					required={true}
+					placeholder="Filter Requests"
+					inputId="order-filter-input"
+				/>
+				{#each orders as order (order.id)}
+					<a
+						animate:flip={{ duration: 200 }}
+						id={`order-${order.id}`}
+						class="order-link"
+						href={`commission-orders/${order.id}`}
+						><div class="order-container" class:completed={order.completed}>
+							<section class="order-id">ID: {order.id}</section>
+							<div class="name-status-container">
+								{order.customer_name}
+								<div class="status-bar">
+									{#if order.statuses}
+										{#each order.statuses as status}
+											<div
+												class="status-element"
+												style={order.completed
+													? 'background-color:green'
+													: `background-color:${status.color}`}
+											/>
+										{/each}
+									{/if}
+								</div>
 							</div>
-						</div>
-					</div></a
-				>
-			{/each}
-		{/if}
-	</Card>
+						</div></a
+					>
+				{/each}
+			{/if}
+		</Card>
+	</div>
 </div>
 
 <style>
@@ -151,6 +174,7 @@
 
 	.completed {
 		background-color: green;
+		color: rgb(7, 37, 7);
 	}
 
 	.name-status-container {
@@ -187,7 +211,6 @@
 		border: none;
 		border-radius: var(--radius-btn);
 		padding: 0.5rem 1rem;
-		align-self: flex-end;
 		box-shadow: var(--btn-drp-shdw);
 		margin-top: 1rem;
 		transition: var(--transition-rate);
@@ -205,5 +228,20 @@
 	.link-btn:active {
 		filter: brightness(60%) saturate(150%);
 		text-decoration: underline;
+	}
+
+	/**Desktop mode:**/
+	@media (min-width: 1018px) {
+		.link-btn,
+		.legend-container,
+		.card-container {
+			width: 70vw;
+		}
+
+		.main-content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 	}
 </style>
