@@ -33,9 +33,9 @@
 	let carouselHeight: number;
 	let working: boolean | undefined;
 
-	let pageTitle: string;
-	let pageDescription: string;
-	let pageImage: string;
+	let pageTitle: string = data.commission.title + ' Furry Commission';
+	let pageDescription: string = data.commission.ad_blurb;
+	let pageImage: string = data.commission.ad_image_url;
 
 	//set page params.
 	$: forceNsfw = $page.url.searchParams.get('fn')?.toLocaleLowerCase() === 'true';

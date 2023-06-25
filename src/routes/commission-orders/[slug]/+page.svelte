@@ -42,8 +42,10 @@
 	let abdl: boolean = false;
 	let options: any;
 	let completed: boolean;
-	let pageTitle: string;
-	let pageDescription: string;
+	let pageTitle: string = 'Order ' + data.order.id + ' details.';
+	let pageDescription: string = `Order ${data.order.id} submitted by: ${data.order.customer_name}.${
+		data.order.completed ? ' Order completed.' : ''
+	}`;
 	let pageImage: string = favicon;
 
 	function assignData() {
