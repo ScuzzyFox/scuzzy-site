@@ -33,10 +33,6 @@
 	let carouselHeight: number;
 	let working: boolean | undefined;
 
-	let pageTitle: string = data.commission.title + ' Furry Commission';
-	let pageDescription: string = data.commission.ad_blurb;
-	let pageImage: string = data.commission.ad_image_url;
-
 	//set page params.
 	$: forceNsfw = $page.url.searchParams.get('fn')?.toLocaleLowerCase() === 'true';
 	$: forceAbdl = $page.url.searchParams.get('fa')?.toLocaleLowerCase() === 'true';
@@ -211,6 +207,9 @@
 	//list of visuals (clickable)
 	//list with button to add/remove categories
 	//list with button to add/remove options
+	let pageTitle: string = data.commission.title + ' Furry Commission';
+	let pageDescription: string = data.commission.ad_blurb;
+	let pageImage: string = data.commission.ad_image_url;
 </script>
 
 <PageViewTelemetry />
