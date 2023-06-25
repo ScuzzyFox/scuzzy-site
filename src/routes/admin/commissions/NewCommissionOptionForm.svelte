@@ -30,6 +30,7 @@
 	enctype="multipart/form-data"
 	autocomplete="off"
 >
+	<h3>New Option</h3>
 	<TextInput
 		required={true}
 		placeholder="Option Name"

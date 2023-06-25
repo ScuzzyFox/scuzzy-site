@@ -1,4 +1,12 @@
 import { error } from '@sveltejs/kit';
+import type { CommissionOrder, CommissionStatus } from '$lib/CommissionTypes.js';
+
+async function getStatuses() {
+	const response = await fetch('https://api.scuzzyfox.com/commissions/statuses/');
+	if (response.ok) {
+		return await response.json();
+	}
+}
 
 export const load = async (event) => {
 	let token: string | undefined = undefined;
@@ -7,6 +15,8 @@ export const load = async (event) => {
 	} else if (event.cookies.get('admin')) {
 		token = event.cookies.get('admin');
 	}
+
+	const statuses = await getStatuses();
 
 	let response: Response;
 
@@ -24,9 +34,22 @@ export const load = async (event) => {
 	}
 
 	if (response.ok) {
-		const orders = await response.json();
+		const orders: CommissionOrder[] = await response.json();
+		if (token) {
+			for (let order of orders) {
+				const commissionResponse = await fetch(
+					`https://api.scuzzyfox.com/commissions/${order.commission}`
+				);
+				if (commissionResponse.ok) {
+					order.commissionData = await commissionResponse.json();
+				} else {
+					throw error(500, 'Failed to fetch commission data for orders.');
+				}
+			}
+		}
 		return {
-			orders: orders
+			orders: orders,
+			statuses: statuses
 		};
 	} else {
 		throw error(500, 'Failed to fetch commission orders.');

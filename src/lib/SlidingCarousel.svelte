@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	export let imageSet: { src: string; alt: string }[];
 	export let autoscroll: boolean = true;
 	export let autoscrollRate: number = 5000;
@@ -120,6 +120,13 @@
 			interval = setInterval(next, autoscrollRate);
 		}
 	}
+
+	onDestroy(() => {
+		console.log('killing carousel');
+		if (interval) {
+			clearInterval(interval);
+		}
+	});
 
 	onMount(() => {
 		//create the positioning object array (so you just have to apply a src and alt in an array)

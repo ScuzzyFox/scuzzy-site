@@ -17,13 +17,18 @@ function deleteOrder(orderId: number) {
 	});
 }
 
-async function notifyScuzzyOfNewOrder(orderId: number, chatId: any) {
+async function notifyScuzzyOfNewOrder(order: CommissionOrder, chatId: any) {
 	var bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
 	//exclamation marks: !
 	//periods: .
 	//dashes: -
 	//must be escaped with double backslash: \
-	const message = `*Hey 'real' scuzzy*\n\n__You have a new commission request\\!__\n\nCatch it at [this link](${viewOrdersUrl}${orderId})\\.\n\nThe Order ID is ${orderId}\\.`;
+	const message = `*Hey 'real' scuzzy*\n\n__You have a new commission request from ${order.customer_name
+		.replace('!', '\\!')
+		.replace('.', '\\.')
+		.replace('-', '\\-')}\\!__\n\nCatch it at [this link](${viewOrdersUrl}${
+		order.id
+	})\\.\n\nThe Order ID is ${order.id}\\.`;
 
 	try {
 		bot.sendMessage(chatId, message, { parse_mode: 'MarkdownV2' });
@@ -575,7 +580,7 @@ export const actions = {
 				} //endif
 
 				//if all's good, then return success notifications!
-				notifyScuzzyOfNewOrder(createdOrder.id, scuzzyChatId);
+				notifyScuzzyOfNewOrder(createdOrder, scuzzyChatId);
 				return {
 					notifications: [
 						{

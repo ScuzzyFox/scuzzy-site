@@ -1,15 +1,18 @@
 <script lang="ts">
 	import BooleanInput from '$lib/BooleanInput.svelte';
-	import FormButton from '$lib/FormButton.svelte';
+	import type { CommissionOrder } from '$lib/CommissionTypes';
 	import TextInput from '$lib/TextInput.svelte';
-	export let commission: any;
-	export let unfilteredOptions: any;
-	let options: any = unfilteredOptions;
+	export let order: CommissionOrder;
+	export let unfilteredOptions: any[];
+
+	let options: any[] = unfilteredOptions;
 	let buttonDisabled = true;
+
 	let assign: boolean = true;
 	let previousAssign: boolean = false;
-	let previousUnassign: boolean = true;
 	let unassign: boolean = false;
+	let previousUnassign: boolean = true;
+
 	let selected: number | undefined | null;
 	let optionFilter: string | undefined;
 
@@ -45,14 +48,14 @@
 	$: if (selected) {
 		if (
 			assign &&
-			commission.options.filter((option: any) => {
+			order.selected_options.filter((option: any) => {
 				return option.id == selected;
 			}).length > 0
 		) {
 			buttonDisabled = true;
 		} else if (
 			unassign &&
-			commission.options.filter((option: any) => {
+			order.selected_options.filter((option: any) => {
 				return option.id == selected;
 			}).length == 0
 		) {
@@ -76,8 +79,7 @@
 	}
 </script>
 
-<form action="?/assignOption" enctype="multipart/form-data" autocomplete="off" method="POST">
-	<h3>Assign Option to Commission</h3>
+{#if order && options}
 	<TextInput
 		name="option-filter"
 		placeholder="Filter Options"
@@ -93,7 +95,7 @@
 				on:keydown={handleKeyDown}
 				data-option={option.id}
 				class:selected={selected == option.id}
-				class:assigned={commission.options
+				class:assigned={order.selected_options
 					//@ts-ignore
 					.map((opt) => {
 						return opt.id;
@@ -120,6 +122,7 @@
 						data-option={option.id}
 					>
 						<p data-option={option.id}>{option.description}</p>
+						<p data-option={option.id}>${option.cost}</p>
 					</div>
 				{/if}
 			</div>
@@ -140,22 +143,14 @@
 		bind:checked={unassign}
 		placeholder="Unassign?"
 	/>
-	<input type="hidden" bind:value={commission.id} name="commission" />
+	<input type="hidden" bind:value={order.id} name="order" />
 	<input type="hidden" bind:value={selected} name="option" />
-	<FormButton bind:buttonDisabled label={assign ? 'Assign Option' : 'Unassign Option'} />
-</form>
+	<button class="yl-btn" disabled={buttonDisabled} type="submit"
+		>{assign ? 'Assign Option' : 'Unassign Option'}</button
+	>
+{/if}
 
 <style>
-	form {
-		box-sizing: border-box;
-		border: 2px solid var(--card-clr-scnd);
-		padding: 1rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		width: 100%;
-	}
-
 	.options-container {
 		display: flex;
 		flex-direction: column;

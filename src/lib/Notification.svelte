@@ -62,7 +62,15 @@
 				animate:flip={{ duration: 200 }}
 				transition:fly={{ x: -500, duration: 250 * (1 + index / 5) }}
 			>
-				{notification.message}
+				{#if notification.message.toLocaleLowerCase().includes('<html') || notification.message
+						.toLocaleLowerCase()
+						.includes('<html>') || notification.message
+						.toLocaleLowerCase()
+						.includes('<!doctype html>')}
+					{@html notification.message}
+				{:else}
+					{notification.message}
+				{/if}
 
 				<button
 					on:click={clearButton}
@@ -79,7 +87,7 @@
 	.popup-container {
 		display: flex;
 		position: absolute;
-		top: 0;
+		top: 1rem;
 		width: 100%;
 		flex-direction: column;
 		gap: 1rem;

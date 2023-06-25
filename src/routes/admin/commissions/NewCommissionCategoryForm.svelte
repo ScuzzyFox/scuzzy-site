@@ -1,11 +1,7 @@
 <script lang="ts">
 	import TextInput from '$lib/TextInput.svelte';
 	import BooleanInput from '$lib/BooleanInput.svelte';
-	import FormButton from '$lib/FormButton.svelte';
-	import NumberInput from '$lib/NumberInput.svelte';
 	import '$lib/styles/buttons.css';
-	import FileFormInput from '$lib/FileFormInput.svelte';
-	import FloatInput from '$lib/FloatInput.svelte';
 
 	let name: string;
 
@@ -27,6 +23,7 @@
 	enctype="multipart/form-data"
 	autocomplete="off"
 >
+	<h3>New Category</h3>
 	<TextInput
 		required={true}
 		placeholder="Category Name"

@@ -37,8 +37,6 @@
 	let requiredSections: string[];
 	let characterReferencesJson: string;
 
-	$: console.log(characterReferences);
-
 	function isOptionsSelectionValid(
 		selectedOptionIds: number[],
 		filteredOptions: Option[],
@@ -220,23 +218,24 @@
 			placeholder="Describe commission"
 			inputId="commission-order-description"
 		/>
-
-		<BooleanInput
-			name="adult"
-			required={false}
-			bind:checked={adult}
-			placeholder="Commission is NSFW?"
-			inputId="commission-adult-rating-input"
-		/>
-
-		<BooleanInput
-			name="abdl"
-			required={false}
-			bind:checked={abdl}
-			placeholder="Commission has ABDL/babyfur content?"
-			inputId="commission-abdl-rating-input"
-		/>
-
+		{#if $userSettingsStore.nsfwAllowed}
+			<BooleanInput
+				name="adult"
+				required={false}
+				bind:checked={adult}
+				placeholder="Commission is NSFW?"
+				inputId="commission-adult-rating-input"
+			/>
+		{/if}
+		{#if $userSettingsStore.abdlAllowed}
+			<BooleanInput
+				name="abdl"
+				required={false}
+				bind:checked={abdl}
+				placeholder="Commission has ABDL/babyfur content?"
+				inputId="commission-abdl-rating-input"
+			/>
+		{/if}
 		<br />
 
 		<label for="commission-order-extra-character-details"
