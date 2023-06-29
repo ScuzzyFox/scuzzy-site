@@ -105,8 +105,10 @@ export const load = async (event) => {
 		let options = await optionsResponse.json();
 		let categories = await categoriesResponse.json();
 
-		incrementViewCount(commission.id);
-		commission.view_count++;
+		if (!event.locals.admin.loggedIn) {
+			incrementViewCount(commission.id);
+			commission.view_count++;
+		}
 
 		if (event.locals.admin.loggedIn || commission.visible) {
 			//display page and data if user is logged in or if commission is visible.

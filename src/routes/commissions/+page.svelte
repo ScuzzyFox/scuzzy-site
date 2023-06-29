@@ -25,6 +25,11 @@
 			forceNsfw = $page.url.searchParams.get('fn')?.toLocaleLowerCase() === 'true';
 			forceAbdl = $page.url.searchParams.get('fa')?.toLocaleLowerCase() === 'true';
 			commissions = data.commissions;
+			if (!$adminStore.loggedIn) {
+				commissions = commissions.filter((com) => {
+					return com.visible;
+				});
+			}
 
 			//realistically, there arent' going to be any nsfw or abdl commissions, but
 			//their visuals might be.
@@ -235,6 +240,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: center;
+		gap: 1rem;
 	}
 
 	.link-btn-container {

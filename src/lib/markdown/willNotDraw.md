@@ -35,3 +35,25 @@ Warning, this page may contain trigger words. Please read at your own risk.
 ## Not Listed Here?
 
 [Don't be afraid to ask!](/contact) I also reserve the right ot reject anything in the Will-Not-Draw list if I feel uncomfortable. These lists are not exhaustive.
+
+# If I enjoy the Subject, You'll Get a Better Drawing!
+
+## Stuff I LOVE
+
+- Feral Rodents
+- Food-play
+- Size-Difference
+- On-model Rule 34
+- Unique ideas
+- Environmental bondage
+- Bears, Canids, Deer, AWDs, and Dragons
+- Fashion/Clothes
+- Teeth
+- Trashy Aesthetic
+
+## Stuff I Hate
+
+- Detailed Backgrounds
+- Stuff in will-not-draw list
+- Scenarios with discontinuities
+- Giant tails

@@ -1,11 +1,10 @@
 import { error } from '@sveltejs/kit';
 
-export const load = async (event) => {
+export const load = async (event: any) => {
 	const commissionsResponse = await fetch('https://api.scuzzyfox.com/commissions/');
 
 	if (commissionsResponse.ok) {
 		let commissions = await commissionsResponse.json();
-		//todo: split commissions into featured and not featured, then order by order count
 		let featuredCommissions = commissions.filter((com: any) => {
 			return com.featured;
 		});

@@ -102,14 +102,25 @@
 					return a.group_identifier == group_id;
 				});
 
-				//filter group to find only max-sized images since this is the detail view page.
+				//filter group between size range
 				let filtered = group.filter((g) => {
-					return g.size == null;
+					return g.size < maxSize && g.size >= minSize;
 				});
 
 				if (filtered.length == 1) {
 					//if length is 1, then a size was found, we should put this into tempArray2
 					tempArray2.push(filtered[0]);
+				} else if (filtered.length == 0) {
+					//if no sizes were found, we need to become less picky
+					filtered = group.filter((g) => {
+						//return full size
+						return g.size == null;
+					});
+
+					if (filtered.length == 1) {
+						//if length is 1, then a size was found, we should put this into tempArray2
+						tempArray2.push(filtered[0]);
+					}
 				}
 			});
 			//tempArray2 should now be full of unique visuals of a particular size.
@@ -134,7 +145,7 @@
 		commission = data.commission;
 		options = data.options;
 		categories = data.categories;
-		pageTitle = commission.title + ' Furry Commission';
+		pageTitle = data.commission.title + ' Commission by ScuzzyFox';
 		pageDescription = commission.ad_blurb;
 		pageImage = commission.ad_image_url;
 
@@ -207,7 +218,7 @@
 	//list of visuals (clickable)
 	//list with button to add/remove categories
 	//list with button to add/remove options
-	let pageTitle: string = data.commission.title + ' Furry Commission';
+	let pageTitle: string = data.commission.title + ' Commission by ScuzzyFox';
 	let pageDescription: string = data.commission.ad_blurb;
 	let pageImage: string = data.commission.ad_image_url;
 </script>

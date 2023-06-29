@@ -3,7 +3,7 @@ function randomIntFromInterval(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export const load = async (event) => {
+export const load = async (event: any) => {
 	const commissionsResponse = await fetch('https://api.scuzzyfox.com/commissions/');
 
 	if (commissionsResponse.ok) {
@@ -11,6 +11,12 @@ export const load = async (event) => {
 
 		let abdlAllowed = event.locals.userSettings.abdlAllowed;
 		let nsfwAllowed = event.locals.userSettings.nsfwAllowed;
+
+		if (!event.locals.admin.loggedIn) {
+			commissions = commissions.filter((com: any) => {
+				return com.visible;
+			});
+		}
 
 		if (!nsfwAllowed) {
 			commissions = commissions.filter((com: any) => {
@@ -25,18 +31,18 @@ export const load = async (event) => {
 		}
 
 		let featuredCommissions = commissions.filter((com: any) => {
-			return com.featured && com.visible && com.available;
+			return com.featured && com.available;
 		});
 
 		if (featuredCommissions.length == 0) {
 			featuredCommissions = commissions.filter((com: any) => {
-				return com.featured && com.visible;
+				return com.featured;
 			});
 		}
 
 		if (featuredCommissions.length == 0) {
 			featuredCommissions = commissions.filter((com: any) => {
-				return com.featured;
+				return com.available;
 			});
 		}
 

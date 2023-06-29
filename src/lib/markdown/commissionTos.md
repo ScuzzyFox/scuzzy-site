@@ -22,6 +22,10 @@ Modification of your piece is allowed as described above, in addition to “phot
 
 I retain the full rights to publish your commission on any platform with credit to your characters/account name. You agree that your commission may be used as part of my advertising efforts and as a result your commission depicting your character may appear in my banners, advertisements, videos and other content.
 
+### Guarantee of Quality
+
+Please note I make no guarantee on quality of your commission. Since my art is hand-made, it varies each time. I will try my best to make a drawing you love, but I can only do so much!
+
 ### Refunds
 
 Refunds for completely finished commissions are not allowed. A partial refund in the middle of the commission process is possible, however you will receive a smaller portion of a refund the further along the commission is to being completed (the range being 100% refund for no work completed and 0% refund for work fully completed). As soon as you know you need a refund, contact [scuzzyfox@gmail.com](mailto:scuzzyfox@gmail.com '‌') or check the [contact](/contact) page to get in touch for a refund.
