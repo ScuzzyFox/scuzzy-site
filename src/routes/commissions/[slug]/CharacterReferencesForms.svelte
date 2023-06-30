@@ -91,7 +91,7 @@
 					data-index={index}
 					data-type={'link'}
 					on:click={switchType}
-					type="button">Link</button
+					type="button">Links/Text Description</button
 				>
 <!--
 				<button
@@ -102,7 +102,7 @@
 					data-type={'file'}
 					on:click={switchType}>Upload Image</button
 				>
--->
+
 				<button
 					class:yl-btn={reference.type.toLocaleLowerCase() == 'text_description'}
 					class:yl-lt-btn={reference.type.toLocaleLowerCase() != 'text_description'}
@@ -111,6 +111,7 @@
 					type="button"
 					on:click={switchType}>Text Description</button
 				>
+-->
 			</div>
 			<div class="reference-inputs">
 				<TextInput
@@ -121,7 +122,7 @@
 				/>
 				{#if reference.type == 'link'}
 					<TextAreaInput
-						placeholder="Ref Link(s)"
+						placeholder="Ref Link(s)/Description"
 						required={true}
 						inputId={`reference-${index}-link`}
 						bind:value={characterReferences[index].link}
