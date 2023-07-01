@@ -302,6 +302,18 @@ export const actions = {
 			fd.delete('ad_image');
 		}
 
+		if (!fd.get('should_be_featured')){
+			fd.set('should_be_featured',false)
+		}
+
+		if (!fd.get('visible')){
+			fd.set('visible',false)
+		}
+
+		if (!fd.get('available')){
+			fd.set('available',false)
+		}
+
 		let token: string | null | undefined = event.locals.admin.token;
 		if (!token) {
 			token = event.cookies.get('admin');
