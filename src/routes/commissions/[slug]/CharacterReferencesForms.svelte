@@ -93,7 +93,7 @@
 					on:click={switchType}
 					type="button">Links/Text Description</button
 				>
-<!--
+
 				<button
 					class:yl-btn={reference.type.toLocaleLowerCase() == 'file'}
 					type="button"
@@ -102,7 +102,7 @@
 					data-type={'file'}
 					on:click={switchType}>Upload Image</button
 				>
-
+				<!--
 				<button
 					class:yl-btn={reference.type.toLocaleLowerCase() == 'text_description'}
 					class:yl-lt-btn={reference.type.toLocaleLowerCase() != 'text_description'}
@@ -111,7 +111,7 @@
 					type="button"
 					on:click={switchType}>Text Description</button
 				>
--->
+				-->
 			</div>
 			<div class="reference-inputs">
 				<TextInput

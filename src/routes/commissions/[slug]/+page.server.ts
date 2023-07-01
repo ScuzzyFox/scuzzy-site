@@ -386,8 +386,19 @@ export const actions = {
 		}
 	},
 	orderCommission: async (event) => {
-		let notificationsArray: { type: string; message: string }[] = [];
+		//let notificationsArray: { type: string; message: string }[] = [];
 		const OrderFD = await event.request.formData();
+		const formAttempt = {
+			customerName: OrderFD.get('customer_name'),
+			whereToContact: OrderFD.get('where_to_contact'),
+			contactInfo: OrderFD.get('contact_info'),
+			email: OrderFD.get('email'),
+			characterCount: OrderFD.get('number_of_characters'),
+			commissionDescription: OrderFD.get('commission_description'),
+			adult: OrderFD.get('adult'),
+			abdl: OrderFD.get('abdl'),
+			extraCommissionDescription: OrderFD.get('extra_character_details')
+		};
 		//extract and parse non-necessary data:
 		//(check if extra_character_details,
 		//check if customer_sketch,
@@ -518,7 +529,8 @@ export const actions = {
 										'One of the character references failed to post. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help. Error code: ' +
 										refResponse.status
 								}
-							]
+							],
+							formAttempt: formAttempt
 						};
 					}
 				}
@@ -539,7 +551,8 @@ export const actions = {
 								message:
 									'Not all of your character references posted. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help.'
 							}
-						]
+						],
+						formAttempt: formAttempt
 					};
 				} //endif
 
@@ -570,7 +583,8 @@ export const actions = {
 										'One of your selected options failed to attach to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help. Error code: ' +
 										optResponse.status
 								}
-							]
+							],
+							formAttempt: formAttempt
 						};
 					}
 				}
@@ -592,7 +606,8 @@ export const actions = {
 								message:
 									'Not all of your selected options attached to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help.'
 							}
-						]
+						],
+						formAttempt: formAttempt
 					};
 				} //endif
 
@@ -634,7 +649,8 @@ export const actions = {
 							message:
 								'Somehow no order ID is available even though the server returned an OK status. Please reach out to scuzzy or try again.'
 						}
-					]
+					],
+					formAttempt: formAttempt
 				};
 			}
 		} else if (orderResponse.status == 403) {
@@ -646,7 +662,8 @@ export const actions = {
 						message:
 							"Authorization failed. Backend error. Sorry, your commission didn't go through! try again or contact scuzzy for help."
 					}
-				]
+				],
+				formAttempt: formAttempt
 			};
 		} else {
 			//unknown failure
@@ -657,7 +674,8 @@ export const actions = {
 						message:
 							'An unexpected error occurred. Commission did not go through. Please try again later or contact scuzzy for help.'
 					}
-				]
+				],
+				formAttempt: formAttempt
 			};
 		}
 	}

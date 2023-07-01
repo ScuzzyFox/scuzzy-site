@@ -18,6 +18,7 @@
 	export let forceNsfw: boolean;
 	export let forceAbdl: boolean;
 	export let orderable: boolean = true;
+	export let formAttempt: any;
 	let filteredOptions: Option[];
 	let customerName: string;
 	let contactInfo: string;
@@ -123,6 +124,17 @@
 		adult = commission.adult;
 		abdl = commission.abdl;
 		setTimeout(filterOptions, 500);
+		if (formAttempt) {
+			customerName = formAttempt.customerName;
+			whereToContact = formAttempt.whereToContact;
+			contactInfo = formAttempt.contactInfo;
+			email = formAttempt.email;
+			characterCount = formAttempt.characterCount;
+			commissionDescription = formAttempt.commissionDescription;
+			adult = formAttempt.adult;
+			abdl = formAttempt.abdl;
+			extraCommissionDescription = formAttempt.extraCommissionDescription;
+		}
 	});
 
 	function filterOptions() {

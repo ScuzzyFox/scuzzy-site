@@ -182,7 +182,7 @@ export const actions = {
 		});
 
 		if (response.ok) {
-			const o = await response.json();
+			//const o = await response.json();
 			throw redirect(303, '/commission-orders');
 		} else if (response.status == 500) {
 			return {

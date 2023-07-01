@@ -347,13 +347,24 @@
 								WARNING: This page does not save your progress if you close it in the middle of
 								entering information.
 							</p>
-							<OrderCommissionForm {commission} {forceNsfw} {forceAbdl} />
+							<OrderCommissionForm
+								{commission}
+								{forceNsfw}
+								{forceAbdl}
+								formAttempt={form && form.formAttempt ? form.formAttempt : null}
+							/>
 						</div>
 					{:else}
 						<!--display available options here if commission is not available to order-->
 						<div class="order-form">
 							<h2>View pricing Estimate</h2>
-							<OrderCommissionForm {commission} {forceNsfw} {forceAbdl} orderable={false} />
+							<OrderCommissionForm
+								{commission}
+								{forceNsfw}
+								{forceAbdl}
+								orderable={false}
+								formAttempt={form && form.formAttempt ? form.formAttempt : null}
+							/>
 						</div>
 					{/if}
 					<!--admin stuff-->

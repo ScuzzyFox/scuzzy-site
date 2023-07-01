@@ -96,18 +96,18 @@
 							<section class="order-id">ID: {order.id}</section>
 							<div class="name-status-container">
 								{order.customer_name}
-								<div class="status-bar">
-									{#if order.statuses}
-										{#each order.statuses as status}
-											<div
-												class="status-element"
-												style={order.completed
-													? 'background-color:green'
-													: `background-color:${status.color}`}
-											/>
-										{/each}
-									{/if}
-								</div>
+							</div>
+							<div class="status-bar">
+								{#if order.statuses}
+									{#each order.statuses as status}
+										<div
+											class="status-element"
+											style={order.completed
+												? 'background-color:green'
+												: `background-color:${status.color}`}
+										/>
+									{/each}
+								{/if}
 							</div>
 						</div></a
 					>
@@ -163,6 +163,7 @@
 		align-items: center;
 		border: 2px solid var(--btn-clr-avail);
 		overflow: hidden;
+		position: relative;
 	}
 
 	.order-id {
@@ -181,7 +182,6 @@
 		padding: 1rem;
 		text-align: center;
 		width: max-content;
-		position: relative;
 	}
 
 	.status-bar {
