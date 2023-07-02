@@ -7,6 +7,8 @@
 	import { flip } from 'svelte/animate';
 	import PageViewTelemetry from '$lib/PageViewTelemetry.svelte';
 	import favicon from '$lib/images/logos/favicon.png';
+	import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 
 	export let data;
 	let orders: CommissionOrder[];
@@ -16,6 +18,13 @@
 	let pageDescription: string =
 		'Submitted a commission request for ScuzzyFox? Check up on its status here!';
 	let pageImage = favicon;
+	let currentSales: number = 0;
+	let finalSales: number = 0;
+
+	const progress = tweened(0, {
+		duration: 100,
+		easing: cubicOut
+	});
 
 	function assignData() {
 		if (!data.orders || !data.statuses) {
@@ -24,6 +33,28 @@
 			orders = data.orders;
 			statuses = data.statuses;
 			pageImage = favicon;
+			currentSales = 0;
+			setTimeout(() => {
+				orders
+					.filter((order) => {
+						return !order.completed;
+					})
+					.forEach((order, index) => {
+						setTimeout(() => {
+							let subt = order.subtotal;
+							if (typeof subt == 'string') {
+								subt = parseInt(subt);
+							}
+							currentSales += subt;
+						}, 5000 / (0.3 * index * index + 2 * index));
+
+						let s = order.subtotal;
+						if (typeof s == 'string') {
+							s = parseInt(s);
+						}
+						finalSales += s;
+					});
+			}, 1000);
 		}
 	}
 
@@ -41,6 +72,7 @@
 	}
 
 	$: filterOrders(orderFilter);
+	$: if (finalSales != 0) progress.set(currentSales / finalSales);
 </script>
 
 <PageViewTelemetry />
@@ -58,6 +90,7 @@
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={pageImage} />
 </svelte:head>
+
 <div class="main-content">
 	<a href="/commissions" class="link-btn">To Commissions</a>
 	<div class="legend-container">
@@ -79,6 +112,27 @@
 	</div>
 	<div class="card-container">
 		<Card h1="Commission Requests">
+			{#if $adminStore.loggedIn}
+				<div class="current-sales-box">
+					<h2 style:margin="1rem">
+						{finalSales == currentSales ? 'Current Pending Sales:' : 'Loading Sales:'}
+					</h2>
+					<p
+						style:font-size="40px"
+						style:color="green"
+						style:font-weight="900"
+						style:margin="0.2rem"
+					>
+						${currentSales}
+					</p>
+					<div
+						class="prog-bar"
+						style:background-color={'green'}
+						style:width={$progress * 100 + '%'}
+						style:height="3px"
+					/>
+				</div>
+			{/if}
 			{#if orders}
 				<TextInput
 					bind:value={orderFilter}
@@ -228,6 +282,16 @@
 	.link-btn:active {
 		filter: brightness(60%) saturate(150%);
 		text-decoration: underline;
+	}
+
+	.current-sales-box {
+		border: 1.8px solid var(--accnt-clr);
+		border-radius: var(--radius-card);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
 	}
 
 	/**Desktop mode:**/

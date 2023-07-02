@@ -302,16 +302,16 @@ export const actions = {
 			fd.delete('ad_image');
 		}
 
-		if (!fd.get('should_be_featured')){
-			fd.set('should_be_featured',false)
+		if (!fd.get('should_be_featured')) {
+			fd.set('should_be_featured', 'false');
 		}
 
-		if (!fd.get('visible')){
-			fd.set('visible',false)
+		if (!fd.get('visible')) {
+			fd.set('visible', 'false');
 		}
 
-		if (!fd.get('available')){
-			fd.set('available',false)
+		if (!fd.get('available')) {
+			fd.set('available', 'false');
 		}
 
 		let token: string | null | undefined = event.locals.admin.token;
@@ -428,16 +428,18 @@ export const actions = {
 
 		let selectedOptions: number[] = [];
 		let unparsedOptions = OrderFD.get('selected_options');
-		OrderFD.delete('selected_options');
-		if (typeof unparsedOptions === 'string' || unparsedOptions instanceof String) {
-			let nums = unparsedOptions.split(',');
-			nums.forEach((num) => {
-				selectedOptions.push(parseInt(num));
-			});
-		} else if (unparsedOptions instanceof Array) {
-			unparsedOptions.forEach((unparsedOption) => {
-				selectedOptions.push(parseInt(unparsedOption));
-			});
+		if (unparsedOptions) {
+			OrderFD.delete('selected_options');
+			if (typeof unparsedOptions === 'string' || unparsedOptions instanceof String) {
+				let nums = unparsedOptions.split(',');
+				nums.forEach((num) => {
+					selectedOptions.push(parseInt(num));
+				});
+			} else if (unparsedOptions instanceof Array) {
+				unparsedOptions.forEach((unparsedOption) => {
+					selectedOptions.push(parseInt(unparsedOption));
+				});
+			}
 		}
 
 		let unparsedCharacterReferences = OrderFD.get('character_references');
@@ -569,20 +571,44 @@ export const actions = {
 				} //endif
 
 				let optionsResponses: any[] = [];
-
-				for (const opt of selectedOptions) {
-					const optResponse = await fetch(
-						`https://api.scuzzyfox.com/commissions/orders/option/${createdOrder.id}/${opt}/`,
-						{
-							method: 'POST',
-							headers: {
-								Authorization: 'Poken ' + DJANGO_API_TOKEN
+				if (selectedOptions && selectedOptions.length > 0) {
+					for (const opt of selectedOptions) {
+						const optResponse = await fetch(
+							`https://api.scuzzyfox.com/commissions/orders/option/${createdOrder.id}/${opt}/`,
+							{
+								method: 'POST',
+								headers: {
+									Authorization: 'Poken ' + DJANGO_API_TOKEN
+								}
 							}
+						);
+						optionsResponses.push(optResponse);
+						//if post didn't succeed, delete order and return error
+						if (!optResponse.ok) {
+							if (createdOrder.id) {
+								deleteOrder(createdOrder.id);
+							}
+
+							return {
+								notifications: [
+									{
+										type: 'error',
+										message:
+											'One of your selected options failed to attach to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help. Error code: ' +
+											optResponse.status
+									}
+								],
+								formAttempt: formAttempt
+							};
 						}
-					);
-					optionsResponses.push(optResponse);
-					//if post didn't succeed, delete order and return error
-					if (!optResponse.ok) {
+					}
+
+					//if not all responses are ok, delete the order and return error
+					if (
+						!optionsResponses.every((res) => {
+							return res.ok;
+						})
+					) {
 						if (createdOrder.id) {
 							deleteOrder(createdOrder.id);
 						}
@@ -592,36 +618,13 @@ export const actions = {
 								{
 									type: 'error',
 									message:
-										'One of your selected options failed to attach to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help. Error code: ' +
-										optResponse.status
+										'Not all of your selected options attached to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help.'
 								}
 							],
 							formAttempt: formAttempt
 						};
-					}
+					} //endif
 				}
-
-				//if not all responses are ok, delete the order and return error
-				if (
-					!optionsResponses.every((res) => {
-						return res.ok;
-					})
-				) {
-					if (createdOrder.id) {
-						deleteOrder(createdOrder.id);
-					}
-
-					return {
-						notifications: [
-							{
-								type: 'error',
-								message:
-									'Not all of your selected options attached to your order. As a result, your order did not go through. You are welcome to try again or contact scuzzy for help.'
-							}
-						],
-						formAttempt: formAttempt
-					};
-				} //endif
 
 				//if all's good, then return success notifications!
 				notifyScuzzyOfNewOrder(createdOrder, scuzzyChatId);
