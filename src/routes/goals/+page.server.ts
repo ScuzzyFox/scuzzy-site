@@ -162,10 +162,10 @@ function compareGoals(a: Goal, b: Goal) {
 	let bDate: number = b.priority;
 
 	if (aDate > bDate) {
-		return 1;
+		return -1;
 	}
 	if (aDate < bDate) {
-		return -1;
+		return 1;
 	}
 	return 0;
 }
