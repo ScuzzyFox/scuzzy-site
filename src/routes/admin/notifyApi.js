@@ -41,7 +41,7 @@ export async function notifyDiscordUsers() {
 			.setTitle('ScuzzyFox is Open for Commissoins!')
 			.setURL('https://scuzzyfox.com/commissions')
 			.setDescription(
-				`Hey, I'm open for commissions!\nHead to https://scuzzyfox.com/commissions to get one!\n\nReminder these are not first-come, first-serve, so don't rush on trying to be first!\n\nAdditionally, check out my terms of service at https://scuzzyfox.com/tos.\n\nHave any questions? DM me here on discord or on telegram [@ScuzzyFox](https://t.me/scuzzyfox)\n\nHope to draw you soon!`
+				`Hey, I'm open for commissions!\nHead to https://scuzzyfox.com/commissions to get one!\n\nReminder these are not first-come, first-serve, so don't rush on trying to be first! This also means your commission might not be selected.\n\nAdditionally, check out my terms of service at https://scuzzyfox.com/tos.\n\nHave any questions? DM me here on discord or on telegram [@ScuzzyFox](https://t.me/scuzzyfox)\n\nHope to draw you soon!`
 			)
 			//.setImage('https://i.imgur.com/AfFp7pu.png') //probably gonna want a commission sheet or thumbnail or something here
 
@@ -62,7 +62,7 @@ export async function notifyDiscordUsers() {
 
 export async function notifyTelegramUsers(token) {
 	var bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
-	const message = `*Hello\\!*\n__Scuzzy is now open for commissions\\.__ Check out [scuzzyfox\\.com/commissions](https://scuzzyfox.com/commissions) to get one\\.\n\nReminder that submissions are not first\\-come, first\\-serve, so don't rush in trying to be the first\\!\n\nAdditionally, check out my terms of service at [scuzzyfox\\.com/tos](https://scuzzyfox.com/tos)\\.\n\nHave any questions? DM me here on Telegram [@ScuzzyFox](https://t.me/scuzzyfox)\\.\n\nLooking forward to drawing you soon\\!`;
+	const message = `*Hello\\!*\n__Scuzzy is now open for commissions\\.__ Check out [scuzzyfox\\.com/commissions](https://scuzzyfox.com/commissions) to get one\\.\n\nReminder that submissions are not first\\-come, first\\-serve, so don't rush in trying to be the first\\! *This means your commission might also not be selected, depending on available slots\\.*\n\nAdditionally, check out my terms of service at [scuzzyfox\\.com/tos](https://scuzzyfox.com/tos)\\.\n\nHave any questions? DM me here on Telegram [@ScuzzyFox](https://t.me/scuzzyfox)\\.\n\nLooking forward to drawing you soon\\!`;
 
 	getChatIdList(token)
 		.then((ids) => {
