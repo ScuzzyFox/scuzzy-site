@@ -31,10 +31,17 @@
 	}
 </script>
 
-<PageViewTelemetry />
+<!--
+
+	<PageViewTelemetry />
+-->
 
 <main>
 	<h1>Welcome {$adminStore.username}!</h1>
+
+	<div class="telegram">
+		<a href="/admin/telegram">Telegram Info</a>
+	</div>
 	<form method="POST" action="?/logout">
 		<button>Log out</button>
 	</form>
@@ -85,6 +92,16 @@
 	a:active {
 		color: var(--tertiary-clr);
 		text-decoration: underline;
+	}
+
+	.telegram {
+		margin: 1rem;
+	}
+
+	.telegram a {
+		background-color: var(--tertiary-clr);
+		padding: 1rem;
+		color: var(--white-txt);
 	}
 
 	@media (min-width: 1010px) {
