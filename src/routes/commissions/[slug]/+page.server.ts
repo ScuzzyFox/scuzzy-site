@@ -306,6 +306,14 @@ export const actions = {
 			fd.set('should_be_featured', 'false');
 		}
 
+		if (!fd.get('adult')) {
+			fd.set('adult', 'false');
+		}
+
+		if (!fd.get('abdl')) {
+			fd.set('abdl', 'false');
+		}
+
 		if (!fd.get('visible')) {
 			fd.set('visible', 'false');
 		}
