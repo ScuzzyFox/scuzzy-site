@@ -100,10 +100,24 @@
 	};
 
 	let TGGroup: LinkCF = {
-		name: 'Telegram Group',
-		href: 'https://t.me/ScuzzyFoxChat',
+		name: 'NSFW Telegram Group',
+		href: 'https://t.me/ScuzzyFoxNSFWChat',
 		nsfw: true,
 		abdl: false
+	};
+
+	let TGDiaperChannel: LinkCF = {
+		name: 'Babyfur Telegram Channel',
+		href: 'https://t.me/ScuzzyFoxArtBabyfur',
+		nsfw: false,
+		abdl: true
+	};
+
+	let TGDiaperGroup: LinkCF = {
+		name: 'Babyfur Telegram Group',
+		href: 'https://t.me/ScuzzyFoxDiaper',
+		nsfw: false,
+		abdl: true
 	};
 
 	let directContact: (Link | LinkCF)[] = [telegram, discord];
@@ -116,16 +130,23 @@
 		twitterSmut,
 		twitterAbdl,
 		discordServer,
-		TGGroup,
 		NSFWTGChannel,
-		TGChannel
+		TGChannel,
+		TGDiaperChannel
 	];
 
 	let lessResponsive: (Link | LinkCF)[] = [twitter, twitterSmut, twitterAbdl, email];
 
 	let twitters: (Link | LinkCF)[] = [twitter, twitterSmut, twitterAbdl];
 
-	let telegrams: (Link | LinkCF)[] = [telegram, TGGroup, NSFWTGChannel, TGChannel];
+	let telegrams: (Link | LinkCF)[] = [
+		telegram,
+		TGGroup,
+		TGDiaperGroup,
+		NSFWTGChannel,
+		TGChannel,
+		TGDiaperChannel
+	];
 
 	let galleriesOnly: boolean,
 		twitterOnly: boolean,
