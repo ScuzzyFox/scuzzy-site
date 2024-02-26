@@ -59,19 +59,19 @@
 	};
 
 	let twitter: Link = {
-		name: 'Twitter',
-		href: 'https://twitter.com/scuzzyfox'
+		name: 'Bluesky',
+		href: 'https://bsky.app/profile/scuzzyfox.com '
 	};
 
 	let twitterSmut: LinkCF = {
-		name: 'Twitter (NSFW)',
-		href: 'https://twitter.com/scuzzysmut',
+		name: 'Bluesky (NSFW)',
+		href: 'https://smut.scuzzyfox.com',
 		nsfw: true,
 		abdl: false
 	};
 	let twitterAbdl: LinkCF = {
-		name: 'Twitter (babyfur)',
-		href: 'https://twitter.com/scuzzykit',
+		name: 'Bluesky (Babyfur)',
+		href: 'https://kit.scuzzyfox.com',
 		nsfw: false,
 		abdl: true
 	};
