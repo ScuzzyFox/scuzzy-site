@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 	import type { CommissionOrder, CommissionStatus } from '$lib/CommissionTypes';
-	import { adminStore } from '$lib/stores';
+	import { userSettingsStore, adminStore } from '$lib/stores';
 	import Card from '$lib/Card.svelte';
 	import TextInput from '$lib/TextInput.svelte';
 	import { flip } from 'svelte/animate';
@@ -12,11 +11,12 @@
 	import { cubicOut } from 'svelte/easing';
 
 	export let data;
-	let orders: CommissionOrder[] = [];
-	let statuses: CommissionStatus[] = [];
-	let orderFilter: string = '';
+	let orders: CommissionOrder[];
+	let statuses: CommissionStatus[];
+	let orderFilter: string;
 	let pageTitle: string = 'ScuzzyFox Commissions Order List';
-	let pageDescription: string = 'Submitted a commission request for ScuzzyFox? Check up on its status here!';
+	let pageDescription: string =
+		'Submitted a commission request for ScuzzyFox? Check up on its status here!';
 	let pageImage = favicon;
 	let currentSales: number = 0;
 	let finalSales: number = 0;
@@ -26,44 +26,53 @@
 		easing: cubicOut
 	});
 
-	function calculateSales() {
-		currentSales = 0;
-		finalSales = 0;
+	function assignData() {
+		if (!data.orders || !data.statuses) {
+			setTimeout(assignData, 200);
+		} else {
+			orders = data.orders;
+			statuses = data.statuses;
+			pageImage = favicon;
+			currentSales = 0;
+			setTimeout(() => {
+				orders
+					.filter((order) => {
+						return !order.completed;
+					})
+					.forEach((order, index) => {
+						setTimeout(() => {
+							let subt = order.subtotal;
+							if (typeof subt == 'string') {
+								subt = parseInt(subt);
+							}
+							currentSales += subt;
+						}, 5000 / (0.3 * index * index + 2 * index));
 
-		orders.forEach((order) => {
-			let subt = typeof order.subtotal === 'string' ? parseInt(order.subtotal) : order.subtotal;
-			if (!order.completed) {
-				currentSales += subt;
-				finalSales = currentSales;
-			}
-			
-		});
-
-		progress.set(currentSales / finalSales);
+						let s = order.subtotal;
+						if (typeof s == 'string') {
+							s = parseInt(s);
+						}
+						finalSales += s;
+					});
+			}, 1000);
+		}
 	}
 
-	$writable(data, ($data) => {
-		if ($data.orders && $data.statuses) {
-			orders = $data.orders;
-			statuses = $data.statuses;
-			calculateSales();
-		}
-	});
+	onMount(assignData);
 
 	function filterOrders(orderFilter: string) {
-		if (!orderFilter) {
-			orders = data.orders;
-		} else {
-			orders = data.orders.filter((order) => {
-				return (
-					(order.id + '').includes(orderFilter) ||
-					order.customer_name.toLowerCase().includes(orderFilter.toLowerCase())
-				);
-			});
-		}
+		orders = data.orders;
+		if (orderFilter == '' || !orderFilter) return;
+		orders = orders.filter((order) => {
+			return (
+				(order.id + '').includes(orderFilter) ||
+				order.customer_name.toLocaleLowerCase().includes(orderFilter.toLocaleLowerCase())
+			);
+		});
 	}
 
 	$: filterOrders(orderFilter);
+	$: if (finalSales != 0) progress.set(currentSales / finalSales);
 </script>
 
 <PageViewTelemetry />
