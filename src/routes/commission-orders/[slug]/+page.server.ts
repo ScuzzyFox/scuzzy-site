@@ -53,7 +53,7 @@ export const load = async (event) => {
 		}
 		if (order.commission) {
 			const commissionResponse = await fetch(
-				`https://api.scuzzyfox.com/commissions/${order.commission.id}/`
+				`https://api.scuzzyfox.com/commissions/${order.commission}/`
 			);
 			if (commissionResponse.ok) {
 				const commissionData = await commissionResponse.json();
