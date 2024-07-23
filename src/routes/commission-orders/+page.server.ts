@@ -20,13 +20,7 @@ async function getOrders(token?: string) {
 	throw error(500, 'Failed to fetch commission orders.');
 }
 
-async function getAllCommissions() {
-	const response = await fetch('https://api.scuzzyfox.com/commissions/');
-	if (response.ok) {
-		return response.json();
-	}
-	throw error(500, 'Failed to fetch all commissions');
-}
+
 
 export const load = async (event) => {
 	let token: string | undefined = undefined;
@@ -36,31 +30,15 @@ export const load = async (event) => {
 		token = event.cookies.get('admin');
 	}
 
-	const [statuses, orders, commissions] = await Promise.all([
+	const [statuses, orders] = await Promise.all([
 		getStatuses(),
-		getOrders(token),
-		getAllCommissions()
+		getOrders(token)
 	]);
 
-	// Create a lookup object for commissions by their IDs
-	const commissionLookup = commissions.reduce((lookup, commission) => {
-		lookup[commission.id] = commission;
-		return lookup;
-	}, {});
+	
 
-	if (token) {
-		const ordersWithCommissionData = orders.map((order: CommissionOrder) => {
-			const commissionData = commissionLookup[order.commission];
-			return { ...order, commissionData };
-		});
-		return {
-			orders: ordersWithCommissionData,
-			statuses: statuses
-		};
-	} else {
-		return {
+	return {
 			orders: orders,
 			statuses: statuses
 		};
-	}
 };
