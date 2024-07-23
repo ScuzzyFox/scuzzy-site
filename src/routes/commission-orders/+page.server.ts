@@ -42,9 +42,15 @@ export const load = async (event) => {
 		getAllCommissions()
 	]);
 
+	// Create a lookup object for commissions by their IDs
+	const commissionLookup = commissions.reduce((lookup, commission) => {
+		lookup[commission.id] = commission;
+		return lookup;
+	}, {});
+
 	if (token) {
 		const ordersWithCommissionData = orders.map((order: CommissionOrder) => {
-			const commissionData = commissions.find((commission: any) => commission.id === order.commission);
+			const commissionData = commissionLookup[order.commission];
 			return { ...order, commissionData };
 		});
 		return {
