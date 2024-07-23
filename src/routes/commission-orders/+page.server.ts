@@ -4,7 +4,7 @@ import type { CommissionOrder, CommissionStatus } from '$lib/CommissionTypes.js'
 async function getStatuses() {
 	const response = await fetch('https://api.scuzzyfox.com/commissions/statuses/');
 	if (response.ok) {
-		return await response.json();
+		return response.json();
 	}
 	throw error(500, 'Failed to fetch statuses');
 }
@@ -15,7 +15,7 @@ async function getOrders(token?: string) {
 	const response = await fetch(url, { headers });
 
 	if (response.ok) {
-		return await response.json();
+		return response.json();
 	}
 	throw error(500, 'Failed to fetch commission orders.');
 }
@@ -23,7 +23,7 @@ async function getOrders(token?: string) {
 async function getAllCommissions() {
 	const response = await fetch('https://api.scuzzyfox.com/commissions/');
 	if (response.ok) {
-		return await response.json();
+		return response.json();
 	}
 	throw error(500, 'Failed to fetch all commissions');
 }
