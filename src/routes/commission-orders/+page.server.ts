@@ -6,6 +6,26 @@ async function getStatuses() {
 	if (response.ok) {
 		return await response.json();
 	}
+	throw error(500, 'Failed to fetch statuses');
+}
+
+async function getOrders(token?: string) {
+	const url = 'https://api.scuzzyfox.com/commissions/orders/';
+	const headers = token ? { Authorization: 'JWT ' + token } : {};
+	const response = await fetch(url, { headers });
+
+	if (response.ok) {
+		return await response.json();
+	}
+	throw error(500, 'Failed to fetch commission orders.');
+}
+
+async function getCommissionData(commissionId: string) {
+	const response = await fetch(`https://api.scuzzyfox.com/commissions/${commissionId}`);
+	if (response.ok) {
+		return await response.json();
+	}
+	throw error(500, 'Failed to fetch commission data for order.');
 }
 
 export const load = async (event) => {
@@ -16,42 +36,25 @@ export const load = async (event) => {
 		token = event.cookies.get('admin');
 	}
 
-	const statuses = await getStatuses();
+	const [statuses, orders] = await Promise.all([
+		getStatuses(),
+		getOrders(token)
+	]);
 
-	let response: Response;
-
-	//if admin is logged in, authenticate with the sever to get the full order data.
-	//otherwise don't authenticate and give us basic data.
 	if (token) {
-		response = await fetch('https://api.scuzzyfox.com/commissions/orders/', {
-			method: 'GET',
-			headers: {
-				Authorization: 'JWT ' + token
-			}
+		const commissionDataPromises = orders.map(async (order: CommissionOrder) => {
+			order.commissionData = await getCommissionData(order.commission);
+			return order;
 		});
+		const ordersWithCommissionData = await Promise.all(commissionDataPromises);
+		return {
+			orders: ordersWithCommissionData,
+			statuses: statuses
+		};
 	} else {
-		response = await fetch('https://api.scuzzyfox.com/commissions/orders/');
-	}
-
-	if (response.ok) {
-		const orders: CommissionOrder[] = await response.json();
-		if (token) {
-			for (let order of orders) {
-				const commissionResponse = await fetch(
-					`https://api.scuzzyfox.com/commissions/${order.commission}`
-				);
-				if (commissionResponse.ok) {
-					order.commissionData = await commissionResponse.json();
-				} else {
-					throw error(500, 'Failed to fetch commission data for orders.');
-				}
-			}
-		}
 		return {
 			orders: orders,
 			statuses: statuses
 		};
-	} else {
-		throw error(500, 'Failed to fetch commission orders.');
 	}
 };
